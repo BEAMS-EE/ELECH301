@@ -1,0 +1,1281 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ucs}
+\usepackage{amsthm} %numéroter les questions
+\usepackage[frenchb]{babel}
+\usepackage{datetime}
+\usepackage{xspace} % typographie IN
+\usepackage{hyperref}% hyperliens
+\usepackage[all]{hypcap} %lien pointe en haut des figures
+\usepackage[french]{varioref} %voir x p y
+\usepackage{fancyhdr}% en têtes
+%\input cyracc.def
+\usepackage[]{graphicx} %include pictures
+\usepackage{pgfplots}
+\usetikzlibrary{babel,positioning,calc}
+\usepackage[americanresistors ]{circuitikz}
+\usepackage[]{gnuplottex}
+\usepackage{ifthen}
+\usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
+
+\usepackage[top=1.3 in, bottom=1.3 in, left=1.3 in, right=1.3 in]{geometry} % Yeah, that's bad to play with margins
+\usepackage[]{pdfpages}
+\usepackage[]{subfig}
+\usepackage[]{attachfile}
+%\usepackage{ stmaryrd } % for \ligthning
+
+\newdateformat{mydate}{2016--2017}%hack pour remplacer \THEYEAR
+
+%cyr
+\newcommand\textcyr[1]{{\fontencoding{OT2}\fontfamily{wncyr}\selectfont #1}}
+
+
+\newboolean{corrige}
+\ifx\correction\undefined
+\setboolean{corrige}{false}% pas de corrigé
+\else
+\setboolean{corrige}{true}%corrigé
+\fi
+
+%\setboolean{corrige}{false}% pas de corrigé
+
+\newboolean{annexes}
+\setboolean{annexes}{true}%annexes
+%\setboolean{annexes}{false}% pas de annexes
+
+\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\newboolean{mos}
+%\setboolean{mos}{true}%annexes
+\setboolean{mos}{false}% pas de annexes
+
+\usepackage{aeguill} %guillemets
+
+%% fancy header & foot
+
+\lhead{[ELEC-H-301] Électronique appliquée\\ Labo \no 5 : circuits logiques}
+\rhead{\mydate\today\\ page \thepage}
+\chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
+\cfoot{}
+%%
+\pagestyle{fancy}
+
+\pdfinfo{
+/Author (Yannick Allard, ULB -- BEAMS)
+/Title (Labo n° 5 ELEC-H-301, circuits logiques)
+/ModDate (D:\pdfdate)
+}
+
+\hypersetup{
+pdftitle={Labo n° 5 [ELEC-H-301] Électronique appliquée : circuits logiques},
+pdfauthor={Yannick Allard, ©2016 ULB - BEAMS  },
+pdfsubject={Diodes et alimentations}
+}
+
+\theoremstyle{definition}% questions pas en italique
+\newtheorem{Q}{Question}[] % numéroter les questions [section] ou non []
+
+\newcommand{\reponse}[1]{% pour intégrer une réponse : \reponse{texte} : sera inclus si \boolean{corrige}
+	\ifthenelse {\boolean{corrige}} {\paragraph{Réponse :} \color{darkblue}   #1\color{black}} {}
+ }
+
+\fancyhfoffset[ERLO]{0cm} %header with full page width
+
+\newcommand{\addcontentslinenono}[4]{\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}{}}}
+
+\date{\vspace{-1.7cm}\mydate\today}
+\title{\vspace{-2cm} Labo \no 5\\ Électronique appliquée [ELEC-H-301]\\Circuits logiques\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
+
+%\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
+
+\setlength{\parskip}{0.2cm plus2mm minus1mm} %espacement entre §
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{52pt}
+\fancypagestyle{plain}
+
+\newcommand{\itgv}[1]{\ifthenelse{\boolean{corrige}}{{\color{blue}#1}}{}} %si corrigé vrai...
+\newcommand{\ifgv}[1]{\ifthenelse{\boolean{corrige}}{}{#1}} %si corrigé vrai...
+
+
+%from SO: kinky cross for wires
+\tikzset{
+  declare function={% in case of CVS which switches the arguments of atan2
+    atan3(\a,\b)=ifthenelse(atan2(0,1)==90, atan2(\a,\b), atan2(\b,\a));},
+  kinky cross radius/.initial=+.125cm,
+  @kinky cross/.initial=+, kinky crosses/.is choice,
+  kinky crosses/left/.style={@kinky cross=-},kinky crosses/right/.style={@kinky cross=+},
+  kinky cross/.style args={(#1)--(#2)}{
+    to path={
+      let \p{@kc@}=($(\tikztotarget)-(\tikztostart)$),
+          \n{@kc@}={atan3(\p{@kc@})+180} in
+      -- ($(intersection of \tikztostart--{\tikztotarget} and #1--#2)!%
+             \pgfkeysvalueof{/tikz/kinky cross radius}!(\tikztostart)$)
+      arc [ radius     =\pgfkeysvalueof{/tikz/kinky cross radius},
+            start angle=\n{@kc@},
+            delta angle=\pgfkeysvalueof{/tikz/@kinky cross}180 ]
+      -- (\tikztotarget)}}}
+
+
+\begin{document}
+\pagestyle{fancy}
+\maketitle
+\vspace*{-1cm}
+\section{Introduction}
+
+\subsection{But}
+Cette manipulation a pour but d'illustrer :
+\begin{itemize}
+\item au niveau «application» : le fonctionnement de circuits logiques câblés
+\item au niveau «composant» : le fonctionnement de circuits logiques discrets.
+\end{itemize}
+
+\subsection{Prérequis}
+\marginpar{\color{white}"We will rise again" Peia}
+%\begin{itemize}
+%\item algèbre de Boole
+%\item 
+Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
+\begin{itemize}
+\item algèbre de Boole
+\item portes logiques, états logiques
+\item logique combinatoire
+\item délai de propagation
+\item logique séquentielle : bascules R-S et D.
+\end{itemize}
+
+\textbf{Veillez aussi à relire l'annexe du laboratoire \no 1 sur les instruments de laboratoire.}
+
+
+%\item Être capable de calculer un gain et une résistance de sortie en utilisant un schéma équivalent.
+%\item Être capable de tracer un diagramme de Bode.
+%\item Avoir compris les principes de la polarisation.
+
+%\end{itemize}
+
+\subsection{Prédéterminations}
+Les questions~\ref{Q:tv1},~\ref{Q:tv2},~\ref{Q:chrono},~\ref{Q:rs_deb} à ~\ref{Q:rs_fin}, ~\ref{Q:dl1} et~\ref{Q:dlatch} doivent être faites \textbf{avant} l'arrivée au laboratoire.
+
+%Le TP 4 portant sur les diodes fait également office de prédéterminations.
+%Les prédéterminations des questions \ref{Q:1} à \ref{Q:predet} 
+
+
+\subsection{Objectifs}
+À la fin de ce laboratoire, vous devez être capable de :
+\begin{itemize}
+\item donner la table de vérité d'un circuit logique
+\item réaliser et tester un circuit logique
+\item comprendre la notion de temps de propagation et le mesurer à l'oscilloscope
+\item comprendre le fonctionnement d'une bascule R-S
+\item réaliser et tester une bascule R-S et une bascule D à l'aide de portes logiques.
+\end{itemize}
+%\clearpage
+\newpage
+\pagestyle{fancy}
+%\begin{Q}
+%	À quelle condition cette source est-elle linéaire ?
+%	\label{Q:1}
+%	\reponse{$g$ doit être constant.}
+%\end{Q}
+
+\section{Concepts}
+
+Les circuits logiques sont invisibles mais fortement présent autour de nous : ordinateurs, téléphones, tablettes numériques\dots Même si la complexité des circuits a fortement augmenté depuis quelques décennies, les fonctions de base sont restées essentiellement identiques. Ce labo a pour but de vous montrer comment réaliser les fonctions de base de la logique numérique avec des circuits conçus à cet effet.
+
+\section{Logique combinatoire}
+
+Les circuits décrits dans cette section sont \textbf{combinatoires}, c'est à dire que leur sortie ne dépend que de l'état des entrées.
+
+%\subsection{Opérations de base}
+Les opérations logiques usuelles\footnote{La représentation américaine des portes logiques est utilisée ici, une représentation européenne existe également} sont :
+
+% rappel des portes logiques
+%footnote : représentation US
+
+\begin{center}
+%\shorthandoff{:!}
+		\begin{circuitikz} \draw
+		(0,0) node [american nand port]{}
+		(-0.7,-0.8) node  {NAND}
+		
+		(2,0) node [american nor port] {}
+		(2-0.7,-0.8) node  {NOR}
+		
+		(4,0) node [american xnor port] {}
+		(4-0.7,-0.8) node  {XNOR}
+		
+		(0,2) node [american and port] {}
+		(-0.7,2-0.8) node  {AND}
+		
+		(2,2) node [american or port] {}
+		(2-0.7,2-0.8) node  {OR}
+		
+		(4,2) node [american xor port] {}
+		(4-0.7,2-0.8) node  {XOR}
+		
+		(6,1) node [american not port] {}
+		(6.7-0.7,1-0.8) node  {NOT}
+		
+	;\end{circuitikz}
+%\shorthandon{:!}		
+	\end{center}
+
+\begin{Q}
+	Donner la table de vérité du circuit suivant :
+	
+	\begin{center}
+%\shorthandoff{:!}
+		\begin{circuitikz} \draw
+		(0,0) node [american nor port] (nor) {}
+%		(-0.7,-0.8) node  {NAND}
+		(nor.in 2) -- ++(-1,0) node [ocirc] {} node [anchor=east] {C} 
+		(nor.in 1) -|  (-1.5,1)
+		
+		(0,2) node [american and port] (and){}
+%		(0-0.7,2-0.8) node  {NOR}
+		(and.in 2) -| (-1.5,1) to [short, -o] (-2.4,1) node [anchor=east] {B}
+		(and.in 1)	-- ++(-1,0) node [ocirc] {} node [anchor=east] {A} 
+
+		(2,1) node [american or port] (or){}
+%		(4-0.7,1-0.8) node  {XNOR}
+		(and.out) -| (or.in 1)
+		(nor.out) -| (or.in 2)
+		
+		(3.5,1) node [american not port] (not){}
+		(or.out) -- (not.in)
+		(not.out) -- ++(1,0) node [ocirc] {} node [anchor=west] {X}
+		
+		
+%		(0,2) node [american and port] {}
+%		(-0.7,2-0.8) node  {AND}
+		
+%		(2,2) node [american or port] {}
+%		(2-0.7,2-0.8) node  {OR}
+		
+%		(4,2) node [american xor port] {}
+%		(4-0.7,2-0.8) node  {XOR}
+		
+		
+%		(6.7-0.7,1-0.8) node  {NOT}
+		
+	;\end{circuitikz}
+%\shorthandon{:!}		
+	\end{center}
+	\label{Q:tv1}
+	%circuit
+	\reponse{
+	\begin{tabular}{ccc|c}
+		A & B & C & X \\ 
+		\hline 
+		0 & 0 & 0 & 0 \\ 
+		0 & 0 & 1 & 1 \\ 
+		0 & 1 & 0 & 1 \\ 
+		0 & 1 & 1 & 1 \\ 
+		1 & 0 & 0 & 0 \\ 
+		1 & 0 & 1 & 1 \\ 
+		1 & 1 & 0 & 0 \\ 
+		1 & 1 & 1 & 0 \\ 
+		\end{tabular} 	
+	
+	}%R
+\end{Q}
+
+%\subsection{Exercices}
+\begin{Q}
+	En utilisant une table de vérité, démontrer que ce circuit est un «voteur» :
+	%circuit
+	\begin{center}
+%\shorthandoff{:!}
+		\begin{circuitikz} \draw
+		(0,0) node [american and port] (and1) {}
+%		(-0.7,-0.8) node  {NAND}
+		(and1.in 2) -- ++(-0.5,0) |- node [circ] {} ++(-0.5,2.56) node [ocirc] (B) {} node [anchor=east] {B} 
+		
+		
+		(0,2) node [american or port] (or){}
+%		(0-0.7,2-0.8) node  {NOR}
+		(or.in 1) -- ++(-0.5,0) |- (B)
+		(or.in 2) |- node [circ] {} ++(-1,-0.4) node [ocirc] (C) {} node [anchor=east] {C} 
+		(and1.in 1) |- (C)
+		
+		(2,3) node [american and port] (and2) {}
+%		(4-0.7,1-0.8) node  {XNOR}
+		(or.out) -| (and2.in 2)
+		(and2.in 1) -- ++(-3,0)  node [ocirc] (A) {} node [anchor=east] {A} 
+		(or.out) -| (and2.in 2)
+		
+		(3.5,1) node [american or port] (and3){}
+		(and2.out) -| (and3.in 1)
+		(and1.out) -| (and3.in 2)
+		(and3.out) -- ++(1,0) node [ocirc] {} node [anchor=west] {Y}
+		
+		
+%		(0,2) node [american and port] {}
+%		(-0.7,2-0.8) node  {AND}
+		
+%		(2,2) node [american or port] {}
+%		(2-0.7,2-0.8) node  {OR}
+		
+%		(4,2) node [american xor port] {}
+%		(4-0.7,2-0.8) node  {XOR}
+		
+		
+%		(6.7-0.7,1-0.8) node  {NOT}
+		
+	;\end{circuitikz}
+%\shorthandon{:!}		
+	\end{center}
+	\label{Q:tv2}
+	\reponse{
+	\begin{tabular}{ccc|c}
+		A & B & C & X \\ 
+		\hline 
+		0 & 0 & 0 & 0 \\ 
+		0 & 0 & 1 & 0 \\ 
+		0 & 1 & 0 & 0 \\ 
+		0 & 1 & 1 & 1 \\ 
+		1 & 0 & 0 & 0 \\ 
+		1 & 0 & 1 & 1 \\ 
+		1 & 1 & 0 & 1 \\ 
+		1 & 1 & 1 & 1 \\ 
+		\end{tabular} 	
+		}%R
+\end{Q}
+
+\begin{Q}
+	Réaliser ce circuit sur le protoboard au moyen de circuits intégrés 74HC00 (\textbf{N}AND) et 74HC32 (OR), les brochages se trouvent en annexe. 
+	\begin{itemize}
+	\item Brancher les entrées sur les leds pour visualiser leur état,
+	\item brancher les sorties intermédiaires sur les leds pour vérifier progressivement votre câblage,
+	\item brancher la sortie sur une led pour vérifier son état.
+	\item \textbf{N'oubliez pas d'alimenter vos circuits logiques en 5V !}
+	\end{itemize}
+
+	\textit{Note~: Réalisez d'abord un circuit permettant de simuler le comportement d'une porte AND à l'aide de deux portes NAND.}
+	\label{Q:2}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Tester son bon fonctionnement à l'aide des LEDs et des interrupteurs. Vérifier si sa table de vérité correspond à celle déterminée précédemment.
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Compléter le chronogramme ci-dessous en considérant que la porte "NOT" a un temps de propagation de 10ns et que la porte "AND" a un temps de propagation de 20 ns.
+		\begin{center}
+%\shorthandoff{:!}
+		\begin{circuitikz} \draw
+		(0,0.72) node [american and port] (and1) {}
+%		(-0.7,-0.8) node  {NAND}
+		(-3,1) node [american not port, scale=0.8] (not){} 
+		(and1.in 1) -|   (not.out)
+		
+		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
+		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
+	
+	;\end{circuitikz}
+%\shorthandon{:!}		
+%\shorthandoff{:!}
+
+\begin{tikzpicture}[minimum size= 1.25cm,scale=0.9]
+%\usetikzlibrary{arrows,decorations.markings}
+%\def \n {5}
+%\def \radius {3cm}
+%\def \margin {8} % margin in angles, depends on the radius
+\usetikzlibrary{calc}
+%\usetikzlibrary{arrows.meta}
+%\foreach \s in {1,...,\n}
+{
+
+%\tikzset{>={Latex[width=3mm,length=3mm]}}
+%/pgf/;
+	\draw   [->]  (0,0) -- (0,1);
+  \node [anchor=east] at (0,1) {A};
+  \draw [->]( 0,0) -- (10.5,0);
+  \node [anchor=west] at (10.5,0) {t};
+  
+  \foreach \x in {1,2,...,10} \draw (\x,-0.1) -- (\x,0.1);
+  \foreach \x in {1,2,...,10} \draw (\x,-0.1-2) -- (\x,0.1-2);
+  \foreach \x in {1,2,...,10} \draw (\x,-0.1-4) -- (\x,0.1-4);
+  \node [anchor=north, inner sep=0pt, outer sep=0pt] at (1,0.25) {10ns};
+  \node [anchor=north, inner sep=0pt, outer sep=0pt] at (2,0.25) {20ns};
+  
+  	\draw [->] (0,-2) -- (0,1-2);
+  \node [anchor=east] at (0,1-2) {B};
+  \draw [->] (0,-2) -- (10.5,-2);
+  \node [anchor=west] at (10.5,-2) {t};
+  
+  	\draw [->] (0,-4) -- (0,1-4);
+  \node [anchor=east] at (0,1-4) {Y};
+  \draw [->] (0,-4) -- (10.5,-4);
+  \node [anchor=west] at (10.5,-4) {t};
+  
+  \draw [line width=2pt] (0,0) -|(3,1) -| (10,1); %A
+   \draw [line width=2pt] (0,0-2) -|(1,1-2) -| (5,0-2) -- (10,0-2); %B
+   
+   \itgv{
+   \draw [line width=2pt, color=darkblue] (0,-4) -| (6,1-4) -|(7,0-4)--(10,0-4); %Y
+   }
+  
+}
+\end{tikzpicture}
+	\label{Q:chrono}
+	\end{center}
+	%diagramme
+	\label{Q:3}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Mettre en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}. 
+	\begin{itemize}
+	\item Brancher $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
+	\item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
+	\item brancher $Y$ sur \verb!CH2!,
+	\item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
+	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+\newpage
+\section{Logique séquentielle, mémorisation}
+
+Les bistables sont des circuits très employés en électronique numérique en raison de leur multiples applications. Leur première fonction est de mémoriser une information logique.
+
+Les bistables sont des circuits \textbf{séquentiels}, c'est à dire que leur sortie dépend des entrées \textbf{et} de l'état précédent du système. Contrairement aux circuits combinatoires de la section précédente, l'état actuel du système dépend de son passé.
+
+\subsection{Bistable élémentaire}
+Ci-dessous est représenté sous 2 formes différentes le bistable le plus simple.
+
+
+\begin{center}
+		\begin{circuitikz} \draw
+		(0,0) node [american not port] (not3) {}
+		(2,0) node [american not port] (not4) {}
+		(not3.out) -- (not4.in)
+		(not4.out) -- ++(0.5,0) |- ++(-4,-1) |- (not3.in)
+		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$} 
+		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+
+		(8,1) node [american not port] (not1) {}
+		(8,-1) node [american not port] (not2) {}
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(not1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(not2.in)  ++(-1,0.5)  coordinate (a-b)
+		
+		(not1.in)++(-1.27,-0.5) node (in) {} % end of the wire with kinky bump
+		(not2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(not1.in)-| ++(-1.14,-0.55)
+		(not2.out) -- ++(1,0) node [circ] () {} node [anchor=south] {$\overline{Q}$}
+		
+		(not1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1) |- (not2.in)
+		(not1.out) -- ++(1,0) node [circ] () {} node [anchor=south] {$Q$}
+%		(not1.out) |-  ++(0.25,0)  
+%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+	;\end{circuitikz}
+\end{center}
+%schéma 
+
+%\newpage
+Ce bistable possède 2 états stables (d'où son nom) :
+\begin{itemize}
+\item soit $Q$ est à l'état haut (1) et $\overline{Q}$ est à l'état bas (0)
+\item soit $Q$ est à l'état bas  (0) et $\overline{Q}$ est à l'état haut (1)
+\end{itemize}
+ 
+Ce circuit est donc une mémoire. Malheureusement, il est difficile de modifier son état autrement
+qu'en court-circuitant une des sortie à un état déterminé: il n'y a en effet pas d'entrée à ce circuit.
+
+\subsection{Amélioration}
+Imaginons que l'on dispose d'inverseurs dont on peut mettre la sortie dans un état déterminé. Par
+exemple l'inverseur suivant :
+
+%schéma 
+
+\begin{center}
+\begin{circuitikz} \draw
+
+		(0,0) node [american not port] (not1) {}
+		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$} 
+		(not1.in) -- ++(-1,0) node [ocirc] () {} node [anchor=south] {$A$} 
+		(not1.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$Q$}
+	
+	;\end{circuitikz}
+
+\end{center}
+\begin{itemize}
+\item si B est à l'état bas, alors Q est l'inverse de A (inversion normale de A)
+\item si B est à l'état haut, alors Q est à l'état bas (par exemple)
+\end{itemize}
+ 
+On peut alors réaliser le montage suivant :
+
+%schéma
+\begin{center}
+\begin{circuitikz} \draw
+		(0,0) node [american not port] (not3) {}
+		(not3)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B1$} 
+		(2,0) node [american not port] (not4) {}
+		(not4)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(not3.out) -- (not4.in)
+		(not4.out) -- ++(0.5,0) |- ++(-4,-1) |- (not3.in)
+		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$} 
+		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+
+		(8,1) node [american not port] (not1) {}
+		(not1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(8,-1) node [american not port] (not2) {}
+		(not2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(not1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(not2.in)  ++(-1,0.5)  coordinate (a-b)
+		
+		(not1.in)++(-1.27,-0.5) node (in) {} % end of the wire with kinky bump
+		(not2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(not1.in)-| ++(-1.14,-0.55)
+		(not2.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$\overline{Q}$}
+		
+		(not1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1) |- (not2.in)
+		(not1.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$Q$}
+%		(not1.out) |-  ++(0.25,0)  
+%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+	;\end{circuitikz}
+\end{center}
+
+On peut maintenant réaliser les opérations suivantes :
+\begin{itemize}
+\item mettre l'entrée B2 à l'état haut et l'entrée B1 à l'état bas : la sortie Q est alors mise à l'état bas.
+\item mettre l'entrée B2 à l'état bas et l'entrée B1 à l'état haut : la sortie Q est alors mise à l'état haut.
+\item  mettre les 2 entrées B1 et B2 à l'état bas : le circuit reste dans sont état précédant : c'est la
+mémorisation.
+\end{itemize}
+
+
+Le cas où les 2 entrées B1 et B2 sont à l'état haut n'est pas intéressant : il force les 2 sorties $Q$ et $\overline{Q}$ à
+l'état bas. C'est un cas indésirable.
+\subsection{Bistable RS}
+En fait, on connaît, sans le savoir, des éléments logiques qui répondent à l'inverseur spécial vu ci-dessus.
+
+
+Prenons par exemple la porte NOR (Non OU).
+
+%schéma 
+
+\begin{center}
+\begin{circuitikz} \draw
+
+		(0,0) node [american nor port] (nor) {}
+%		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$} 
+		(nor.in 1) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$A$} 
+		(nor.in 2) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$B$} 
+		(nor.out) -- ++(1,0) node [ocirc] () {} node [anchor=west] {$Q$}
+	
+	;\end{circuitikz}
+
+\end{center}
+
+Cette porte répond parfaitement à la table de vérité de l'inverseur spécial : si son entrée B est à l'état
+haut, la sortie Q est forcée à l'état bas ; sinon, la sortie Q est l'inverse de l'entrée A.
+Construisons alors le bistable à partir de ces portes et renommons (S, R) les entrées (B1, B2).
+
+%schéma
+
+\begin{center}
+\begin{circuitikz} \draw
+		(0,1) node [american nor port] (nor1) {}
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(0,-1.5) node [american nor port] (nor2) {}
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
+		
+		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
+		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(nor1.in 2)-| ++(-1,-0.3)
+		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
+		
+		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
+		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
+		(nor1.out) |-  ++(0.25,0)  
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+		(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$S$}
+		(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$R$}
+		
+	;
+	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+	\end{circuitikz}
+\end{center}
+
+\begin{itemize}
+\item Pour mettre la sortie Q à l'état bas, il suffit d'appliquer un état haut à l'entrée R (Reset : mise à l'état bas)
+et un état bas à l'entrée S (Set : mise à l'état haut)
+\item Pour mettre la sortie Q à l'état haut, il suffit d'appliquer un état haut à l'entrée S (Set : mise à l'état haut)
+et un état bas à l'entrée R (Reset : mise à l'état bas)
+\item Pour être en mémorisation, il suffit d'appliquer un état bas aux 2 entrées.
+\end{itemize}
+
+
+Si on appelle l'état bas le niveau inactif et l'état haut le niveau actif, alors on peut dire :
+\begin{itemize}
+\item pour mettre le bistable dans un état déterminé, il suffit d'appliquer un niveau actif à l'entrée
+correspondante.
+\item pour mettre le bistable en mémorisation, il suffit de ne mettre aucun niveau actif
+\item l'état indésirable a lieu lorsqu'on demande au bistable en même temps une mise à l'état haut et une mise
+à l'état bas.
+\end{itemize}
+
+\subsection{Table de vérité du bistable R-S}
+Si on n'est pas convaincu par les développements précédents, on peut écrire la table de vérité du
+bistable R-S :
+
+%table
+\begin{center}
+\begin{tabular}{cccc|cc}
+R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
+\hline 
+0 & 0 & 0 & 0 & ? & ? \\ 
+0 & 0 & 0 & 1 & 0 & 1 \\ 	
+0 & 0 & 1 & 0 & 1 & 0 \\ 	
+0 & 0 & 1 & 1 &  \multicolumn{2}{c}{impossible} \\ 	
+0 & 1 & 0 & 0 & 1 & 0 \\ 	
+0 & 1 & 0 & 1 & 1 & 0 \\ 
+0 & 1 & 1 & 0 & 1 & 0 \\ 	
+0 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
+1 & 0 & 0 & 0 & 0 & 1 \\ 	
+1 & 0 & 0 & 1 & 0 & 1 \\ 
+1 & 0 & 1 & 0 & 0 & 1 \\ 	
+1 & 0 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
+1 & 1 & 0 & 0 & 0 & 0 \\ 	
+1 & 1 & 0 & 1 & 0 & 0 \\ 
+1 & 1 & 1 & 0 & 0 & 0 \\ 	
+1 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
+\end{tabular} 
+\end{center}
+
+En entrée de la table, on met les 2 sorties stables à l'instant t et les entrée que l'on applique à ce
+même instant. En sortie de la table, on détermine l'état des 2 sorties à l'instant $t+t_p$, c'est-à-dire après le
+temps de propagation du bistable.
+Cette table de vérité peut être simplifiée, en effet, les états impossibles ne sont pas à prendre en
+considération puisqu'ils ne seront jamais rencontrés. Il ne faut cependant pas confondre état
+impossible en entrée (lignes impossibles) et état indéterminé en sortie (ligne 1). La table devient:
+
+
+%table
+\begin{center}
+\begin{tabular}{cccc|cc}
+R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
+\hline
+0 & 0 & 0 & 0 & ? & ? \\ 
+0 & 0 & 0 & 1 & 0 & 1 \\ 	
+0 & 0 & 1 & 0 & 1 & 0 \\ 	
+0 & 1 & X & X & 1 & 0 \\ 	
+1 & 0 & X & X & 0 & 1 \\ 	
+1 & 1 & X & X & 0 & 0 \\ 	 	
+\end{tabular} 
+\end{center}
+
+Le dernier état est évidemment indésirable puisqu'il rend égales des sorties normalement
+complémentaires (l'ordre donné au bistable est incohérent). Si on évite cet état, on peut supprimer la
+dernière ligne du tableau ainsi que la première. On peut alors simplifier cette table pour avoir :
+
+
+%table
+\begin{center}
+\begin{tabular}{cc|cc}
+R & S & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
+\hline & & & \\[-1em]
+0 & 0 & $Q_n$ & $\overline{Q_n}$ \\
+0 & 1 & 1 & 0 \\ 	
+1 & 0 & 0 & 1 \\ 		
+\end{tabular} 
+\end{center}
+
+
+De cette table, on retire heureusement les mêmes conclusions que précédemment.
+La méthode par table de vérité est assez lourde dans son entièreté. Il vaut donc mieux essayer
+d'établir directement la table simplifiée comme vu précédemment.
+
+\subsection{Réalisation du bistable R-S}
+%Réaliser le schéma suivant à l'aide de portes logiques :
+Soit le circuit suivant :
+
+%schéma
+
+\begin{center}
+\begin{circuitikz} \draw
+		(0,1) node [american nand port] (nor1) {}
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(0,-1.5) node [american nand port] (nor2) {}
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
+		
+		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
+		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(nor1.in 2)-| ++(-1,-0.3)
+		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
+		
+		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
+		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
+		(nor1.out) |-  ++(0.25,0)  
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+		(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
+		(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
+		
+	;
+	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+	\end{circuitikz}
+\end{center}
+
+\begin{Q}
+	Quel est l'état des entrées qui assure la fonction de mémorisation ?
+	\label{Q:rs_deb}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Que faut il appliquer au circuit pour réaliser un Set ou Reset ?
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Quelle est l'anomalie des sorties lorsque les deux entrées sont à l'état bas ?
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+
+\begin{Q}
+	Donner à chaque valeur des entrées ($\overline{R}$, $\overline{S}$) une appellation parmi les suivantes :
+	\begin{itemize}
+	\item mémorisation
+	\item mise à 0
+	\item mise à 1
+	\item indésirable
+	\end{itemize}
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Justifier appellation R-S. (R : Reset S : Set); Quel est le niveau logique actif de ces 2 entrées ?
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Pourquoi parle-t-on d'entrées en logique inverse ?
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+\begin{Q}
+	Que pourrait-il se passer si on passe de l'état [mise à 1] à l'état [mémorisation] en passant transitoirement
+par l'état [indésirable] ?
+	\label{Q:rs_fin}
+	\reponse{}%R
+\end{Q}
+
+\begin{Q}
+	Réaliser le circuit ci-dessus sur le protoboard et vérifier vos conclusions des questions~\ref{Q:rs_deb} à~\ref{Q:rs_fin}.
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+%\begin{Q} % on peut pasremplacer directement le 74HC00 par un HC00, mais on peut pas un HC36, introuvable...
+%	Remplacer les portes NAND par des portes NOR (remplacer le circuit). Comment le comportement est-il affecté ?
+%	\label{Q:1}
+%	\reponse{}%R
+%\end{Q}
+%
+%\begin{Q}
+%	Pour la suite du labo, revenir au circuit basé sur des portes NAND.
+%	\label{Q:1}
+%	\reponse{}%R
+%\end{Q}
+
+%FIXME TODO style pour les états
+
+\subsection{Bistable R-S avec entrée d'activation (Enable)}
+
+Modifier le schéma précédent comme suit : %, \textbf{en vérifiant bien que les bonnes portes logiques sont utilisées} :
+
+%schéma
+
+\begin{center}
+\begin{circuitikz} \draw
+		(0,1.28) node [american nand port] (nand1) {}
+		(0,-1.5-0.28) node [american nand port] (nand2) {}
+		
+		(nand1.in 1) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$R$}  
+		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}  
+		
+%		(nand1.in 2) 
+		(nand1.in 2) |- ++(-1.5,-1.28) coordinate (dot) node [ocirc] () {} node [anchor=east] {$E$} 
+		(nand2.in 1) |- (dot)
+		
+		(3,1) node [american nand port] (nor1) {}
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(3,-1.5) node [american nand port] (nor2) {}
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
+		
+		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
+		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(nor1.in 2)-| ++(-1,-0.3)
+		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
+		
+		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
+		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
+		(nor1.out) |-  ++(0.25,0)  
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+		%(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
+		%(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
+		(nor1.in 1) -| (nand1.out)
+		(nor2.in 2) -| (nand2.out)
+		
+	;
+%	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+	\end{circuitikz}
+\end{center}
+
+
+\begin{Q}
+	Mettre en évidence l'avantage de l'entrée enable du point de vue des modifications des entrées R et S.
+	\label{Q:dl1}
+	\reponse{}%R
+\end{Q}
+\subsection{D latch}
+
+Le D latch peut être réalisé avec le schéma suivant :
+%schéma
+
+\begin{center}
+\begin{circuitikz} \draw
+		(0,1.28) node [american nand port] (nand1) {}
+		(0,-1.5-0.28) node [american nand port] (nand2) {}
+		
+		(nand1.in 1) -- ++(-2.5,0) node [ocirc] (D) {} node [anchor=east] {$D$}  
+%		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}  
+		(-2.25,-2.07) node [american not port] (not) {}
+		(D) -| (not.in)
+		(not.out) --	(nand2.in 2) 
+%		(nand1.in 2) 
+		(D)++(0.94,0) coordinate (Dvert) %pour avoir seulement le segment vertical pour calculer l'intersection
+		(nand1.in 2) |- ++(-1.25,-1.28) coordinate (dot) 
+		(dot) to [kinky cross=(Dvert)--(not.in), kinky crosses=left] ++(-1.25,0)node [ocirc] () {} node [anchor=east] {$E$} 
+		(nand2.in 1) |- (dot)
+		
+		(3,1) node [american nand port] (nor1) {}
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(3,-1.5) node [american nand port] (nor2) {}
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+%		(not1.out) -- (not2.in)
+	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
+		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
+		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
+		
+		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
+		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
+		(nor1.in 2)-| ++(-1,-0.3)
+		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
+		
+		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
+		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
+		(nor1.out) |-  ++(0.25,0)  
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+	
+		%(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
+		%(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
+		(nor1.in 1) -| (nand1.out)
+		(nor2.in 2) -| (nand2.out)
+		
+	;
+	\draw [dashed](-3.5,-3.25) rectangle (4.25,2.75);	
+	\end{circuitikz}
+\end{center}
+
+
+L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bistable R-S de sortie.
+
+\begin{Q}
+	 Déterminer son fonctionnement (table de vérité simplifiée).
+	 
+	\label{Q:dlatch}
+	\reponse{}%R
+\end{Q}
+\begin{Q}
+	Réaliser le D LATCH à l'aide de portes logiques. Le circuit 74HC04 contient 6 inverseurs.
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+
+
+
+\begin{Q}
+	Vérifier que votre circuit reproduit bien le fonctionnement attendu.
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+ 
+\begin{Q}
+	Peut-on, à votre avis, modifier D n'importe quand ?
+	\label{Q:1}
+	\reponse{}%R
+\end{Q}
+ 
+{\color{white} C'était pénible de faire tous les schémas, j'espère que vous les trouvez beaux. Si c'est pas le cas, allez voir au pôle Sud si j'y suis.}
+
+\appendix
+\section{Brochages}
+%\subsection{74HC00 : 4$\times$2-NAND}
+
+\begin{center}
+		\begin{circuitikz}[scale=0.8] \draw
+		(4,2.5) node [anchor=center] {$74HC00, 4\cdot NAND$}
+		(2.8,1.5) node [american nand port,scale=0.8] (nand1) {}
+		(1,0) node (in11) {}
+		(2,0) node (in12) {}
+		(3,0) node (out1) {}
+		(in11) |- (nand1.in 1)
+		(in12) |- ++(-0.6,0.75)|- (nand1.in 2)
+		(out1) |- (nand1.out)
+		
+		(2.8+3,1.5) node [american nand port,scale=0.8] (nand2) {}
+		(1+3,0) node (in21) {}
+		(2+3,0) node (in22) {}
+		(3+3,0) node (out2) {}
+		(in21) |- (nand2.in 1)
+		(in22) |- ++(-0.6,0.75)|- (nand2.in 2)
+		(out2) |- (nand2.out)
+		
+		
+		(1+2.8,5-1.5) node [american nand port,scale=0.8] (nand3) {}
+		(1+1,5) node (in31) {}
+		(2+1,5) node (in32) {}
+		(3+1,5) node (out3) {}
+		(in31) |- (nand3.in 2)
+		(in32) |- ++(-0.6,-0.75)|- (nand3.in 1)
+		(out3) |- (nand3.out)
+		
+		(1+2.8+3,5-1.5) node [american nand port,scale=0.8] (nand4) {}
+		(2+3,5) node (in41) {}
+		(3+3,5) node (in42) {}
+		(4+3,5) node (out4) {}
+		(in41) |- (nand4.in 2)
+		(in42) |- ++(-0.6,-0.75)|- (nand4.in 1)
+		(out4) |- (nand4.out)
+		
+		(7,0-0.25) node [anchor=north](gnd) {GND}	
+		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+		
+%		(-0.7,-0.8) node  {NAND}
+%		(-3,1) node [american not port, scale=0.8] (not){} 
+%		(and1.in 1) -|   (not.out)
+		
+%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
+%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+%		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
+	
+	;
+	\draw (0,0)rectangle (8,5);	
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+	\end{circuitikz}
+%\end{center}
+\hspace{1cm}
+%\subsection{74HC32 : 4$\times$2-OR}
+%\begin{center}
+		\begin{circuitikz}[scale=0.8] \draw
+		(4,2.5) node [anchor=center] {$74HC32, 4\cdot  OR$}
+		(2.8,1.5) node [american or port,scale=0.8] (or1) {}
+		(1,0) node (in11) {}
+		(2,0) node (in12) {}
+		(3,0) node (out1) {}
+		(in11) |- (or1.in 1)
+		(in12) |- ++(-0.6,0.75)|- (or1.in 2)
+		(out1) |- (or1.out)
+		
+		(2.8+3,1.5) node [american or port,scale=0.8] (or2) {}
+		(1+3,0) node (in21) {}
+		(2+3,0) node (in22) {}
+		(3+3,0) node (out2) {}
+		(in21) |- (or2.in 1)
+		(in22) |- ++(-0.6,0.75)|- (or2.in 2)
+		(out2) |- (or2.out)
+		
+		
+		(1+2.8,5-1.5) node [american or port,scale=0.8] (or3) {}
+		(1+1,5) node (in31) {}
+		(2+1,5) node (in32) {}
+		(3+1,5) node (out3) {}
+		(in31) |- (or3.in 2)
+		(in32) |- ++(-0.6,-0.75)|- (or3.in 1)
+		(out3) |- (or3.out)
+		
+		(1+2.8+3,5-1.5) node [american or port,scale=0.8] (or4) {}
+		(2+3,5) node (in41) {}
+		(3+3,5) node (in42) {}
+		(4+3,5) node (out4) {}
+		(in41) |- (or4.in 2)
+		(in42) |- ++(-0.6,-0.75)|- (or4.in 1)
+		(out4) |- (or4.out)
+		
+		(7,0-0.25) node [anchor=north](gnd) {GND}	
+		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+		
+	;
+	\draw (0,0)rectangle (8,5);	
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+	\end{circuitikz}
+\end{center}
+
+%\subsection{74HC36 : 4$\times$2-NOR}
+%\begin{center}
+%		\begin{circuitikz}[scale=0.8] \draw
+%		(4,2.5) node [anchor=center] {$74HC36, 4\times NOR$}
+%		(2.8,1.5) node [american nor port,scale=0.8] (nor1) {}
+%		(1,0) node (in11) {}
+%		(2,0) node (in12) {}
+%		(3,0) node (out1) {}
+%		(in11) |- (nor1.in 1)
+%		(in12) |- ++(-0.6,0.75)|- (nor1.in 2)
+%		(out1) |- (nor1.out)
+%		
+%		(2.8+3,1.5) node [american nor port,scale=0.8] (nor2) {}
+%		(1+3,0) node (in21) {}
+%		(2+3,0) node (in22) {}
+%		(3+3,0) node (out2) {}
+%		(in21) |- (nor2.in 1)
+%		(in22) |- ++(-0.6,0.75)|- (nor2.in 2)
+%		(out2) |- (nor2.out)
+%		
+%		
+%		(1+2.8,5-1.5) node [american nor port,scale=0.8] (nor3) {}
+%		(1+1,5) node (in31) {}
+%		(2+1,5) node (in32) {}
+%		(3+1,5) node (out3) {}
+%		(in31) |- (nor3.in 2)
+%		(in32) |- ++(-0.6,-0.75)|- (nor3.in 1)
+%		(out3) |- (nor3.out)
+%		
+%		(1+2.8+3,5-1.5) node [american nor port,scale=0.8] (nor4) {}
+%		(2+3,5) node (in41) {}
+%		(3+3,5) node (in42) {}
+%		(4+3,5) node (out4) {}
+%		(in41) |- (nor4.in 2)
+%		(in42) |- ++(-0.6,-0.75)|- (nor4.in 1)
+%		(out4) |- (nor4.out)
+%		
+%		(7,0-0.25) node [anchor=north](gnd) {GND}	
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+%		
+%	;
+%	\draw (0,0)rectangle (8,5);	
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+%	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+%	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+%	\end{circuitikz}
+%\end{center}
+
+%\subsection{74HC02 : 4$\times$2-NOR}
+%\begin{center}
+%		\begin{circuitikz}[scale=0.8] \draw
+%		(4,2.5) node [anchor=center] {$74HC02, 4\cdot  NOR$}
+%		(1.2,1.5) node [american nor port,scale=0.8, xscale=-1] (nor1) {}
+%		(3,0) node (in11) {}
+%		(2,0) node (in12) {}
+%		(1,0) node (out1) {}
+%		(in11) |- (nor1.in 1)
+%		(in12) |- ++(0.6,0.75)|- (nor1.in 2)
+%		(out1) |- (nor1.out)
+%		
+%		(1.2+3,1.5) node [american nor port,scale=0.8, xscale=-1] (nor2) {}
+%		(3+3,0) node (in21) {}
+%		(2+3,0) node (in22) {}
+%		(1+3,0) node (out2) {}
+%		(in21) |- (nor2.in 1)
+%		(in22) |- ++(0.6,0.75)|- (nor2.in 2)
+%		(out2) |- (nor2.out)
+%		
+%		
+%		(1+1.2,5-1.5) node [american nor port,scale=0.8,xscale=-1] (nor3) {}
+%		(3+1,5) node (in31) {}
+%		(2+1,5) node (in32) {}
+%		(1+1,5) node (out3) {}
+%		(in31) |- (nor3.in 2)
+%		(in32) |- ++(0.6,-0.75)|- (nor3.in 1)
+%		(out3) |- (nor3.out)
+%		
+%		(1+1.2+3,5-1.5) node [american nor port,scale=0.8,xscale=-1] (nor4) {}
+%		(4+3,5) node (in41) {}
+%		(3+3,5) node (in42) {}
+%		(2+3,5) node (out4) {}
+%		(in41) |- (nor4.in 2)
+%		(in42) |- ++(0.6,-0.75)|- (nor4.in 1)
+%		(out4) |- (nor4.out)
+%		
+%		(7,0-0.25) node [anchor=north](gnd) {GND}	
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+%		
+%	;
+%	\draw (0,0)rectangle (8,5);	
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+%	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+%	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+%	\end{circuitikz}
+%\end{center}
+
+%\begin{center}
+%		\begin{circuitikz}[scale=0.8] \draw
+%		(4,2.5) node [anchor=center] {$74HC02, 4\cdot  NOR$}
+%		(1.2,1.5) node [american not port,scale=0.8, xscale=-1] (nor1) {}
+%		%(3,0) node (in11) {}
+%		(2,0) node (in12) {}
+%		(1,0) node (out1) {}
+%		(in11) |- (nor1.in 1)
+%		(in12) |- ++(0.6,0.75)|- (nor1.in 2)
+%		(out1) |- (nor1.out)
+%		
+%		(1.2+3,1.5) node [american not port,scale=0.8, xscale=-1] (nor2) {}
+%		(3+3,0) node (in21) {}
+%		(2+3,0) node (in22) {}
+%		(1+3,0) node (out2) {}
+%		(in21) |- (nor2.in 1)
+%		(in22) |- ++(0.6,0.75)|- (nor2.in 2)
+%		(out2) |- (nor2.out)
+%		
+%		
+%		(1+1.2,5-1.5) node [american not port,scale=0.8,xscale=-1] (nor3) {}
+%		(3+1,5) node (in31) {}
+%		(2+1,5) node (in32) {}
+%		(1+1,5) node (out3) {}
+%		(in31) |- (nor3.in 2)
+%		(in32) |- ++(0.6,-0.75)|- (nor3.in 1)
+%		(out3) |- (nor3.out)
+%		
+%		(1+1.2+3,5-1.5) node [american not port,scale=0.8,xscale=-1] (nor4) {}
+%		(4+3,5) node (in41) {}
+%		(3+3,5) node (in42) {}
+%		(2+3,5) node (out4) {}
+%		(in41) |- (nor4.in 2)
+%		(in42) |- ++(0.6,-0.75)|- (nor4.in 1)
+%		(out4) |- (nor4.out)
+%		
+%		(7,0-0.25) node [anchor=north](gnd) {GND}	
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+%		
+%	;
+%	\draw (0,0)rectangle (8,5);	
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+%	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+%	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+%	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+%	\end{circuitikz}
+%\end{center}
+
+\begin{center}
+		\begin{circuitikz}[scale=0.8] \draw
+		(4,2.5) node [anchor=center] {$74HC04, 6\cdot NOT$}
+		(1.5,1) node [american not port,scale=0.55] (not1) {}
+		(1,0) node (in11) {}
+		%(2,0) node (in12) {}
+		(2,0) node (out1) {}
+		(in11) |- (not1.in)
+		%(in12) |- ++(-0.6,0.75)|- (not1.in 2)
+		(out1) |- (not1.out)
+		
+		(1.5+2,1) node [american not port,scale=0.55] (not2) {}
+		(1+2,0) node (in21) {}
+		%(2+2,0) node (in22) {}
+		(2+2,0) node (out2) {}
+		(in21) |- (not2.in)
+		%(in22) |- ++(-0.6,0.75)|- (not2.in 2)
+		(out2) |- (not2.out)
+		
+		(1.5+4,1) node [american not port,scale=0.55] (not5) {}
+		(1+4,0) node (in51) {}
+		%(2+2,0) node (in22) {}
+		(2+4,0) node (out5) {}
+		(in51) |- (not5.in)
+		%(in22) |- ++(-0.6,0.75)|- (not2.in 2)
+		(out5) |- (not5.out)
+		
+		(1+1.5,5-1) node [american not port,scale=0.55] (not3) {}
+		(1+1,5) node (in31) {}
+		%(2+1,5) node (in32) {}
+		(2+1,5) node (out3) {}
+		(in31) |- (not3.in)
+		%(in32) |- ++(-0.6,-0.75)|- (not3.in 1)
+		(out3) |- (not3.out)
+		
+		(1+1.5+2,5-1) node [american not port,scale=0.55] (not4) {}
+		(2+2,5) node (in41) {}
+		%(3+2,5) node (in42) {}
+		(3+2,5) node (out4) {}
+		(in41) |- (not4.in)
+		%(in42) |- ++(-0.6,-0.75)|- (not4.in 1)
+		(out4) |- (not4.out)
+		
+		(1+1.5+4,5-1) node [american not port,scale=0.55] (not6) {}
+		(2+4,5) node (in61) {}
+		%(3+2,5) node (in42) {}
+		(3+4,5) node (out6) {}
+		(in61) |- (not6.in)
+		%(in42) |- ++(-0.6,-0.75)|- (not4.in 1)
+		(out6) |- (not6.out)
+		
+		(7,0-0.25) node [anchor=north](gnd) {GND}	
+		(1,5+0.35) node [anchor=south](vcc) {VCC}	
+		
+%		(-0.7,-0.8) node  {NAND}
+%		(-3,1) node [american not port, scale=0.8] (not){} 
+%		(and1.in 1) -|   (not.out)
+		
+%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
+%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+%		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
+	
+	;
+	\draw (0,0)rectangle (8,5);	
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
+	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
+	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
+	\draw (0,2) arc[start angle=-90, end angle=90, radius=0.5];
+	\end{circuitikz}
+\end{center}
+
+Pour information, les documentations complètes :
+\begin{itemize}
+\item 74HC00 (Quad NAND) \href{https://www.fairchildsemi.com/datasheets/74/74VHC00.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC00.pdf}
+\item 74HC04 (Hex NOT) \href{https://www.fairchildsemi.com/datasheets/74/74VHC04.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC04.pdf}
+\item 74HC32 (Quad OR) \href{https://www.fairchildsemi.com/datasheets/74/74VHC32.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC32.pdf}
+\end{itemize}
+%liens doc
+
+\end{document}

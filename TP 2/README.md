@@ -1,0 +1,2 @@
+* Veillez à avoir la version 1.51 du package qrcode sur votre système. C'est le cas sur une Debian Testing, donc ça devrait généralement aller.
+* Le tp.cls ne se trouve pas dans ce dossier. Faites une copie symbolique depuis le dossier de template ou configurer votre PATH pour qu'il aille chercher la classe dans le dossier de template.
