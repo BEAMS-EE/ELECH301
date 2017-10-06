@@ -1,0 +1,9 @@
+*.aux
+*.toc
+*.log
+*.aux
+*.out
+
+.~lock*
+
+template/demo.pdf

@@ -1,0 +1,4 @@
+- Raoul : TP 1 et 6
+- Quentin : TP 2 et 3
+- Yannick : TP 5
+- Ken : TP 4
