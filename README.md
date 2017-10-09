@@ -1,7 +1,8 @@
-# ELEC-H-301 Électronique appliquée -- Séances d'exercices et laboratoires
----
+# ELEC-H-301 Électronique appliquée  
 
-## Sémentique des versions;
+Séances d'exercices et laboratoires à destination des BA3 tronc commun.
+
+## Sémentique des versions
 
 
 Les énoncés et corrigés de ce dépôt suivent la sémantique de version MAJEURE.MINEURE.CORRECTION, soit x.y.z, avec :
