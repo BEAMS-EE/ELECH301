@@ -28,6 +28,8 @@
 \usepackage{fancyhdr}
 % \langexam{frenchb}
 
+\newcommand{\version}{v1.1.0}
+
 \newboolean{koriG}
 \ifx\koriG\undefined
 \correction{false}
@@ -44,7 +46,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 3 : amplification avancée\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.0.0\\ page \thepage}
+\rhead{\version\\ page \thepage}
 \cfoot{}
 %%
 
@@ -344,7 +346,7 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 		Il reste à vérifier qu'un seul étage est suffisant au vu du produit gain-bande passante (GBP) de chacun des modèles.
 		Étant donné qu'il nous faut un gain de 10 pour une bande passante de 20~kHz, le GBP du LM741 et du CA3140A (respectivement 1.5~MHz et 4.5~MHz) est suffisant pour qu'un seul étage fasse l'affaire.
 
-		On peut finalement s'en sortir avec un seul montage non-inverseur comprenant une résistance de rétroaction de 90~k\ohm et une résistance sur l'entrée inverseuse de 10~k\ohm.
+		On peut finalement s'en sortir avec un seul montage non-inverseur comprenant une résistance de rétroaction de 90~k\ohm\ et une résistance sur l'entrée inverseuse de 10~k\ohm.
 	\end{itemize}
 }
 
@@ -410,11 +412,11 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 			\end{tabular}
 		\end{center}
 
-		On peut immédiatement écarter l'OPA459, il est non seulement moins bon, mais aussi plus cher.
-		La solution la moins chère pour obtenir un gain total de 400, il faut utiliser un AD8129 et un OPA132.
+		On peut immédiatement écarter l'OPA549, il est non seulement moins bon, mais aussi plus cher.
+		La solution la moins chère pour obtenir un gain total de 400 est d'utiliser deux étages inverseurs à base de AD8129.
 
 		Cependant, si la résistance de charge vaut 4~\ohm, l'adaptation d'impédance à la sortie est certes respectée (en supposant une résistance nulle à la sortie de l'ampli-op), mais l'ampli-op doit pouvoir fournir un courant dont l'amplitude de crête est de $\frac{4V}{4\Omega} = 1 A$.
-		Or, les amplis-op sélectionné ne peuvent fournir que 40~mA.
+		Or le ampli-op sélectionné ne peut fournir que 40~mA.
 		Il faut donc ajouter un troisième étage de gain 1 (montage suiveur de tension) qui servira à fournir de la puissance à la charge.
 		On peut alors utiliser l'OPA549 qui peut fournir jusqu'à 8~A.
 		C'est cette caractéristique qui justifie son prix.
