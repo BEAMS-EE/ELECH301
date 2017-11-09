@@ -39,7 +39,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 4 : Diodes\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.0.0\\ page \thepage}
+\rhead{v1.1.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -83,7 +83,7 @@ Sur le schéma suivant :
 \item flécher et nommer les grandeurs électriques.
 \end{itemize}
  Préciser les différents modèles électriques possibles pour la diode.
-\\% 
+\\%
  Quelles sont les précautions à prendre lors de l'utilisation d'une diode ?
 	\ifthenelse{\boolean{corrige}}{}{
 		\begin{center}
@@ -103,13 +103,13 @@ Sur le schéma suivant :
 
 Modèles possibles pour la diode :
 \begin{itemize}
-	\item idéale : le \textbf{courant} circulant à travers la diode est \textbf{nul} si la diode est polarisée \textbf{en inverse}, la \textbf{tension} aux bornes de la diode est \textbf{nulle} si elle est polarisée \textbf{en direct} (par rapport au schéma si dessus, polarisation directe $\equiv V>0$).
+	\item idéale : le \textbf{courant} circulant à travers la diode est \textbf{nul} si la diode est polarisée \textbf{en inverse}, la \textbf{tension} aux bornes de la diode est \textbf{nulle} si elle est polarisée \textbf{en direct} (par rapport au schéma ci dessus, polarisation directe $\equiv V>0$).
 	\item idéale avec tension de seuil :  le courant est nul si la diode est polarisée en inverse. Le courant est nul tant que la tension de seuil n'a pas été atteinte ($V_{TH}=0.7V$ habituellement). Si la diode est polarisée en direct \textbf{et} que la tension à ses bornes atteint $V_{TH}$, \textbf{alors} la diode est passante et un courant peut circuler à travers la diode. Quel que soit le courant($>0$), la tension aux bornes de la diode restera $V_{TH}$.
 	\item idéale avec tension de seuil et résistance série : comme précédemment mais avec une résistance en série. Cette résistance modélise la résistance interne de la diode.
 	\item exponentiel : ce modèle découle directement des caractéristiques électriques d'une jonction PN.
 	\end{itemize}
 	Le phénomène d'avalanche peut se modéliser de la même façon.
-	
+
 Précautions à prendre lors de l'utilisation d'une diode :
 \begin{itemize}
 \item quel que soit le mode de fonctionnement : ne jamais dépasser la puissance maximum que peut dissiper la diode
@@ -163,7 +163,7 @@ Première partie de gauche à droite :
 Deuxième partie de gauche à droite :
 \begin{itemize}
     \item $V_o = 3V$ (D1 bloquée et D2 passante) et $I = \frac{3-(-3)}{2k} = 3mA$
-    \item $V_o = 1V$ (D3 passante et D4 bloquée) et $I = \frac{3-(-1)}{2k} = 1mA$
+    \item $V_o = 1V$ (D3 passante et D4 bloquée) et $I = \frac{3-(+1)}{2k} = 1mA$
 \end{itemize}
 
 Reprenons le premier circuit de la seconde partie.
@@ -232,7 +232,7 @@ Première partie de gauche à droite :
 Deuxième partie de gauche à droite :
 \begin{itemize}
     \item $V_0 = 2.3V$ (D1 bloquée et D2 passante) et $I = \frac{2.3-(-3)}{2k} = 2.7mA$
-    \item $V_0 = 1.7V$ (D3 passante et D4 bloquée) et $I = \frac{3-(-1.7)}{2k} = 2.4mA$
+    \item $V_0 = 1.7V$ (D3 passante et D4 bloquée) et $I = \frac{3-(+1.7)}{2k} = 0.65mA$
 \end{itemize}
 
 Pour le \ref{sinus} :
