@@ -1,0 +1,62 @@
+
+set output "carac_mes.pdf"
+set terminal pdf colour enhanced dashed
+set key box top left
+set key width -5
+
+set style line 1 lw 3 pt 0 lt rgb "black"
+set xzeroaxis ls 1 
+set xtics axis offset 1,0
+set yzeroaxis ls 1 
+set ytics axis offset 0,0.5
+
+set pointsize 1
+set arrow 1 from 0,0 to 5,0 filled
+set arrow 2 from 0,0 to 0,0.11/4 filled
+
+unset border
+set grid xtics ytics
+set sample 1000
+set xr [-5:5]
+set yr [-0.005:0.11/4]
+set xlabel 'V (V)'
+set ylabel 'I (A)'
+Is=4e-11 #A
+Vt=26e-3 #V
+n=4
+#R=10
+
+vth=2
+
+idp(x)=x<0 ? 0:1e6 #parfaite
+idr(x)=x<vth ? 0:(x-vth)*0.2 #vth+R
+idi(x)=x<vth ? 0:(x-vth)*1e6 #vth seul
+id(x)=Is*(exp(x/(n*Vt))-1)
+
+#idrs(x)=id(x)
+set style data linespoints
+set datafile separator ","
+
+plot  id(x) t "I(V) (théorique)" lw 5 lc 3 , idp(x) lw 5 lc 3 t "I(V) idéale",  \
+ idi(x) t "I(V) idéalisée avec Vth" lw 5 lc 3, "NewFile6.csv" every 100::500000 using ($3-$2):($2/100)-1e-4 smooth bezier  with lines ls 5 lt 0 lw 5 lc 1 t "Mesure"
+
+#plot "./NewFile3.csv" using 3:($2)/100+.06 smooth csplines with lines
+
+set fit logfile "fit.log"
+set fit errorvariables
+fit id(x) '-' using 1:2 via Is, n
+0	0
+1.786	0.32e-3
+1.900	2.060e-3
+1.9981	5.355e-3
+2.014	6.329e-3
+2.089	18.12e-3
+
+show variables Is, n
+replot 
+1.786	0.32e-3
+1.900	2.060e-3
+1.9981	5.355e-3
+2.014	6.329e-3
+2.089	18.12e-3
+#clear
