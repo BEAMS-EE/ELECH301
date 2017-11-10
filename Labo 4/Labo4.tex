@@ -316,7 +316,7 @@ On ajoute une capacité de découplage en entrée et en sortie et un pont résis
 		(1,3) to [C=$C_{in}$ ](1.5,3)
 		(1.5,3) to [short,-*] (2,3)
 %
-		(2,6) node[alimp ] (alim) {}
+		(2,6) node[european voltage source] (alim) {}
 		(alim.text) node {$+V_{dc}$}
 %
 		(2,3) to [R, l_=$R_{b1}$](2,6)

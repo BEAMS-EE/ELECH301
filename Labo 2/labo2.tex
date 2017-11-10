@@ -26,16 +26,9 @@
 \usepackage{fancyhdr} %en-tête
 \usepackage{qrcode}
 
-% \langexam{frenchb}
+\langexam{frenchb}
 
-\newboolean{koriG}
-\ifx\koriG\undefined
 \correction{false}
-\else
-\correction{true}
-\fi
-
-% \correction{false}
  %\correction{true}
 
 \author{The Fantastic Four}
@@ -44,19 +37,19 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 2 : Conception et réalisation d'un amplificateur audio\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.1\\ page \thepage}
+\rhead{v1.0.2\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
 /Author (Raoul Sommeillier, ULB -- BEAMS)
-/Title (LABO 2 ELEC-H-301, Filtrage)
+/Title (LABO 2 ELEC-H-301, Conception et réalisation d'un amplificateur audio)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={LABO 2 [ELEC-H-301] Électronique appliquée: Conception et réalisation d'un amplificateur audio},
-pdfauthor={Raoul Sommeillier, ©2017 ULB - BEAMS  },
+pdfauthor={ ULB - BEAMS  },
 pdfsubject={Conception et réalisation d'un amplificateur audio}
 }
 
@@ -92,7 +85,7 @@ Les notions liées aux amplis-op sont supposées connues :
 En particulier, vous devez être capable de résoudre des problèmes semblables à ceux des séances d'exercices n°2 et 3.
 
 \section{Matériel}
-En plus du matériel classique de laboratoire (multimètre, oscilloscope, générateur de fonction, câbles, etc.), cette séance nécessite les composants suivants: 
+En plus du matériel classique de laboratoire (multimètre, oscilloscope, générateur de fonction, câbles, etc.), cette séance nécessite les composants suivants:
 \begin{itemize}
 \item Ampli-ops (AOP): 4 AOP TLE2061 et 1 NJM2113 (JRC-K002A).
 \item Résistances : 1 de $1k\Omega$, 2 de $2,7k\Omega$, 2 de $4,7k\Omega$, 2 de $22k\Omega$, 1 de $39k\Omega$, et 2 de $100k\Omega$.
@@ -124,8 +117,8 @@ On désire réaliser un amplificateur dans la gamme des fréquences audio. Il se
 On dispose des informations suivantes :
 \vspace{3mm}
 \begin{itemize}
-\item Le récepteur AM fournit un signal d'amplitude supérieure à 5mV crête, avec une impédance de sortie d'environ 100kW.
-\item Le HP se comporte comme une résistance de 16W dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500mW.
+\item Le récepteur AM fournit un signal d'amplitude supérieure à 5mV crête, avec une impédance de sortie d'environ $100k\Omega$.
+\item Le HP se comporte comme une résistance de $16\Omega$ dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500mW.
 \item La plage des fréquences audio s'étend de 20Hz à 20kHz.
 \item On désire pouvoir régler le volume sonore.
 \end{itemize}
@@ -137,8 +130,8 @@ On dispose des informations suivantes :
 \subsubsection{Définition des critères de dimensionnement de l'ampli}
 
 \begin{itemize}
-\item Impédance d'entrée : Rin >> 100kW
-\item impédance de sortie : Rout << 16W
+\item Impédance d'entrée : $Rin >> 100k\Omega$
+\item impédance de sortie : $Rout << 16\Omega$
 \item gain : pour pouvoir régler le volume sonore, nous aurons besoin d'un gain variable. Cherchons le gain maximum nécessaire :
 \item le gain minimum doit idéalement valoir 0 pour pouvoir annuler totalement le volume, ce qui implique la présence d'au moins un étage inverseur dans notre montage.
 \item bande passante : la bande passante de chaque étage doit être supérieure ou égale à 20kHz.
