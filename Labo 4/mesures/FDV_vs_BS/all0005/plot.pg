@@ -1,0 +1,31 @@
+set grid xtics ytics y2tics
+set xzeroaxis lt -1 lw 0
+#set xzeroaxis lt -1 lw 0
+#set title "Lampe, \n\n V_{lampe_{max}}=13V, I_{lampe_{max}}=2.88A, I_{lampe[0.25,0.5]}=0.732A,\n\n {/Symbol j}_{rise}=39ms, {/Symbol j}_{fall}=274ms"
+set style data lines
+set ylabel "I_D (A)"
+set xlabel "V_{GS} (V)"
+#set y2label "Courant (A)"
+#set y2tics in
+set ytics in nomirror
+
+#set yrange [0:14]
+#set y2range [0:3.5]
+
+#plot "f0005ch1.csv.glp" smooth unique title "V_{in}" axes x1y1 lw 2
+#replot  "f0005ch2.csv.glp" smooth unique title "V_{D}" axes x1y1 lw 2
+#plot "<paste f0005ch1.csv.glp f0005ch2.csv.glp" using ($2):(($4+12.2)/100) smooth unique title "I_{D}=f(V_{GS}, FDV301N" axes x1y1 lw 2
+plot "<paste ../all0006/f0006ch1.csv.glp ../all0006/f0006ch2.csv.glp" using ($2):(($4+12.2)/100) smooth unique title "I_{D}=f(V_{GS}), BS170" axes x1y1 lw 2
+
+#set datafile separator ";"
+#replot "../../simu_mos_vt2_1v_qucs.csv" using ($1+0.5):($2) smooth unique title "I_D=f(V_{GS}), BS170 simu" lw 2
+#replot "../../simu_mos_vt2_6v_qucs.csv" using ($1):($2) smooth unique title "I_D=f(V_{GS}), BS170 simu" lw 2
+
+#replot "f0002ch4.csv.glp" using 1:($2 *10) axes x1y1  smooth unique title "{/Symbol j} _{lampe}" lw 2
+pause -1
+set output "out.ps"
+set terminal postscript landscape enhanced color
+replot
+set terminal x11
+
+
