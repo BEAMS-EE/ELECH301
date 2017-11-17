@@ -68,14 +68,14 @@
 %%
 
 \pdfinfo{
-/Author (Raoul Sommeillier, ULB -- BEAMS)
+/Author (The Fantastic Four, ULB -- BEAMS)
 /Title (LABO 3 ELEC-H-301, Diodes et alimentations)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={LABO 3 [ELEC-H-301] Électronique appliquée: Diodes et alimentations},
-pdfauthor={Raoul Sommeillier, 2017 ULB - BEAMS  },
+pdfauthor={The Fantastic Four, 2017 ULB - BEAMS  },
 pdfsubject={Filtrage}
 }
 
@@ -94,14 +94,14 @@ pdfsubject={Filtrage}
 
 \section{Introduction}
 
-\section{But de la manipulation}
+\subsection{But de la manipulation}
 Cette manipulation a pour but d'illustrer :
 \begin{itemize}
 \item au niveau «application» : le fonctionnement d'une alimentation AC/DC linéaire
 \item au niveau «composant» : le fonctionnement des diodes les plus courantes : diode à jonction PN, diode Zener, LED.
 \end{itemize}
 
-\section{Prérequis}
+\subsection{Prérequis}
 \begin{itemize}
 \item Circuit RC du premier ordre
 \item Chapitre \no 17 du livre de référence (ed 5).\\ En particulier :
@@ -121,7 +121,7 @@ Cette manipulation a pour but d'illustrer :
 \end{itemize}
 
 \subsection{Prédéterminations}
-Toutes les sections «prédétermination» ainsi que les questions~\ref{Q:7} à~\ref{Q:9} et~\ref{Q:22} doivent être faites \textbf{avant} l'arrivée au laboratoire.
+Toutes les sections « prédétermination » ainsi que les questions 7 à 9 et 22 doivent être faites \textbf{avant} l'arrivée au laboratoire.
 
 Le TP 4 portant sur les diodes fait également office de prédéterminations.
 %Les prédéterminations des questions \ref{Q:1} à \ref{Q:predet} 
@@ -501,73 +501,73 @@ Voici le schéma électrique d'un redresseur double alternance :
 
 \Question
 {
-	Que devient la formule d'approximation déterminée à la question~\ref{Q:ondulation} ? 
+	Que devient la formule d'approximation permettant de déterminer $\Delta_V$ ? 
 }
 %	Vérifiez expérimentalement.
 {}%R
 	\label{Q:20}
 
 
-%\subsection{Manipulation}
-%\Question
-%{
-%	Vérifiez expérimentalement les trois résultats précédents.
-%}
-%{}%R
-%	\label{Q:21}
-%
-%
-%\newpage
-%\section{Régulation à diode Zener}
-%Le circuit précédent produit une tension quasiment continue mais dont l'amplitude n'est pas précisément connue et peut varier assez fortement ($\pm 10\%$). Nous devons maintenant la réguler afin d'obtenir une tension continue de valeur connue indépendante des variations du réseau. Nous allons utiliser une diode Zener. D'autres composants permettant d'effectuer des régulations plus précises existent.
-%
-%\subsection{La diode Zener}%{\color{white}, sa vie, son œuvre\dots}
-%
-%La diode Zener utilise le phénomène d'avalanche existant d'une diode\footnote{Le phénomène d'avalanche n'est destructeur que si la température limite de jonction de la diode est atteinte. Généralement, l'entrée en avalanche donne lieu à la circulation d'un courant qui va échauffer très rapidement la diode et la détruire lorsque la température limite de jonction aura été atteinte.} dont le seuil a été fixé à la fabrication de la diode. Notez qu'une diode Zener  se comporte comme une diode classique si elle est utilisée en direct. Au risque de répéter un point important, une diode Zener s'utilise en \textbf{inverse} car sa caractéristique intéressante est son phénomène d'avalanche (en inverse).
-%
-%Les conventions électriques utilisées pour la diode Zener sont les mêmes que pour toute diode, pour rappel, 
-%\begin{figure}[h!]
-%	\begin{center}
-%		\begin{circuitikz}\draw
-%			(0,0) node[anchor=east] {A} to [short,i>^=$I$] (1.5,0)
-%			(0,0) to [zDo, v<=$V$] (2.5,0) node [anchor=west]{K}
-%		;\end{circuitikz}
-%	\end{center}
-%	\vspace{-0.4cm}
-%\caption{Conventions électriques}
-%\label{fig:zenerconv}
-%\end{figure}
-%\vspace{-0.4cm}
-%sa caractéristique comporte un coude supplémentaire en inverse :
-%\begin{figure}[h!]
-%	\begin{center}
-%		\includegraphics[width=10cm]{figures/carac_zener.pdf}
-%	\end{center}
-%\caption{Caractéristique I/V de la diode Zener}
-%\label{fig:carac_Zener}
-%\end{figure}
-%
-%Notez que la tension de Zener est positive et que sur la caractéristique, le phénomène d'avalanche se produit pour $V=-V_z$. Il faut donc utiliser la diode Zener en \textbf{inverse} pour pouvoir utiliser l'effet Zener. En direct, une diode Zener se comporte comme une diode commune ayant une tension de seuil de $0.7V$ généralement.
-%
-%\subsection{Utilisation en avalanche}
-%Intéressons-nous uniquement à l'étage de régulation de l'alimentation présentée Figure~\vref{fig:alim} dans un premier temps.
-%
-%Soit le circuit de la Figure~\vref{fig:regulateur}.
-%\begin{figure}[h!]
-%	\begin{center}
-%		\begin{circuitikz}\draw
-%			(0,0) to [battery, invert, l=$V_{2}$] (0,3)
-%			to [european resistor,l=$R$] (3,3)
-%			(3,0) to [zDo, i<=$I_z$] (3,3)
-%			(3,0) to (0,0)
-%			(3,0) to [short,*-o] (4,0)
-%			(3,3) to [short,*-o] (4,3)
-%			(4,3) to [open,v^<=$V_{out}\equiv -V(Fig\ref{fig:zenerconv})$] (4,0)
-%		;\end{circuitikz}
-%	\end{center}
-%\caption{Diode Zener utilisée en avalanche pour effectuer une régulation en tension}
-%\label{fig:regulateur}
-%\end{figure}
+\subsection{Manipulation}
+\Question
+{
+	Vérifiez expérimentalement les trois résultats précédents.
+}
+{}%R
+	\label{Q:21}
+
+
+\newpage
+\section{Régulation à diode Zener}
+Le circuit précédent produit une tension quasiment continue mais dont l'amplitude n'est pas précisément connue et peut varier assez fortement ($\pm 10\%$). Nous devons maintenant la réguler afin d'obtenir une tension continue de valeur connue indépendante des variations du réseau. Nous allons utiliser une diode Zener. D'autres composants permettant d'effectuer des régulations plus précises existent.
+
+\subsection{La diode Zener}%{\color{white}, sa vie, son œuvre\dots}
+
+La diode Zener utilise le phénomène d'avalanche existant d'une diode\footnote{Le phénomène d'avalanche n'est destructeur que si la température limite de jonction de la diode est atteinte. Généralement, l'entrée en avalanche donne lieu à la circulation d'un courant qui va échauffer très rapidement la diode et la détruire lorsque la température limite de jonction aura été atteinte.} dont le seuil a été fixé à la fabrication de la diode. Notez qu'une diode Zener  se comporte comme une diode classique si elle est utilisée en direct. Au risque de répéter un point important, une diode Zener s'utilise en \textbf{inverse} car sa caractéristique intéressante est son phénomène d'avalanche (en inverse).
+
+Les conventions électriques utilisées pour la diode Zener sont les mêmes que pour toute diode, pour rappel, 
+\begin{figure}[h!]
+	\begin{center}
+		\begin{circuitikz}\draw
+			(0,0) node[anchor=east] {A} to [short,i>^=$I$] (1.5,0)
+			(0,0) to [zDo, v<=$V$] (2.5,0) node [anchor=west]{K}
+		;\end{circuitikz}
+	\end{center}
+	\vspace{-0.4cm}
+\caption{Conventions électriques}
+\label{fig:zenerconv}
+\end{figure}
+\vspace{-0.4cm}
+sa caractéristique comporte un coude supplémentaire en inverse :
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=10cm]{figures/carac_zener.pdf}
+	\end{center}
+\caption{Caractéristique I/V de la diode Zener}
+\label{fig:carac_Zener}
+\end{figure}
+
+Notez que la tension de Zener est positive et que sur la caractéristique, le phénomène d'avalanche se produit pour $V=-V_z$. Il faut donc utiliser la diode Zener en \textbf{inverse} pour pouvoir utiliser l'effet Zener. En direct, une diode Zener se comporte comme une diode commune ayant une tension de seuil de $0.7V$ généralement.
+
+\subsection{Utilisation en avalanche}
+Intéressons-nous uniquement à l'étage de régulation de l'alimentation présentée Figure~\vref{fig:alim} dans un premier temps.
+
+Soit le circuit de la Figure~\vref{fig:regulateur}.
+\begin{figure}[h!]
+	\begin{center}
+		\begin{circuitikz}\draw
+			(0,0) to [battery, invert, l=$V_{2}$] (0,3)
+			to [european resistor,l=$R$] (3,3)
+			(3,0) to [zDo, i<=$I_z$] (3,3)
+			(3,0) to (0,0)
+			(3,0) to [short,*-o] (4,0)
+			(3,3) to [short,*-o] (4,3)
+			(4,3) to [open,v^<=$V_{out}\equiv -V(Fig\ref{fig:zenerconv})$] (4,0)
+		;\end{circuitikz}
+	\end{center}
+\caption{Diode Zener utilisée en avalanche pour effectuer une régulation en tension}
+\label{fig:regulateur}
+\end{figure}
 
 \Question
 {
@@ -708,31 +708,31 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 {}%R
 	\label{Q:27}
 
-\Question
-{
-	Quel est le prénom de Zener ? Quel est le prénom de Graetz ?
-%	\includegraphics[width=5cm]{figures/Clarence_Zener.jpg}
-%	« Clarence Zener » par Mcapdevila — {Modified:http://histo.cat/1/Clarence_Zener.jpg. Sous licence Creative Commons Attribution-Share Alike 3.0 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Clarence_Zener.jpg#mediaviewer/File:Clarence_Zener.jpg
-\begin{center}
-%\includegraphics[width=2cm]{figures/QR_zener.pdf}
-\end{center}
-}
-{Clarence Melvin Zener et Leo Graetz}%R
-	\label{Q:28}
+% \Question
+% {
+% 	Quel est le prénom de Zener ? Quel est le prénom de Graetz ?
+% %	\includegraphics[width=5cm]{figures/Clarence_Zener.jpg}
+% %	« Clarence Zener » par Mcapdevila — {Modified:http://histo.cat/1/Clarence_Zener.jpg. Sous licence Creative Commons Attribution-Share Alike 3.0 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Clarence_Zener.jpg#mediaviewer/File:Clarence_Zener.jpg
+% \begin{center}
+% %\includegraphics[width=2cm]{figures/QR_zener.pdf}
+% \end{center}
+% }
+% {Clarence Melvin Zener et Leo Graetz}%R
+% 	\label{Q:28}
 
-%
-\vspace{-1.25cm}
-\begin{figure*}[h!]
-\vspace{-1cm}
-	\begin{center}
-	\subfloat[Redresseur à mercure, BEAMS -- Laboratoire~d'électricité~bâtiment~L]{\includegraphics[width=4cm]{figures/IMG_3843rs2.jpg}}\hspace{1cm}
-	\subfloat[Redresseur au Sélénium {\tiny \textit{transferred to fr.wikipedia Commons by User : Bloody-libu Public domain via Wikimedia Commons}}]{\includegraphics[width=4cm]{figures/Redresseur_Seleniums.jpg} 
-	}\hspace{1cm}
-	\subfloat[Diode~à~vide, BEAMS -- Laboratoire~d'électronique bâtiment~U]{\includegraphics[width=3cm]{figures/diode_viders.jpg}}
-	%		\includegraphics[width=15cm]{figures/-crop.pdf}
-	\end{center}\vspace{-0.75cm}
-\caption{Redresseurs d'un autre temps\dots}
-\vspace{-0.5cm}
-\label{fig:}
-\end{figure*}
+% %
+% \vspace{-1.25cm}
+% \begin{figure*}[h!]
+% \vspace{-1cm}
+% 	\begin{center}
+% 	\subfloat[Redresseur à mercure, BEAMS -- Laboratoire~d'électricité~bâtiment~L]{\includegraphics[width=4cm]{figures/IMG_3843rs2.jpg}}\hspace{1cm}
+% 	\subfloat[Redresseur au Sélénium {\tiny \textit{transferred to fr.wikipedia Commons by User : Bloody-libu Public domain via Wikimedia Commons}}]{\includegraphics[width=4cm]{figures/Redresseur_Seleniums.jpg} 
+% 	}\hspace{1cm}
+% 	\subfloat[Diode~à~vide, BEAMS -- Laboratoire~d'électronique bâtiment~U]{\includegraphics[width=3cm]{figures/diode_viders.jpg}}
+% 	%		\includegraphics[width=15cm]{figures/-crop.pdf}
+% 	\end{center}\vspace{-0.75cm}
+% \caption{Redresseurs d'un autre temps\dots}
+% \vspace{-0.5cm}
+% \label{fig:}
+% \end{figure*}
 \end{document}
