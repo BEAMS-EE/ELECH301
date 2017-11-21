@@ -63,7 +63,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Diodes et alimentations\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.0.0\\ page \thepage}
+\rhead{v2.0.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -120,6 +120,16 @@ Cette manipulation a pour but d'illustrer :
 
 \end{itemize}
 
+
+\subsection{Matériel}
+\begin{itemize}
+\item Résistances~: 100 \ohm, 150 \ohm, 330 \ohm, 1 k\ohm, 3.3 k\ohm.
+\item Diodes~: 1N5392 et LED TLHR5401.
+\item Condensateurs~: 220 \textmu F
+\item Un transformateur 220:9 V.
+\item Plaquettes de composants discrets~: diode Zener, condensateur électrolytique, pont redresseur, résistance de 180 \ohm~ et charges (quatre résistances).
+\end{itemize}
+
 \subsection{Prédéterminations}
 Toutes les sections « prédétermination » ainsi que les questions 7 à 9 et 22 doivent être faites \textbf{avant} l'arrivée au laboratoire.
 
@@ -138,7 +148,7 @@ Le TP 4 portant sur les diodes fait également office de prédéterminations.
 \item d'expliquer le fonctionnement des circuits comprenant des diodes (à jonction, LED, Zener, etc) ;
 \item de lire la notice d'une diode et d'en extraire les informations utiles ;
 \item d'utiliser la caractéristique d'une diode;
-\item de dimensionner une résistance de limitation de courant pour une LED ;
+\item de dimensionner une résistance de limitation de courant pour une LED.
 \end{itemize}
 %\clearpage
 \newpage
@@ -152,7 +162,7 @@ Le TP 4 portant sur les diodes fait également office de prédéterminations.
 \section{Concepts}
 Les circuits électroniques ont besoin d'être alimentés par des sources de tension continue. Dans la plupart des cas, l'amplitude de ces tensions d'alimentation doit être de l'ordre de quelques volts ou quelques dizaines de volts (les plus courantes sont $2.5V$, $3.3V$, $5V$, $12V$ et $15V$).
 Malheureusement, le réseau électrique nous fournit une tension sinusoïdale de $220V_{eff}$. Il est donc nécessaire de transformer cette tension alternative en tension continue de plus faible amplitude ; c'est le rôle des alimentations AC/DC.
-Toute alimentation de ce type doit entre autres réaliser un "redressement" des grandeurs électriques, ce qui se fait en pratique au moyen d'une ou plusieurs diodes.
+Toute alimentation de ce type doit entre autres réaliser un «~redressement~» des grandeurs électriques, ce qui se fait en pratique au moyen d'une ou plusieurs diodes.
  
 Dans la suite, nous appellerons :%\marginpar{mettre ça plus loin ?}
 \begin{itemize}
@@ -167,7 +177,7 @@ Commençons par comprendre le fonctionnement et l'utilisation d'une diode.
 Dans cette section, nous allons nous intéresser à la polarisation d'une diode afin de faire le lien entre les caractéristiques théoriques et l'utilisation pratique d'une diode.
 \subsection{Caractéristique I/V théorique}
 \subsubsection{Conventions}
-Les conventions pour le tracé de caractéristique I/V pour les diodes sont «courant positif de l'anode vers la cathode, convention récepteur» :
+Les conventions pour le tracé de caractéristique I/V pour les diodes sont «~courant positif de l'anode vers la cathode, convention récepteur~» :
 \begin{figure}[h!]
 	\begin{center}
 		\begin{circuitikz}\draw
@@ -222,8 +232,8 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 	\begin{center}
 	\shorthandoff{:!}
 		\begin{circuitikz}\draw
-			(0,0) to [battery, l=$V_{dc}$] (0,3)
-			to [european resistor, l=$R$] (3,3)
+			(0,3) to [american voltage source, l=$V_{dc}$] (0,0)
+			(0,3) to [european resistor, l^=$R$] (3,3)
 			to [leDo] (3,0) -- (0,0)
 		;\end{circuitikz}
 	\shorthandon{:!}
@@ -258,7 +268,7 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 	
 \Question
 {
-	En tenant compte de la réponse à la question~\ref{Q:2}, calculez la valeur de $R$ pour obtenir un courant de 20mA dans la LED.	
+	En tenant compte de la réponse à la question 2, calculez la valeur de $R$ pour obtenir un courant de 20mA dans la LED.	
 }
 {$$R=\frac{V_{dc}-V_{th}}{I_D}=150\Omega$$}%R
 	\label{Q:4}
@@ -295,17 +305,17 @@ Il existe plusieurs types d'alimentations AC/DC. Le type le plus simple (l'alime
 \label{fig:alim}
 \end{figure}
 
-On peut diviser l'alimentation en 3 étages, remplissant chacun une fonction :
+On peut diviser l'alimentation en trois étages, remplissant chacun une fonction :
 \begin{itemize}
 \item Le \textbf{1\ier étage} a pour but de diminuer l'amplitude de la tension alternative, pour la rendre compatible avec les besoins de la charge. Pour cela, on utilise un transformateur abaisseur de tension.
 Dans ce labo, nous utiliserons un transformateur $220V/9V$.
 Le transformateur a un avantage supplémentaire : il assure une isolation galvanique entre la charge et la source, ce qui garantit une certaine sécurité à l'utilisateur, même en cas de défaut de l'alimentation.
-A la sortie du 1\ier étage, on a une tension ($V1$) toujours sinusoïdale, mais d'amplitude plus faible, convenant mieux à notre application.
+À la sortie du 1\ier étage, on a une tension ($V1$) toujours sinusoïdale, mais d'amplitude plus faible, convenant mieux à notre application.
 
-\item Le \textbf{2\ieme étage} a pour but de transformer cette tension ($V1$) alternative en une tension continue. Pour cela, il combine 2 fonctions : le redressement et le lissage.
+\item Le \textbf{2\ieme étage} a pour but de transformer cette tension ($V1$) alternative en une tension continue. Pour cela, il combine deux fonctions : le redressement et le lissage.
 Le redressement a pour but de transformer une tension purement alternative (sans composante continue) en une tension unipolaire (c'est à dire toujours positive). Il existe deux types de redressement : le simple redressement et le double redressement; nous utiliserons le double redressement.
 Le lissage a pour but d'atténuer la partie alternative de la tension redressée, pour rendre celle-ci principalement continue.
-Dans la pratique, on aura une tension $V2$ qui sera la somme d'une composante continue (qui est celle qui nous intéresse) et d'une composante alternative non sinusoïdale résiduelle, le \textit{«ripple»}, de faible amplitude.
+Dans la pratique, on aura une tension $V2$ qui sera la somme d'une composante continue (qui est celle qui nous intéresse) et d'une composante alternative non sinusoïdale résiduelle, le \textit{«~ripple~»}, de faible amplitude.
 
 \item Le \textbf{3\ieme étage} a pour but de réguler l'amplitude de la tension de sortie. En effet, la tension $V2$ n'est pas parfaitement continue, de plus, l'amplitude de sa composante continue dépend de celle de la source, qui peut fluctuer fortement ($\pm10\%$\footnote{La tension du réseau peut avoir une telle variation, demandez à M. Maun.}). %\marginpar{renommer correctement V1/2/out}
 Il existe plusieurs façons de réaliser cet étage ; dans ce labo, nous étudierons le plus simple, basé sur une diode Zener.
@@ -402,7 +412,7 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 \item Vérifiez expérimentalement. (\textbf{ATTENTION} à la polarité de votre condensateur).
 \item Placez une résistance de charge en parallèle avec le condensateur ; observez son effet sur $V_{charge}$ pour différentes valeurs.
 \item Expliquez qualitativement l'influence de cette résistance sur l'allure de $V_{charge}$.
-\item Remarquez que le signal comporte plusieurs «phases» successives.
+\item Remarquez que le signal comporte plusieurs «~phases~» successives.
 \item Quelle est la forme d'onde dans chacune de ces phases ?
 \end{itemize}
 }
@@ -441,9 +451,10 @@ Cette formule permet de dimensionner la valeur de la capacité à utiliser pour 
 
 \newpage
 \section{Redressement double alternance}
+
 Le redresseur simple alternance a le défaut majeur de ne redresser qu'une seule alternance (et également de consommer un courant continu sur le réseau alternatif\footnote{Pour s'en rendre compte, effectuez une transformée de Fourier du courant délivré par la source ou calculez sa valeur moyenne. La circulation de courant continu sur un réseau alternatif pose un certain nombre de problèmes détaillés dans les différents cours de M. Maun.}).
 
-Ce défaut peut être corrigé et le courant fourni par le réseau peut être alternatif si la deuxième alternance du signal est mise à contribution. Un redresseur double alternance\footnote{Le pont redresseur à 4 diodes est aussi appelé «Pont de Graetz»}  aura également moins d'ondulation.
+Ce défaut peut être corrigé et le courant fourni par le réseau peut être alternatif si la deuxième alternance du signal est mise à contribution. Un redresseur double alternance\footnote{Le pont redresseur à 4 diodes est aussi appelé «~Pont de Graetz~»}  aura également moins d'ondulation.
 
 \textit{Cette partie du laboratoire est à réaliser avec les composants sur support. Alimentez votre montage avec le transformateur.}
 
@@ -588,8 +599,8 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 \begin{figure}[h!]
 	\begin{center}
 		\begin{circuitikz}\draw
-			(0,0) to [battery, v=$V_{2}$] (0,3)
-			to [european resistor,l=$R$] (3,3)
+			(0,3) to [battery, v_<=$V_{2}$] (0,0)
+			(0,3) to [european resistor,l=$R$] (3,3)
 			(3,0) to [zDo, i<=$I_z$] (3,3)
 			(3,0) to (0,0)
 			(3,0) to [short,*-o] (4,0) to (5,0)
