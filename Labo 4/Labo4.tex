@@ -72,7 +72,7 @@ Le but de ce laboratoire est de réaliser un pré-amplificateur audio pour une r
 \item Chapitre \no 17 du livre de référence (ed 5)
 \item Circuit RC du premier ordre.
 \item TP \no 2, exercice 6 sur la polarisation
-\item TP \no 6 portant sur les transistors MOS %TODO <= MAJ en 2017 FIXME
+\item TP \no 5 portant sur les transistors MOS
 
 \end{itemize}
 
@@ -151,7 +151,10 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 		(3,5) to (4,5)
         %(4,3.2) node[esource] (voltm) {V}
 		%(4,3.2) to (4,5)
-		(2,0) -- (5,0) to [battery, l_=$12V$] (5,5) -- (3,5)
+		%(2,0) -- (5,0) to [battery, l_=$12V$] (5,5) -- (3,5)
+		(2,0) -- (5,0)
+		(5,5) -- (3,5)
+		(5,5) to [battery, l=$12V$] (5,0)
 		(3,0) node[ground] {}
 		;\end{circuitikz}
 	\end{center}
@@ -243,7 +246,7 @@ La résistance sert à \og convertir \fg le courant qui circule dans le transist
 		(3,3) to [short, -o](4,3)
 		(4,3) node[anchor=west] {$v_{out}$}
 		(3,5) node[rground, yscale=-1] (alim) {}
-		(alim.text) node {+12V}
+		(3,5.7) node {+12V}
 		(3,0) node[ground] {}
 		;\end{circuitikz}
 	\end{center}
@@ -281,7 +284,6 @@ Avec $R_D=330\Omega$ et $V_{max}=3V$ :
 \end{itemize}
 }
 {
-%Cette question sera reformulée en "Que faut-il faire\dots ?" TODO
 \begin{enumerate}
     \item Ajouter une composante continue pour se placer dans la zone de saturation $\Longrightarrow$ ajout d'une tension de polarisation
     \item Ajouter un filtre passe haut en sortie pour filtrer la composante continue
@@ -294,7 +296,7 @@ Avec $R_D=330\Omega$ et $V_{max}=3V$ :
     \item De même, que faire pour obtenir une tension de sortie à moyenne nulle ?
 \end{itemize}
 }
-{%Et celle ci sera reformulée par "Comment faire\dots ?" TODO
+{
 On ajoute une capacité de découplage en entrée et en sortie et un pont résistif pour la polarisation
 }
 
