@@ -25,7 +25,7 @@
 \usepackage[]{attachfile}
 %\usepackage{ stmaryrd } % for \ligthning
 
-\newdateformat{mydate}{2016--2017}%hack pour remplacer \THEYEAR
+\newdateformat{mydate}{}%hack pour remplacer \THEYEAR
 
 %cyr
 \newcommand\textcyr[1]{{\fontencoding{OT2}\fontfamily{wncyr}\selectfont #1}}
@@ -46,23 +46,19 @@
 
 \definecolor{darkblue}{rgb}{0,0,0.5}
 
-\newboolean{mos}
-%\setboolean{mos}{true}%annexes
-\setboolean{mos}{false}% pas de annexes
-
 \usepackage{aeguill} %guillemets
 
 %% fancy header & foot
 
-\lhead{[ELEC-H-301] Électronique appliquée\\ Labo \no 5 : circuits logiques}
-\rhead{\mydate\today\\ page \thepage}
+\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 5 : circuits logiques}
+\rhead{v1.0.0 \\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
 \pagestyle{fancy}
 
 \pdfinfo{
-/Author (Yannick Allard, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (Labo n° 5 ELEC-H-301, circuits logiques)
 /ModDate (D:\pdfdate)
 }
@@ -84,8 +80,8 @@ pdfsubject={Diodes et alimentations}
 
 \newcommand{\addcontentslinenono}[4]{\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}{}}}
 
-\date{\vspace{-1.7cm}\mydate\today}
-\title{\vspace{-2cm} Labo \no 5\\ Électronique appliquée [ELEC-H-301]\\Circuits logiques\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
+\date{}
+\title{Séance 5~: Circuits logiques\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
 
 %\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
 
@@ -134,7 +130,7 @@ Cette manipulation a pour but d'illustrer :
 \marginpar{\color{white}"We will rise again" Peia}
 %\begin{itemize}
 %\item algèbre de Boole
-%\item 
+%\item
 Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
 \begin{itemize}
 \item algèbre de Boole
@@ -146,18 +142,13 @@ Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
 
 \textbf{Veillez aussi à relire l'annexe du laboratoire \no 1 sur les instruments de laboratoire.}
 
-
-%\item Être capable de calculer un gain et une résistance de sortie en utilisant un schéma équivalent.
-%\item Être capable de tracer un diagramme de Bode.
-%\item Avoir compris les principes de la polarisation.
-
 %\end{itemize}
 
 \subsection{Prédéterminations}
 Les questions~\ref{Q:tv1},~\ref{Q:tv2},~\ref{Q:chrono},~\ref{Q:rs_deb} à ~\ref{Q:rs_fin}, ~\ref{Q:dl1} et~\ref{Q:dlatch} doivent être faites \textbf{avant} l'arrivée au laboratoire.
 
 %Le TP 4 portant sur les diodes fait également office de prédéterminations.
-%Les prédéterminations des questions \ref{Q:1} à \ref{Q:predet} 
+%Les prédéterminations des questions \ref{Q:1} à \ref{Q:predet}
 
 
 \subsection{Objectifs}
@@ -197,86 +188,86 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		\begin{circuitikz} \draw
 		(0,0) node [american nand port]{}
 		(-0.7,-0.8) node  {NAND}
-		
+
 		(2,0) node [american nor port] {}
 		(2-0.7,-0.8) node  {NOR}
-		
+
 		(4,0) node [american xnor port] {}
 		(4-0.7,-0.8) node  {XNOR}
-		
+
 		(0,2) node [american and port] {}
 		(-0.7,2-0.8) node  {AND}
-		
+
 		(2,2) node [american or port] {}
 		(2-0.7,2-0.8) node  {OR}
-		
+
 		(4,2) node [american xor port] {}
 		(4-0.7,2-0.8) node  {XOR}
-		
+
 		(6,1) node [american not port] {}
 		(6.7-0.7,1-0.8) node  {NOT}
-		
+
 	;\end{circuitikz}
-%\shorthandon{:!}		
+%\shorthandon{:!}
 	\end{center}
 
 \begin{Q}
 	Donner la table de vérité du circuit suivant :
-	
+
 	\begin{center}
 %\shorthandoff{:!}
 		\begin{circuitikz} \draw
 		(0,0) node [american nor port] (nor) {}
 %		(-0.7,-0.8) node  {NAND}
-		(nor.in 2) -- ++(-1,0) node [ocirc] {} node [anchor=east] {C} 
+		(nor.in 2) -- ++(-1,0) node [ocirc] {} node [anchor=east] {C}
 		(nor.in 1) -|  (-1.5,1)
-		
+
 		(0,2) node [american and port] (and){}
 %		(0-0.7,2-0.8) node  {NOR}
 		(and.in 2) -| (-1.5,1) to [short, -o] (-2.4,1) node [anchor=east] {B}
-		(and.in 1)	-- ++(-1,0) node [ocirc] {} node [anchor=east] {A} 
+		(and.in 1)	-- ++(-1,0) node [ocirc] {} node [anchor=east] {A}
 
 		(2,1) node [american or port] (or){}
 %		(4-0.7,1-0.8) node  {XNOR}
 		(and.out) -| (or.in 1)
 		(nor.out) -| (or.in 2)
-		
+
 		(3.5,1) node [american not port] (not){}
 		(or.out) -- (not.in)
 		(not.out) -- ++(1,0) node [ocirc] {} node [anchor=west] {X}
-		
-		
+
+
 %		(0,2) node [american and port] {}
 %		(-0.7,2-0.8) node  {AND}
-		
+
 %		(2,2) node [american or port] {}
 %		(2-0.7,2-0.8) node  {OR}
-		
+
 %		(4,2) node [american xor port] {}
 %		(4-0.7,2-0.8) node  {XOR}
-		
-		
+
+
 %		(6.7-0.7,1-0.8) node  {NOT}
-		
+
 	;\end{circuitikz}
-%\shorthandon{:!}		
+%\shorthandon{:!}
 	\end{center}
 	\label{Q:tv1}
 	%circuit
 	\reponse{
 	\begin{tabular}{ccc|c}
-		A & B & C & X \\ 
-		\hline 
-		0 & 0 & 0 & 0 \\ 
-		0 & 0 & 1 & 1 \\ 
-		0 & 1 & 0 & 1 \\ 
-		0 & 1 & 1 & 1 \\ 
-		1 & 0 & 0 & 0 \\ 
-		1 & 0 & 1 & 1 \\ 
-		1 & 1 & 0 & 0 \\ 
-		1 & 1 & 1 & 0 \\ 
-		\end{tabular} 	
-	
+		A & B & C & X \\
+		\hline
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 1 & 1 \\
+		0 & 1 & 0 & 1 \\
+		0 & 1 & 1 & 1 \\
+		1 & 0 & 0 & 0 \\
+		1 & 0 & 1 & 1 \\
+		1 & 1 & 0 & 0 \\
+		1 & 1 & 1 & 0 \\
+		\end{tabular}
+
 	}%R
 \end{Q}
 
@@ -289,61 +280,61 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		\begin{circuitikz} \draw
 		(0,0) node [american and port] (and1) {}
 %		(-0.7,-0.8) node  {NAND}
-		(and1.in 2) -- ++(-0.5,0) |- node [circ] {} ++(-0.5,2.56) node [ocirc] (B) {} node [anchor=east] {B} 
-		
-		
+		(and1.in 2) -- ++(-0.5,0) |- node [circ] {} ++(-0.5,2.56) node [ocirc] (B) {} node [anchor=east] {B}
+
+
 		(0,2) node [american or port] (or){}
 %		(0-0.7,2-0.8) node  {NOR}
 		(or.in 1) -- ++(-0.5,0) |- (B)
-		(or.in 2) |- node [circ] {} ++(-1,-0.4) node [ocirc] (C) {} node [anchor=east] {C} 
+		(or.in 2) |- node [circ] {} ++(-1,-0.4) node [ocirc] (C) {} node [anchor=east] {C}
 		(and1.in 1) |- (C)
-		
+
 		(2,3) node [american and port] (and2) {}
 %		(4-0.7,1-0.8) node  {XNOR}
 		(or.out) -| (and2.in 2)
-		(and2.in 1) -- ++(-3,0)  node [ocirc] (A) {} node [anchor=east] {A} 
+		(and2.in 1) -- ++(-3,0)  node [ocirc] (A) {} node [anchor=east] {A}
 		(or.out) -| (and2.in 2)
-		
+
 		(3.5,1) node [american or port] (and3){}
 		(and2.out) -| (and3.in 1)
 		(and1.out) -| (and3.in 2)
 		(and3.out) -- ++(1,0) node [ocirc] {} node [anchor=west] {Y}
-		
-		
+
+
 %		(0,2) node [american and port] {}
 %		(-0.7,2-0.8) node  {AND}
-		
+
 %		(2,2) node [american or port] {}
 %		(2-0.7,2-0.8) node  {OR}
-		
+
 %		(4,2) node [american xor port] {}
 %		(4-0.7,2-0.8) node  {XOR}
-		
-		
+
+
 %		(6.7-0.7,1-0.8) node  {NOT}
-		
+
 	;\end{circuitikz}
-%\shorthandon{:!}		
+%\shorthandon{:!}
 	\end{center}
 	\label{Q:tv2}
 	\reponse{
 	\begin{tabular}{ccc|c}
-		A & B & C & X \\ 
-		\hline 
-		0 & 0 & 0 & 0 \\ 
-		0 & 0 & 1 & 0 \\ 
-		0 & 1 & 0 & 0 \\ 
-		0 & 1 & 1 & 1 \\ 
-		1 & 0 & 0 & 0 \\ 
-		1 & 0 & 1 & 1 \\ 
-		1 & 1 & 0 & 1 \\ 
-		1 & 1 & 1 & 1 \\ 
-		\end{tabular} 	
+		A & B & C & X \\
+		\hline
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 1 & 1 & 1 \\
+		1 & 0 & 0 & 0 \\
+		1 & 0 & 1 & 1 \\
+		1 & 1 & 0 & 1 \\
+		1 & 1 & 1 & 1 \\
+		\end{tabular}
 		}%R
 \end{Q}
 
 \begin{Q}
-	Réaliser ce circuit sur le protoboard au moyen de circuits intégrés 74HC00 (\textbf{N}AND) et 74HC32 (OR), les brochages se trouvent en annexe. 
+	Réaliser ce circuit sur le protoboard au moyen de circuits intégrés 74HC00 (\textbf{N}AND) et 74HC32 (OR), les brochages se trouvent en annexe.
 	\begin{itemize}
 	\item Brancher les entrées sur les leds pour visualiser leur état,
 	\item brancher les sorties intermédiaires sur les leds pour vérifier progressivement votre câblage,
@@ -369,15 +360,15 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		\begin{circuitikz} \draw
 		(0,0.72) node [american and port] (and1) {}
 %		(-0.7,-0.8) node  {NAND}
-		(-3,1) node [american not port, scale=0.8] (not){} 
+		(-3,1) node [american not port, scale=0.8] (not){}
 		(and1.in 1) -|   (not.out)
-		
-		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
-		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+
+		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A}
+		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B}
 		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
-	
+
 	;\end{circuitikz}
-%\shorthandon{:!}		
+%\shorthandon{:!}
 %\shorthandoff{:!}
 
 \begin{tikzpicture}[minimum size= 1.25cm,scale=0.9]
@@ -396,30 +387,30 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
   \node [anchor=east] at (0,1) {A};
   \draw [->]( 0,0) -- (10.5,0);
   \node [anchor=west] at (10.5,0) {t};
-  
+
   \foreach \x in {1,2,...,10} \draw (\x,-0.1) -- (\x,0.1);
   \foreach \x in {1,2,...,10} \draw (\x,-0.1-2) -- (\x,0.1-2);
   \foreach \x in {1,2,...,10} \draw (\x,-0.1-4) -- (\x,0.1-4);
   \node [anchor=north, inner sep=0pt, outer sep=0pt] at (1,0.25) {10ns};
   \node [anchor=north, inner sep=0pt, outer sep=0pt] at (2,0.25) {20ns};
-  
+
   	\draw [->] (0,-2) -- (0,1-2);
   \node [anchor=east] at (0,1-2) {B};
   \draw [->] (0,-2) -- (10.5,-2);
   \node [anchor=west] at (10.5,-2) {t};
-  
+
   	\draw [->] (0,-4) -- (0,1-4);
   \node [anchor=east] at (0,1-4) {Y};
   \draw [->] (0,-4) -- (10.5,-4);
   \node [anchor=west] at (10.5,-4) {t};
-  
+
   \draw [line width=2pt] (0,0) -|(3,1) -| (10,1); %A
    \draw [line width=2pt] (0,0-2) -|(1,1-2) -| (5,0-2) -- (10,0-2); %B
-   
+
    \itgv{
    \draw [line width=2pt, color=darkblue] (0,-4) -| (6,1-4) -|(7,0-4)--(10,0-4); %Y
    }
-  
+
 }
 \end{tikzpicture}
 	\label{Q:chrono}
@@ -430,7 +421,7 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 \end{Q}
 
 \begin{Q}
-	Mettre en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}. 
+	Mettre en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
 	\begin{itemize}
 	\item Brancher $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
 	\item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
@@ -458,8 +449,8 @@ Ci-dessous est représenté sous 2 formes différentes le bistable le plus simpl
 		(2,0) node [american not port] (not4) {}
 		(not3.out) -- (not4.in)
 		(not4.out) -- ++(0.5,0) |- ++(-4,-1) |- (not3.in)
-		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$} 
-		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$}
+		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
 
 		(8,1) node [american not port] (not1) {}
 		(8,-1) node [american not port] (not2) {}
@@ -467,20 +458,20 @@ Ci-dessous est représenté sous 2 formes différentes le bistable le plus simpl
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(not1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(not2.in)  ++(-1,0.5)  coordinate (a-b)
-		
+
 		(not1.in)++(-1.27,-0.5) node (in) {} % end of the wire with kinky bump
 		(not2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(not1.in)-| ++(-1.14,-0.55)
 		(not2.out) -- ++(1,0) node [circ] () {} node [anchor=south] {$\overline{Q}$}
-		
+
 		(not1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1) |- (not2.in)
 		(not1.out) -- ++(1,0) node [circ] () {} node [anchor=south] {$Q$}
-%		(not1.out) |-  ++(0.25,0)  
-%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+%		(not1.out) |-  ++(0.25,0)
+%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 	;\end{circuitikz}
 \end{center}
-%schéma 
+%schéma
 
 %\newpage
 Ce bistable possède 2 états stables (d'où son nom) :
@@ -488,7 +479,7 @@ Ce bistable possède 2 états stables (d'où son nom) :
 \item soit $Q$ est à l'état haut (1) et $\overline{Q}$ est à l'état bas (0)
 \item soit $Q$ est à l'état bas  (0) et $\overline{Q}$ est à l'état haut (1)
 \end{itemize}
- 
+
 Ce circuit est donc une mémoire. Malheureusement, il est difficile de modifier son état autrement
 qu'en court-circuitant une des sortie à un état déterminé: il n'y a en effet pas d'entrée à ce circuit.
 
@@ -496,16 +487,16 @@ qu'en court-circuitant une des sortie à un état déterminé: il n'y a en effet
 Imaginons que l'on dispose d'inverseurs dont on peut mettre la sortie dans un état déterminé. Par
 exemple l'inverseur suivant :
 
-%schéma 
+%schéma
 
 \begin{center}
 \begin{circuitikz} \draw
 
 		(0,0) node [american not port] (not1) {}
-		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$} 
-		(not1.in) -- ++(-1,0) node [ocirc] () {} node [anchor=south] {$A$} 
+		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$}
+		(not1.in) -- ++(-1,0) node [ocirc] () {} node [anchor=south] {$A$}
 		(not1.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$Q$}
-	
+
 	;\end{circuitikz}
 
 \end{center}
@@ -513,40 +504,40 @@ exemple l'inverseur suivant :
 \item si B est à l'état bas, alors Q est l'inverse de A (inversion normale de A)
 \item si B est à l'état haut, alors Q est à l'état bas (par exemple)
 \end{itemize}
- 
+
 On peut alors réaliser le montage suivant :
 
 %schéma
 \begin{center}
 \begin{circuitikz} \draw
 		(0,0) node [american not port] (not3) {}
-		(not3)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B1$} 
+		(not3)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B1$}
 		(2,0) node [american not port] (not4) {}
-		(not4)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(not4)+(0,.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(not3.out) -- (not4.in)
 		(not4.out) -- ++(0.5,0) |- ++(-4,-1) |- (not3.in)
-		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$} 
-		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
+		(not3.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$\overline{Q}$}
+		(not4.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
 
 		(8,1) node [american not port] (not1) {}
-		(not1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+		(not1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(8,-1) node [american not port] (not2) {}
-		(not2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+		(not2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$}
 %		(not1.out) -- (not2.in)
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(not1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(not2.in)  ++(-1,0.5)  coordinate (a-b)
-		
+
 		(not1.in)++(-1.27,-0.5) node (in) {} % end of the wire with kinky bump
 		(not2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(not1.in)-| ++(-1.14,-0.55)
 		(not2.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$\overline{Q}$}
-		
+
 		(not1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1) |- (not2.in)
 		(not1.out) -- ++(1,0) node [ocirc] () {} node [anchor=south] {$Q$}
-%		(not1.out) |-  ++(0.25,0)  
-%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+%		(not1.out) |-  ++(0.25,0)
+%		(not2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 	;\end{circuitikz}
 \end{center}
 
@@ -567,17 +558,17 @@ En fait, on connaît, sans le savoir, des éléments logiques qui répondent à 
 
 Prenons par exemple la porte NOR (Non OU).
 
-%schéma 
+%schéma
 
 \begin{center}
 \begin{circuitikz} \draw
 
 		(0,0) node [american nor port] (nor) {}
-%		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$} 
-		(nor.in 1) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$A$} 
-		(nor.in 2) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$B$} 
+%		(not1)+(0,.25) |- ++(-1.7,1) node [ocirc] () {} node [anchor=south] {$B$}
+		(nor.in 1) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$A$}
+		(nor.in 2) -- ++(-1,0) node [ocirc] () {} node [anchor=east] {$B$}
 		(nor.out) -- ++(1,0) node [ocirc] () {} node [anchor=west] {$Q$}
-	
+
 	;\end{circuitikz}
 
 \end{center}
@@ -591,29 +582,29 @@ Construisons alors le bistable à partir de ces portes et renommons (S, R) les e
 \begin{center}
 \begin{circuitikz} \draw
 		(0,1) node [american nor port] (nor1) {}
-	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(0,-1.5) node [american nor port] (nor2) {}
-	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$}
 %		(not1.out) -- (not2.in)
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
-		
+
 		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
 		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(nor1.in 2)-| ++(-1,-0.3)
 		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
-		
+
 		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
 		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
-		(nor1.out) |-  ++(0.25,0)  
-		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+		(nor1.out) |-  ++(0.25,0)
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 		(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$S$}
 		(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$R$}
-		
+
 	;
-	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);
 	\end{circuitikz}
 \end{center}
 
@@ -642,25 +633,25 @@ bistable R-S :
 %table
 \begin{center}
 \begin{tabular}{cccc|cc}
-R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
-\hline 
-0 & 0 & 0 & 0 & ? & ? \\ 
-0 & 0 & 0 & 1 & 0 & 1 \\ 	
-0 & 0 & 1 & 0 & 1 & 0 \\ 	
-0 & 0 & 1 & 1 &  \multicolumn{2}{c}{impossible} \\ 	
-0 & 1 & 0 & 0 & 1 & 0 \\ 	
-0 & 1 & 0 & 1 & 1 & 0 \\ 
-0 & 1 & 1 & 0 & 1 & 0 \\ 	
-0 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
-1 & 0 & 0 & 0 & 0 & 1 \\ 	
-1 & 0 & 0 & 1 & 0 & 1 \\ 
-1 & 0 & 1 & 0 & 0 & 1 \\ 	
-1 & 0 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
-1 & 1 & 0 & 0 & 0 & 0 \\ 	
-1 & 1 & 0 & 1 & 0 & 0 \\ 
-1 & 1 & 1 & 0 & 0 & 0 \\ 	
-1 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\ 	
-\end{tabular} 
+R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\
+\hline
+0 & 0 & 0 & 0 & ? & ? \\
+0 & 0 & 0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0 & 1 & 0 \\
+0 & 0 & 1 & 1 &  \multicolumn{2}{c}{impossible} \\
+0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 & 1 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+1 & 0 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & 0 & 1 \\
+1 & 0 & 1 & 0 & 0 & 1 \\
+1 & 0 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+\end{tabular}
 \end{center}
 
 En entrée de la table, on met les 2 sorties stables à l'instant t et les entrée que l'on applique à ce
@@ -674,15 +665,15 @@ impossible en entrée (lignes impossibles) et état indéterminé en sortie (lig
 %table
 \begin{center}
 \begin{tabular}{cccc|cc}
-R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
+R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\
 \hline
-0 & 0 & 0 & 0 & ? & ? \\ 
-0 & 0 & 0 & 1 & 0 & 1 \\ 	
-0 & 0 & 1 & 0 & 1 & 0 \\ 	
-0 & 1 & X & X & 1 & 0 \\ 	
-1 & 0 & X & X & 0 & 1 \\ 	
-1 & 1 & X & X & 0 & 0 \\ 	 	
-\end{tabular} 
+0 & 0 & 0 & 0 & ? & ? \\
+0 & 0 & 0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0 & 1 & 0 \\
+0 & 1 & X & X & 1 & 0 \\
+1 & 0 & X & X & 0 & 1 \\
+1 & 1 & X & X & 0 & 0 \\
+\end{tabular}
 \end{center}
 
 Le dernier état est évidemment indésirable puisqu'il rend égales des sorties normalement
@@ -693,12 +684,12 @@ dernière ligne du tableau ainsi que la première. On peut alors simplifier cett
 %table
 \begin{center}
 \begin{tabular}{cc|cc}
-R & S & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ 
+R & S & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\
 \hline & & & \\[-1em]
 0 & 0 & $Q_n$ & $\overline{Q_n}$ \\
-0 & 1 & 1 & 0 \\ 	
-1 & 0 & 0 & 1 \\ 		
-\end{tabular} 
+0 & 1 & 1 & 0 \\
+1 & 0 & 0 & 1 \\
+\end{tabular}
 \end{center}
 
 
@@ -715,29 +706,29 @@ Soit le circuit suivant :
 \begin{center}
 \begin{circuitikz} \draw
 		(0,1) node [american nand port] (nor1) {}
-	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(0,-1.5) node [american nand port] (nor2) {}
-	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$}
 %		(not1.out) -- (not2.in)
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
-		
+
 		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
 		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(nor1.in 2)-| ++(-1,-0.3)
 		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
-		
+
 		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
 		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
-		(nor1.out) |-  ++(0.25,0)  
-		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+		(nor1.out) |-  ++(0.25,0)
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 		(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
 		(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
-		
+
 	;
-	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);
 	\end{circuitikz}
 \end{center}
 
@@ -820,40 +811,40 @@ Modifier le schéma précédent comme suit : %, \textbf{en vérifiant bien que l
 \begin{circuitikz} \draw
 		(0,1.28) node [american nand port] (nand1) {}
 		(0,-1.5-0.28) node [american nand port] (nand2) {}
-		
-		(nand1.in 1) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$R$}  
-		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}  
-		
-%		(nand1.in 2) 
-		(nand1.in 2) |- ++(-1.5,-1.28) coordinate (dot) node [ocirc] () {} node [anchor=east] {$E$} 
+
+		(nand1.in 1) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$R$}
+		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}
+
+%		(nand1.in 2)
+		(nand1.in 2) |- ++(-1.5,-1.28) coordinate (dot) node [ocirc] () {} node [anchor=east] {$E$}
 		(nand2.in 1) |- (dot)
-		
+
 		(3,1) node [american nand port] (nor1) {}
-	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(3,-1.5) node [american nand port] (nor2) {}
-	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$}
 %		(not1.out) -- (not2.in)
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
-		
+
 		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
 		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(nor1.in 2)-| ++(-1,-0.3)
 		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
-		
+
 		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
 		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
-		(nor1.out) |-  ++(0.25,0)  
-		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+		(nor1.out) |-  ++(0.25,0)
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 		%(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
 		%(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
 		(nor1.in 1) -| (nand1.out)
 		(nor2.in 2) -| (nand2.out)
-		
+
 	;
-%	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);	
+%	\draw [dashed](-2.75,-2.25) rectangle (1,1.75);
 	\end{circuitikz}
 \end{center}
 
@@ -872,44 +863,44 @@ Le D latch peut être réalisé avec le schéma suivant :
 \begin{circuitikz} \draw
 		(0,1.28) node [american nand port] (nand1) {}
 		(0,-1.5-0.28) node [american nand port] (nand2) {}
-		
-		(nand1.in 1) -- ++(-2.5,0) node [ocirc] (D) {} node [anchor=east] {$D$}  
-%		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}  
+
+		(nand1.in 1) -- ++(-2.5,0) node [ocirc] (D) {} node [anchor=east] {$D$}
+%		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}
 		(-2.25,-2.07) node [american not port] (not) {}
 		(D) -| (not.in)
-		(not.out) --	(nand2.in 2) 
-%		(nand1.in 2) 
+		(not.out) --	(nand2.in 2)
+%		(nand1.in 2)
 		(D)++(0.94,0) coordinate (Dvert) %pour avoir seulement le segment vertical pour calculer l'intersection
-		(nand1.in 2) |- ++(-1.25,-1.28) coordinate (dot) 
-		(dot) to [kinky cross=(Dvert)--(not.in), kinky crosses=left] ++(-1.25,0)node [ocirc] () {} node [anchor=east] {$E$} 
+		(nand1.in 2) |- ++(-1.25,-1.28) coordinate (dot)
+		(dot) to [kinky cross=(Dvert)--(not.in), kinky crosses=left] ++(-1.25,0)node [ocirc] () {} node [anchor=east] {$E$}
 		(nand2.in 1) |- (dot)
-		
+
 		(3,1) node [american nand port] (nor1) {}
-	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$} 
+	%	(nor1)+(0,0.25) |- ++(-0.7,1) node [ocirc] () {} node [anchor=south] {$B2$}
 		(3,-1.5) node [american nand port] (nor2) {}
-	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$} 
+	%	(nor2)+(0,-0.25) |- ++(-0.7,-1) node [ocirc] () {} node [anchor=north] {$B1$}
 %		(not1.out) -- (not2.in)
 	%	(not2.out) -| ++(0.5,0.5)  coordinate (a-a) to [kinky cross=(a-a)--(a-b), kinky crosses=left] ++(-3,1)  coordinate (a-b) |- (not1.in)
 		(nor1.out)  ++(0.5,-0.5)  coordinate (a-a) %coords of the crossing wire
 		(nor2.in 2)  ++(-1.5,0.5)  coordinate (a-b)
-		
+
 		(nor1.in 2)++(-1.135,-0.225) node (in) {} % end of the wire with kinky bump
 		(nor2.out)-| ++(0.5,0.5) to  [kinky cross=(a-a)--(a-b), kinky crosses=left] (in)
 		(nor1.in 2)-| ++(-1,-0.3)
 		(nor1.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$Q$}
-		
+
 		(nor1.out) -| ++(0.5,-0.5) -- ++(-3.043,-1.5) |- (nor2.in 1)
 		(nor2.out) -- ++(1.5,0) node [ocirc] () {} node [anchor=west] {$\overline{Q}$}
-		(nor1.out) |-  ++(0.25,0)  
-		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$} 
-	
+		(nor1.out) |-  ++(0.25,0)
+		%(nor2.out) |-  ++(0.25,0) node [circ] () {} node [anchor=south] {$Q$}
+
 		%(nor1.in 1) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{S}$}
 		%(nor2.in 2) -- ++(-2,0) node [ocirc] () {} node [anchor=east] {$\overline{R}$}
 		(nor1.in 1) -| (nand1.out)
 		(nor2.in 2) -| (nand2.out)
-		
+
 	;
-	\draw [dashed](-3.5,-3.25) rectangle (4.25,2.75);	
+	\draw [dashed](-3.5,-3.25) rectangle (4.25,2.75);
 	\end{circuitikz}
 \end{center}
 
@@ -918,7 +909,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 
 \begin{Q}
 	 Déterminer son fonctionnement (table de vérité simplifiée).
-	 
+
 	\label{Q:dlatch}
 	\reponse{}%R
 \end{Q}
@@ -935,13 +926,13 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 	\label{Q:1}
 	\reponse{}%R
 \end{Q}
- 
+
 \begin{Q}
 	Peut-on, à votre avis, modifier D n'importe quand ?
 	\label{Q:1}
 	\reponse{}%R
 \end{Q}
- 
+
 {\color{white} C'était pénible de faire tous les schémas, j'espère que vous les trouvez beaux. Si c'est pas le cas, allez voir au pôle Sud si j'y suis.}
 
 \appendix
@@ -958,7 +949,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in11) |- (nand1.in 1)
 		(in12) |- ++(-0.6,0.75)|- (nand1.in 2)
 		(out1) |- (nand1.out)
-		
+
 		(2.8+3,1.5) node [american nand port,scale=0.8] (nand2) {}
 		(1+3,0) node (in21) {}
 		(2+3,0) node (in22) {}
@@ -966,8 +957,8 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in21) |- (nand2.in 1)
 		(in22) |- ++(-0.6,0.75)|- (nand2.in 2)
 		(out2) |- (nand2.out)
-		
-		
+
+
 		(1+2.8,5-1.5) node [american nand port,scale=0.8] (nand3) {}
 		(1+1,5) node (in31) {}
 		(2+1,5) node (in32) {}
@@ -975,7 +966,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in31) |- (nand3.in 2)
 		(in32) |- ++(-0.6,-0.75)|- (nand3.in 1)
 		(out3) |- (nand3.out)
-		
+
 		(1+2.8+3,5-1.5) node [american nand port,scale=0.8] (nand4) {}
 		(2+3,5) node (in41) {}
 		(3+3,5) node (in42) {}
@@ -983,20 +974,20 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in41) |- (nand4.in 2)
 		(in42) |- ++(-0.6,-0.75)|- (nand4.in 1)
 		(out4) |- (nand4.out)
-		
-		(7,0-0.25) node [anchor=north](gnd) {GND}	
-		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-		
+
+		(7,0-0.25) node [anchor=north](gnd) {GND}
+		(1,5+0.35) node [anchor=south](vcc) {VCC}
+
 %		(-0.7,-0.8) node  {NAND}
-%		(-3,1) node [american not port, scale=0.8] (not){} 
+%		(-3,1) node [american not port, scale=0.8] (not){}
 %		(and1.in 1) -|   (not.out)
-		
-%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
-%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+
+%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A}
+%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B}
 %		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
-	
+
 	;
-	\draw (0,0)rectangle (8,5);	
+	\draw (0,0)rectangle (8,5);
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
@@ -1015,7 +1006,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in11) |- (or1.in 1)
 		(in12) |- ++(-0.6,0.75)|- (or1.in 2)
 		(out1) |- (or1.out)
-		
+
 		(2.8+3,1.5) node [american or port,scale=0.8] (or2) {}
 		(1+3,0) node (in21) {}
 		(2+3,0) node (in22) {}
@@ -1023,8 +1014,8 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in21) |- (or2.in 1)
 		(in22) |- ++(-0.6,0.75)|- (or2.in 2)
 		(out2) |- (or2.out)
-		
-		
+
+
 		(1+2.8,5-1.5) node [american or port,scale=0.8] (or3) {}
 		(1+1,5) node (in31) {}
 		(2+1,5) node (in32) {}
@@ -1032,7 +1023,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in31) |- (or3.in 2)
 		(in32) |- ++(-0.6,-0.75)|- (or3.in 1)
 		(out3) |- (or3.out)
-		
+
 		(1+2.8+3,5-1.5) node [american or port,scale=0.8] (or4) {}
 		(2+3,5) node (in41) {}
 		(3+3,5) node (in42) {}
@@ -1040,12 +1031,12 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in41) |- (or4.in 2)
 		(in42) |- ++(-0.6,-0.75)|- (or4.in 1)
 		(out4) |- (or4.out)
-		
-		(7,0-0.25) node [anchor=north](gnd) {GND}	
-		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-		
+
+		(7,0-0.25) node [anchor=north](gnd) {GND}
+		(1,5+0.35) node [anchor=south](vcc) {VCC}
+
 	;
-	\draw (0,0)rectangle (8,5);	
+	\draw (0,0)rectangle (8,5);
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
@@ -1064,7 +1055,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in11) |- (nor1.in 1)
 %		(in12) |- ++(-0.6,0.75)|- (nor1.in 2)
 %		(out1) |- (nor1.out)
-%		
+%
 %		(2.8+3,1.5) node [american nor port,scale=0.8] (nor2) {}
 %		(1+3,0) node (in21) {}
 %		(2+3,0) node (in22) {}
@@ -1072,8 +1063,8 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in21) |- (nor2.in 1)
 %		(in22) |- ++(-0.6,0.75)|- (nor2.in 2)
 %		(out2) |- (nor2.out)
-%		
-%		
+%
+%
 %		(1+2.8,5-1.5) node [american nor port,scale=0.8] (nor3) {}
 %		(1+1,5) node (in31) {}
 %		(2+1,5) node (in32) {}
@@ -1081,7 +1072,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in31) |- (nor3.in 2)
 %		(in32) |- ++(-0.6,-0.75)|- (nor3.in 1)
 %		(out3) |- (nor3.out)
-%		
+%
 %		(1+2.8+3,5-1.5) node [american nor port,scale=0.8] (nor4) {}
 %		(2+3,5) node (in41) {}
 %		(3+3,5) node (in42) {}
@@ -1089,12 +1080,12 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in41) |- (nor4.in 2)
 %		(in42) |- ++(-0.6,-0.75)|- (nor4.in 1)
 %		(out4) |- (nor4.out)
-%		
-%		(7,0-0.25) node [anchor=north](gnd) {GND}	
-%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-%		
+%
+%		(7,0-0.25) node [anchor=north](gnd) {GND}
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}
+%
 %	;
-%	\draw (0,0)rectangle (8,5);	
+%	\draw (0,0)rectangle (8,5);
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 %	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
@@ -1113,7 +1104,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in11) |- (nor1.in 1)
 %		(in12) |- ++(0.6,0.75)|- (nor1.in 2)
 %		(out1) |- (nor1.out)
-%		
+%
 %		(1.2+3,1.5) node [american nor port,scale=0.8, xscale=-1] (nor2) {}
 %		(3+3,0) node (in21) {}
 %		(2+3,0) node (in22) {}
@@ -1121,8 +1112,8 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in21) |- (nor2.in 1)
 %		(in22) |- ++(0.6,0.75)|- (nor2.in 2)
 %		(out2) |- (nor2.out)
-%		
-%		
+%
+%
 %		(1+1.2,5-1.5) node [american nor port,scale=0.8,xscale=-1] (nor3) {}
 %		(3+1,5) node (in31) {}
 %		(2+1,5) node (in32) {}
@@ -1130,7 +1121,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in31) |- (nor3.in 2)
 %		(in32) |- ++(0.6,-0.75)|- (nor3.in 1)
 %		(out3) |- (nor3.out)
-%		
+%
 %		(1+1.2+3,5-1.5) node [american nor port,scale=0.8,xscale=-1] (nor4) {}
 %		(4+3,5) node (in41) {}
 %		(3+3,5) node (in42) {}
@@ -1138,12 +1129,12 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in41) |- (nor4.in 2)
 %		(in42) |- ++(0.6,-0.75)|- (nor4.in 1)
 %		(out4) |- (nor4.out)
-%		
-%		(7,0-0.25) node [anchor=north](gnd) {GND}	
-%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-%		
+%
+%		(7,0-0.25) node [anchor=north](gnd) {GND}
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}
+%
 %	;
-%	\draw (0,0)rectangle (8,5);	
+%	\draw (0,0)rectangle (8,5);
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 %	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
@@ -1161,7 +1152,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in11) |- (nor1.in 1)
 %		(in12) |- ++(0.6,0.75)|- (nor1.in 2)
 %		(out1) |- (nor1.out)
-%		
+%
 %		(1.2+3,1.5) node [american not port,scale=0.8, xscale=-1] (nor2) {}
 %		(3+3,0) node (in21) {}
 %		(2+3,0) node (in22) {}
@@ -1169,8 +1160,8 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in21) |- (nor2.in 1)
 %		(in22) |- ++(0.6,0.75)|- (nor2.in 2)
 %		(out2) |- (nor2.out)
-%		
-%		
+%
+%
 %		(1+1.2,5-1.5) node [american not port,scale=0.8,xscale=-1] (nor3) {}
 %		(3+1,5) node (in31) {}
 %		(2+1,5) node (in32) {}
@@ -1178,7 +1169,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in31) |- (nor3.in 2)
 %		(in32) |- ++(0.6,-0.75)|- (nor3.in 1)
 %		(out3) |- (nor3.out)
-%		
+%
 %		(1+1.2+3,5-1.5) node [american not port,scale=0.8,xscale=-1] (nor4) {}
 %		(4+3,5) node (in41) {}
 %		(3+3,5) node (in42) {}
@@ -1186,12 +1177,12 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 %		(in41) |- (nor4.in 2)
 %		(in42) |- ++(0.6,-0.75)|- (nor4.in 1)
 %		(out4) |- (nor4.out)
-%		
-%		(7,0-0.25) node [anchor=north](gnd) {GND}	
-%		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-%		
+%
+%		(7,0-0.25) node [anchor=north](gnd) {GND}
+%		(1,5+0.35) node [anchor=south](vcc) {VCC}
+%
 %	;
-%	\draw (0,0)rectangle (8,5);	
+%	\draw (0,0)rectangle (8,5);
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 %	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 %	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
@@ -1209,7 +1200,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in11) |- (not1.in)
 		%(in12) |- ++(-0.6,0.75)|- (not1.in 2)
 		(out1) |- (not1.out)
-		
+
 		(1.5+2,1) node [american not port,scale=0.55] (not2) {}
 		(1+2,0) node (in21) {}
 		%(2+2,0) node (in22) {}
@@ -1217,7 +1208,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in21) |- (not2.in)
 		%(in22) |- ++(-0.6,0.75)|- (not2.in 2)
 		(out2) |- (not2.out)
-		
+
 		(1.5+4,1) node [american not port,scale=0.55] (not5) {}
 		(1+4,0) node (in51) {}
 		%(2+2,0) node (in22) {}
@@ -1225,7 +1216,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in51) |- (not5.in)
 		%(in22) |- ++(-0.6,0.75)|- (not2.in 2)
 		(out5) |- (not5.out)
-		
+
 		(1+1.5,5-1) node [american not port,scale=0.55] (not3) {}
 		(1+1,5) node (in31) {}
 		%(2+1,5) node (in32) {}
@@ -1233,7 +1224,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in31) |- (not3.in)
 		%(in32) |- ++(-0.6,-0.75)|- (not3.in 1)
 		(out3) |- (not3.out)
-		
+
 		(1+1.5+2,5-1) node [american not port,scale=0.55] (not4) {}
 		(2+2,5) node (in41) {}
 		%(3+2,5) node (in42) {}
@@ -1241,7 +1232,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in41) |- (not4.in)
 		%(in42) |- ++(-0.6,-0.75)|- (not4.in 1)
 		(out4) |- (not4.out)
-		
+
 		(1+1.5+4,5-1) node [american not port,scale=0.55] (not6) {}
 		(2+4,5) node (in61) {}
 		%(3+2,5) node (in42) {}
@@ -1249,20 +1240,20 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 		(in61) |- (not6.in)
 		%(in42) |- ++(-0.6,-0.75)|- (not4.in 1)
 		(out6) |- (not6.out)
-		
-		(7,0-0.25) node [anchor=north](gnd) {GND}	
-		(1,5+0.35) node [anchor=south](vcc) {VCC}	
-		
+
+		(7,0-0.25) node [anchor=north](gnd) {GND}
+		(1,5+0.35) node [anchor=south](vcc) {VCC}
+
 %		(-0.7,-0.8) node  {NAND}
-%		(-3,1) node [american not port, scale=0.8] (not){} 
+%		(-3,1) node [american not port, scale=0.8] (not){}
 %		(and1.in 1) -|   (not.out)
-		
-%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A} 
-%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B} 
+
+%		(not.in) |-  ++(-0.5,0) node [ocirc] (A) {} node [anchor=east] {A}
+%		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B}
 %		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
-	
+
 	;
-	\draw (0,0)rectangle (8,5);	
+	\draw (0,0)rectangle (8,5);
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,-0.15) rectangle (\x+0.25,0.35) (\x,0.1) node {\x};
 	\foreach \x in {1,2,...,7} \filldraw [fill=white] (\x-0.25,5-0.15) rectangle (\x+0.25,5+0.35);
 	\foreach \x in {8,9,...,14} \draw (15-\x,5+0.1) node {\x};
