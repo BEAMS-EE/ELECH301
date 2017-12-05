@@ -51,7 +51,7 @@
 %% fancy header & foot
 
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 5 : circuits logiques}
-\rhead{v1.0.0 \\ page \thepage}
+\rhead{v1.0.1 \\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -812,8 +812,8 @@ Modifier le schéma précédent comme suit : %, \textbf{en vérifiant bien que l
 		(0,1.28) node [american nand port] (nand1) {}
 		(0,-1.5-0.28) node [american nand port] (nand2) {}
 
-		(nand1.in 1) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$R$}
-		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}
+		(nand1.in 1) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$S$}
+		(nand2.in 2) -- ++(-1.5,0) node [ocirc] () {} node [anchor=east] {$R$}
 
 %		(nand1.in 2)
 		(nand1.in 2) |- ++(-1.5,-1.28) coordinate (dot) node [ocirc] () {} node [anchor=east] {$E$}
