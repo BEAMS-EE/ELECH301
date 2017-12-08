@@ -1,6 +1,5 @@
 \documentclass[11pt,a4paper]{article}
 
-\usepackage{CJKutf8}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[]{tikz}
@@ -27,12 +26,10 @@
 
 \usepackage[]{attachfile}
 
-\newdateformat{mydate}{2016--2017}%hack pour remplacer \THEYEAR
+\newdateformat{mydate}{v1.0.0}%hack pour remplacer \THEYEAR
 
 %cyr
 \newcommand\textcyr[1]{{\fontencoding{OT2}\fontfamily{wncyr}\selectfont #1}}
-
-\input{stegano.tex}
 
 \newboolean{corrige}
 \setboolean{corrige}{true}%corrigé
@@ -48,12 +45,9 @@
 
 \usepackage{aeguill} %guillemets
 
-%\usepackage{CJK} %Chinese 
 
 %\usetikzlibrary{graphs} 
 \usetikzlibrary{graphs}
-
-%\setCJKmainfont{SimSun}
 
 %% fancy header & foot
 \pagestyle{fancy}
@@ -101,8 +95,7 @@ pdfsubject={Transistor MOS en amplification}
 \begin{itemize}
 \item Bande passante : 20Hz--20kHz
 \item Gain : 26dB
-\item Am\pl{``Giving up something that no longer serves a purpose, or protects you, or
-helps you, isn’t giving up at all, it’s growing up."}{Laurell K. Hamilton}litude de l'entrée : 0.1V, sinusoïdale, moyenne nulle
+\item Amplitude de l'entrée : 0.1V, sinusoïdale, moyenne nulle
 \item Tension de sortie à moyenne nulle
 \item Impédance d'entrée : $Z_{in}\geq10k\Omega$
 \item Impédance de sortie : $Z_{out}\leq 1k\Omega$
@@ -115,42 +108,16 @@ helps you, isn’t giving up at all, it’s growing up."}{Laurell K. Hamilton}li
 ~\\
 \textit{Démarche proposée :}
 \begin{enumerate}
-\item Identifier les contraintes im\pl{``The one who finds you drowning in shallow water and simply helps you out
-without commenting on the depth of the water is a rare gift."}{Shabaz Khan}osées par le cahier des charges\dl{Li \& Summer, thank you for the quotes :-)}{}
+\item Identifier les contraintes imposées par le cahier des charges.
 \item Choisir la topologie de l'amplificateur (= schéma que vous avez obtenu en répondant aux questions du labo).
-\item Identifier les différents \pl{``A person who feels appreciated will always do more than what is expected."}{Amy Rees Anderson}aramètres en fonction du cahier des charges (faire un schéma à petit signal).
+\item Identifier les différents paramètres en fonction du cahier des charges (faire un schéma à petit signal).
 \item Dimensionner les valeurs des différents composants du circuit sur base des courbes théoriques en annexe.
 \item Déterminer la valeur de la tension de polarisation.
-\item {Vérifier expérimentalement}\footnote{Ce point ne sera pas abordé dans ce document.} en tenant compte des caractéristiques réelles de votre transistor. La polarisation devra être ajustée pour obtenir le bon gain\dl{``Please, calm down and breathe."}{Queena}
-%\item 
+\item {Vérifier expérimentalement}\footnote{Ce point ne sera pas abordé dans ce document.} en tenant compte des caractéristiques réelles de votre transistor. La polarisation devra être ajustée pour obtenir le bon gain.
 \end{enumerate}
-
-{\color{white}C'est parti ! On se motive et on y va, tout va bien se passer !}
-
-\begin{center}
-\begin{CJK}{UTF8}{gbsn}
-破釜沉舟，百二秦关终属楚\\
-卧薪尝胆，三千越甲可吞吴\\
-祝你考试成功！\\
-考试必过，加油！
-\end{CJK}
-
-\end{center}
-
-
-
-%\begin{Q}
-%\vspace{-0.3cm}
-%\begin{enumerate}
-%\item Sur base des courbes fournies en annexe du labo, dimensionner un étage amplificateur ayant un gain de $26dB$ pour un signal d'entrée d'amplitude $0.1V$. L'impédance de charge du montage sera supérieure à $3.3k\Omega$. Le montage doit consommer moins de $0.5W$. 
-%\item Vérifier expérimentalement en tenant compte des caractéristiques réelles de votre transistor. \textbf{Cette partie ne sera pas abordée dans ce document.}
-
-%\end{enumerate}
 
 \reponse{
 ~\\
-%\appendix
-%\section{dimensionnement}
 \subsection{Contraintes :}
 \begin{enumerate}
 \item Gain de $26dB$ $\Longrightarrow$ $A_v= \pm 20$
@@ -159,63 +126,47 @@ without commenting on the depth of the water is a rare gift."}{Shabaz Khan}osée
 \item $E=12V$
 \item $P_T=P_{\mbox{transistor}}\leq 0.5W$ il s'agit de la puissance statique dissipée par le transistor (et uniquement par le transistor)
 \item $BW=20 \rightarrow 20kHz$
-%\item Entrée et sortie à moyennes nulles
 \end{enumerate}
 
 \subsection{Topologie :}
 
 On utilise le schéma de l'amplificateur inverseur à NMOS (inverseur) du labo :
 \begin{center}
-			%\includegraphics[width=8cm]{}
-			\begin{circuitikz}[scale=1]\draw
-			(0,1) to [short,o-] (9,1)
-			(4,6) to [short] (9,6)
-			(0,3) node[anchor=east] {In} to [short,o-] (1,3)
-			(0,3) to [open, v_=$V_{in}$]  (0,1)
-			(1,3) to [C=$C_{in}$ ](1.5,3)
-			(1.5,3) to [short,-*] (2,3)
-	%
-			(2,6) node[alimp ] (alim) {}
-			(alim.text) node {$+V_{dc}$}
-	%		
-			(2,3) to [R, l_=$R_{b1}$](2,6)
-			(2,3) to [R=$R_{b2}$](2,1)
-	%		
-			(4,3) node[nigfetec] (mos) {}
-			%(mos.B) node[anchor=west] {B}
-			(mos.G) to [short] (2,3)
-	%		
-			(mos.D) to (4,4) to [R, l_=$R_D$] (4, 6)		
-			%(4,5.5) to [R] (mos.D)
-	%		
-			(mos.D) to [short,-*](4,3.5)  to [short] (4.25,3.5)
-	%		
-			(mos.S) to [short] (4,1)% to [short, -o](2,0)  node[anchor=west] {S}
-	%		
-			(4.25,3.5) to [C, l^=$C{out}$] (6,3.5) to  [short](6,3.5) to [short,-o](6.5,3.5)node [anchor=south] {Out}	
-			(6,3.5) to [generic, l_=$Z_{ch}$] (6,1)
-			(6.5,3.5) to [open,v^=$V_{out}$] (6.5,1)
-	%		
-			(9,1) to [battery, l_=$E$](9,6)
-	%		%(1,0) to [short, -o](-1,0)  node[anchor=east] {S}
-	%		
-	%%			(0,0) node[anchor=east] {In} 
-	%%			to [short, o-] (1,0) 
-	%%			to [open, v=$V_{GS}$] (1,-2)
-	%%			to [short, -o] (0,-2)
-	%%			to  (0,-2) node[anchor=east] {S}
-	%%			to [short] (3,-2)
-	%%			(3,0) to [cI=$ g_m \cdot V_{GS}$] (3,-2)
-	%%			(3,-2) to [short, -o] (4,-2) node[anchor=west] {S}
-	%%			(3,0) to [short, -o] (4,0)
-	%%			to node[anchor=west] {D} (4,0)
-	%	%		
-			;\end{circuitikz}
+	\begin{circuitikz}[scale=1]\draw
+	(0,1) to [short,o-] (9,1)
+	(4,6) to [short] (9,6)
+	(0,3) node[anchor=east] {In} to [short,o-] (1,3)
+	(0,3) to [open, v_=$V_{in}$]  (0,1)
+	(1,3) to [C=$C_{in}$ ](1.5,3)
+	(1.5,3) to [short,-*] (2,3)
+%
+	(2,6) node[alimp ] (alim) {}
+	(alim.text) node {$+V_{dc}$}
+%		
+	(2,3) to [R, l_=$R_{b1}$](2,6)
+	(2,3) to [R=$R_{b2}$](2,1)
+%		
+	(4,3) node[nigfetec] (mos) {}
+	%(mos.B) node[anchor=west] {B}
+	(mos.G) to [short] (2,3)
+%		
+	(mos.D) to (4,4) to [R, l_=$R_D$] (4, 6)		
+	%(4,5.5) to [R] (mos.D)
+%		
+	(mos.D) to [short,-*](4,3.5)  to [short] (4.25,3.5)
+%		
+	(mos.S) to [short] (4,1)% to [short, -o](2,0)  node[anchor=west] {S}
+%		
+	(4.25,3.5) to [C, l^=$C{out}$] (6,3.5) to  [short](6,3.5) to [short,-o](6.5,3.5)node [anchor=south] {Out}	
+	(6,3.5) to [generic, l_=$Z_{ch}$] (6,1)
+	(6.5,3.5) to [open,v^=$V_{out}$] (6.5,1)
+%		
+	(9,1) to [battery, l_=$E$](9,6)
+	;\end{circuitikz}
 	\end{center}
 	
 	Cette topologie impose que $Av=-20$ car cet étage d'amplification est inverseur.
 
-%\subsection{Paramètres}
 
 \subsection{Dimensionnement du gain et du point de polarisation}
 Processus:
@@ -261,33 +212,6 @@ Cette imprécision sera corrigée en pratique par un étalonnage du montage (qui
 \fbox{$V_{dc}=5.9V$}
 \fbox{$R_{b1}=R_{b2}$}
 \end{center}
-%Si on impose $g_m$:
-%ex: $g_m=0.07S$
-%alors $I_D=25mA$
-%et $R_D=285\Omega$
-%
-%Par conséquent : $V_D=4.87V$
-%En traçant la droite de charge sur le deuxième graphe, on peut déterminer que l'excursion possible en sortie vaut $5V$ ($>2V$ nécessaires).
-%
-%Si on impose $R_D$ :
-%On sait que $146<R_D<330$ pour respecter les contraintes de puissance et d'impédance de sortie.
-%
-%Si on choisis $R_D=200$ alors :
-%$g_m=0.1S$
-%$I_D=$
-%
-%
-%%On choisit de polariser au milieu de la droite de charge $V_D=6V$. Dans la mesure où le gain est fixé, le $V_D$ final sera différent.
-%
-%
-%
-%Si on choisit $R_D=330\Omega$, 
-%
-%on obtient $I_D=18mA$ (à $V_D=6V$) → $g_m=0.06S$ (voir courbes) → $A= -20$ 
-%
-%donc en choisissant la bonne tension de polarisation pour avoir $I_D=18mA$ ou encore $V_s=6V$, on obtient le gain de $26dB$ voulu.
-%
-%%Le circuit consomme (en négligeant le pont de polarisation) : $P=V_{dc}\cdot I_D=0.216W<0.5W$
 
 \subsection{Dimensionnement des capacités, impédances d'entrée et de sortie}
 
@@ -308,18 +232,6 @@ L'analyse à petit signal du montage permet de constater que le montage se compo
 \end{center}
 %
 L'étude théorique de la composition des filtres du premier ordre montre que la composée de $n$ filtres passe-haut du premier ordre ayant la \textbf{même} fréquence de coupure $f_c$ auront une fréquence de coupure qui vaudra\footnote{La démonstration de cette propriété est laissée au lecteur, il suffit d'exprimer la composée et identifier pour quelle fréquence son gain vaut $-3dB$.} $$f_{c_{\mbox{composée}}}=\frac{f_c}{\sqrt{2^{1/n}-1}}$$ Dans le cas présent, pour que la fréquence de coupure du système soit $f_{c_{\mbox{composée}}}=20Hz$, il faudra choisir $f_c=12.8Hz$.
-%Les valeurs des dimensionnements qui corres
-
-%Le dimensionnement fait pendant le labo considère des fréquences de coupures différentes à l'entrée et à la sortie. Les surdimensionnements dus à l'utilisation de valeurs normalisées permettent d'obtenir une fréquence de coupure de 20Hz.{\color{white}(mais c'est un peu par chance)}
-
-%La réponse en fréquence des deux solutions se trouve sur le graphe suivant :
-%\begin{center}
-%\includegraphics[width=10cm]{bode_corr.pdf}
-%\end{center}
-
-%Pour que ce corrigé soit cohérent avec la démonstration faite pendant le labo, la suite du dimensionnement sera effectuée en considérant $20Hz$ comme fréquence de coupure pour chaque filtre.
-
-%Les valeurs correspondant à $f_c=12.8Hz$ sont toutefois précisées entre parenthèses dans la suite du document.
 
 \subsubsection{Capacité d'entrée}
 On désire amplifier un signal audio, par conséquent, l'entrée du circuit doit être un filtre passe-haut de fréquence de coupure inférieure à $20Hz$ à $-3dB$. Il faut également éviter que la composante continue appliquée sur la grille implique un courant continu dans la source de tension d'entrée.
@@ -362,14 +274,6 @@ Avec l'autre contrainte sur $C_{out}$, on peut choisir $C_{out}=8.2\mu F$ (valeu
 
 Ce qui permet d'avoir $f_{c_{out}}\leq 5.6Hz$ et respecter la contrainte sur l'impédance de sortie et sur la fréquence de coupure.
 
-%\subsection{Consommation électrique}
-%
-%Il n'y avait pas de contrainte sur la consommation électrique, mais on peut 
-%
-%Le circuit consomme en moyenne :
-%$$P_{circuit}=\frac{V_{dc}^2}{R_{b1}+R_{b2}}+E\cdot I_D$$%+{E\cdot i_{out}(R_{ch},t) }$$ avec $i_{out}=\frac{-A_v\cdot g_m \cdot v_{in}(t)}{R_{ch}}$
-%
-%La première contribution est négligeable devant l'autre avec les valeurs choisies.
 
 \begin{center}
 \fbox{$C_{out}= 8.2\mu F$}
@@ -401,26 +305,10 @@ $V_{GS}=2.95V$ & $f_{c_{\mbox{totale}}}=13.8Hz$ & $f_{c_{out}}=5.6Hz$ \\
 
 Le graphe des dépendances entre paramètres/contraintes est :
 
-%\begin{tikzpicture} [>=spaced stealth’]
-%\graph [layered layout, components go right top aligned, nodes=draw, edges=rounded corners]
-%{
-%first root -> {1 -> {2, 3, 7} -> {4, 5}, 6 }, 4 -- 5;
-%second root -> x -> {a -> {u,v}, b, c -> d -> {w,z} };
-%third root -> child -> grandchild -> youngster -> third root;
-%};
-%\end{tikzpicture}
 \begin{tikzpicture}[->, >=latex,minimum size= 1.25cm,scale=0.9]
-%\usetikzlibrary{arrows,decorations.markings}
-%\def \n {5}
-%\def \radius {3cm}
-%\def \margin {8} % margin in angles, depends on the radius
 \usetikzlibrary{calc}
-%\usetikzlibrary{arrows.meta}
-%\foreach \s in {1,...,\n}
 {
 
-%\tikzset{>={Latex[width=3mm,length=3mm]}}
-%/pgf/;
   \node[draw, circle] (id) at (0-90:2) {$I_D$};
   \node[draw, circle] (vdsq) at (72-90:2) {$V_{DS}$};
   \node[draw, circle, color=red] (vout) at (144-90:2) {$v_{out}$};
@@ -496,15 +384,6 @@ Le graphe des dépendances entre paramètres/contraintes est :
 	\draw (vin) to (vout);
   
   \draw (cont) to node [midway, above=-2mm] {influe sur/limite}(param);
-%  \draw (zin) to (rb1);
-%  \draw (zin) to (rb2);
-%  \draw (zin) to (cin);
-%  \draw (fcin) to (cin);
-%  \draw (fcin) to (rb1);
-%  \draw (fcin) to (rb2);  
-  
-  % ({360/\n * (\s - 1)+\margin}:\radius) 
-   % arc ({360/\n * (\s - 1)+\margin}:{360/\n * (\s)-\margin}:\radius);
 }
 \end{tikzpicture}
 

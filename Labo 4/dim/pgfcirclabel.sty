@@ -1,0 +1,157 @@
+% Copyright 2007-2009 by Massimo Redaelli
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/LICENSE for more details.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ay monopole 221010 
+%% monopole label positioning
+
+%% Options
+\ctikzset{label/.style = { l=#1 } }
+\ctikzset{l/.code = { 
+	\pgfkeys{/tikz/circuitikz/monopole/label/name=#1}
+	\ctikzsetvalof{monopole/label/unit}{}
+	\ifpgf@circ@siunitx 
+		\pgf@circ@handleSI{#1}
+		\ifpgf@circ@siunitx@res 
+			\edef\pgf@temp{\pgf@circ@handleSI@val}
+			\pgfkeyslet{/tikz/circuitikz/monopole/label/name}{\pgf@temp}
+			\edef\pgf@temp{\pgf@circ@handleSI@unit}
+			\pgfkeyslet{/tikz/circuitikz/monopole/label/unit}{\pgf@temp}
+		\else
+		\fi
+	\else
+	\fi
+}}
+
+\ctikzset{label above/.code = { 
+	l=#1, 
+	\circuitikzbasekey/monopole/label/position=90 }
+}
+\ctikzset{l^/.style = { 
+	l=#1,
+	\circuitikzbasekey/monopole/label/position=90 } 
+}
+
+\ctikzset{label below/.code = { 
+	l=#1,
+	\circuitikzbasekey/monopole/label/position=-90 } 
+}
+\ctikzset{l_/.style = { 
+	l=#1,
+	\circuitikzbasekey/monopole/label/position=-90 } 
+}
+%%%%%%%%%%%%%%% /Ay
+
+
+%% Bipole label positioning
+
+%% Options
+\ctikzset{label/.style = { l=#1 } }
+\ctikzset{l/.code = { 
+	\pgfkeys{/tikz/circuitikz/bipole/label/name=#1}
+	\ctikzsetvalof{bipole/label/unit}{}
+	\ifpgf@circ@siunitx 
+		\pgf@circ@handleSI{#1}
+		\ifpgf@circ@siunitx@res 
+			\edef\pgf@temp{\pgf@circ@handleSI@val}
+			\pgfkeyslet{/tikz/circuitikz/bipole/label/name}{\pgf@temp}
+			\edef\pgf@temp{\pgf@circ@handleSI@unit}
+			\pgfkeyslet{/tikz/circuitikz/bipole/label/unit}{\pgf@temp}
+		\else
+		\fi
+	\else
+	\fi
+}}
+
+\ctikzset{label above/.code = { 
+	l=#1, 
+	\circuitikzbasekey/bipole/label/position=90 }
+}
+\ctikzset{l^/.style = { 
+	l=#1,
+	\circuitikzbasekey/bipole/label/position=90 } 
+}
+
+\ctikzset{label below/.code = { 
+	l=#1,
+	\circuitikzbasekey/bipole/label/position=-90 } 
+}
+\ctikzset{l_/.style = { 
+	l=#1,
+	\circuitikzbasekey/bipole/label/position=-90 } 
+}
+
+%% Output routing
+%% #1 - node name
+
+\def\pgf@circ@drawlabel{
+	\pgfextra{
+		\def\pgf@circ@temp{\ctikzvalof{bipole/label/position}}
+		\edef\pgf@circ@ffffff{\pgf@circ@direction}
+		\def\pgfcircmathresult{\expandafter\pgf@circ@stripdecimals\pgf@circ@ffffff\pgf@nil}
+		
+		\ifnum \ctikzvalof{mirror value}=-1
+			\pgfmathadd{\pgfcircmathresult}{+180}
+			\def\pgfcircmathresult{\expandafter\pgf@circ@stripdecimals\pgfmathresult\pgf@nil}
+		\fi
+		
+		\ifnum\pgfcircmathresult >4 \ifnum\pgfcircmathresult <86
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{south east} \else \def\pgf@circ@dir{north west}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >85 \ifnum\pgfcircmathresult <95
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{east} \else \def\pgf@circ@dir{west}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >94 \ifnum\pgfcircmathresult <176
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{north east} \else \def\pgf@circ@dir{south west}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >175 \ifnum\pgfcircmathresult <185
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{north} \else \def\pgf@circ@dir{south}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >184 \ifnum\pgfcircmathresult <256
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{north west}\else \def\pgf@circ@dir{south east}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >265 \ifnum\pgfcircmathresult <275
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{west} \else \def\pgf@circ@dir{east}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult >284 \ifnum\pgfcircmathresult <356
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{south west} \else \def\pgf@circ@dir{north east}
+			\fi
+		\fi\fi
+		\ifnum\pgfcircmathresult <5
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{south} \else \def\pgf@circ@dir{north}
+			\fi
+		\fi
+		\ifnum\pgfcircmathresult >355
+			\ifnum\pgf@circ@temp>0
+				\def\pgf@circ@dir{south} \else \def\pgf@circ@dir{north}
+			\fi
+		\fi
+	}
+	node [anchor=\pgf@circ@dir] at (\ctikzvalof{bipole/name}.\pgf@circ@temp) { 
+ 		\pgf@circ@finallabel{}
+	}
+}
+
+
+
+\endinput

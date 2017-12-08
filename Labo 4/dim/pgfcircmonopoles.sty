@@ -1,0 +1,137 @@
+% Copyright 2007-2009 by Massimo Redaelli
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/LICENSE for more details.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Monopoles
+
+%% Ground symbol
+
+\pgfdeclareshape{ground}{
+	\anchor{center}{
+		\pgfpointorigin
+	}
+	\behindforegroundpath{		
+		\pgf@circ@res@step=\ctikzvalof{monopoles/ground/width}\pgf@circ@Rlen
+		
+		\pgfscope		
+			\pgfpathmoveto{\pgfpointorigin}
+			\pgfpathlineto{\pgfpoint{0pt}{-\pgf@circ@res@step}}
+			\pgfusepath{draw}
+
+			\pgfstartlinewidth=\pgflinewidth
+			%\pgfsetlinewidth{\pgfkeysvalueof{/tikz/circuitikz/bipoles/thickness}\pgfstartlinewidth}
+
+			\pgfpathmoveto{\pgfpoint{-\pgf@circ@res@step}{-\pgf@circ@res@step}}
+			\pgfpathlineto{\pgfpoint{\pgf@circ@res@step}{-\pgf@circ@res@step}}
+			\pgfusepath{draw}
+						
+			\pgfsetlinewidth{\pgfstartlinewidth}
+			\pgfpathmoveto{\pgfpoint{-.8\pgf@circ@res@step}{-1.2\pgf@circ@res@step}}
+			\pgfpathlineto{\pgfpoint{.8\pgf@circ@res@step}{-1.2\pgf@circ@res@step}}
+			\pgfpathmoveto{\pgfpoint{-.6\pgf@circ@res@step}{-1.4\pgf@circ@res@step}}
+			\pgfpathlineto{\pgfpoint{.6\pgf@circ@res@step}{-1.4\pgf@circ@res@step}}
+			\pgfpathmoveto{\pgfpoint{-.4\pgf@circ@res@step}{-1.6\pgf@circ@res@step}}
+			\pgfpathlineto{\pgfpoint{.4\pgf@circ@res@step}{-1.6\pgf@circ@res@step}}
+			\pgfsetcolor{\pgfkeysvalueof{/tikz/circuitikz/color}}
+			\pgfusepath{draw}
+		
+			
+			\pgfsetlinewidth{\pgfstartlinewidth}
+	
+		\endpgfscope
+	}
+
+}
+
+
+%% alim+ symbol
+
+\pgfdeclareshape{alimp}{
+	\anchor{center}{
+		\pgfpointorigin
+	}
+  	\anchor{text}{
+  	%\pgfpointorigin
+	\pgf@x=0pt
+	\pgf@y=\ctikzvalof{monopoles/alimp/width}\pgf@circ@Rlen
+  	} 	
+  \anchor{value}{
+ 	\north
+ 	}
+	\behindforegroundpath{		
+		\pgf@circ@res@step=\ctikzvalof{monopoles/alimp/width}\pgf@circ@Rlen
+		\pgftransformrotate{180}
+		\pgfscope		
+			\pgfpathmoveto{\pgfpointorigin}
+			\pgfpathlineto{\pgfpoint{0pt}{-\pgf@circ@res@step*0.5}}
+			\pgfusepath{draw}
+
+			\pgfstartlinewidth=\pgflinewidth
+			%\pgfsetlinewidth{\pgfkeysvalueof{/tikz/circuitikz/bipoles/thickness}\pgfstartlinewidth}
+
+			\pgfpathmoveto{\pgfpoint{-\pgf@circ@res@step}{-\pgf@circ@res@step*0.5}}
+			\pgfpathlineto{\pgfpoint{\pgf@circ@res@step}{-\pgf@circ@res@step*0.5}}
+			\pgfusepath{draw}
+						
+			
+			\pgfsetcolor{\pgfkeysvalueof{/tikz/circuitikz/color}}
+			\pgfusepath{draw}
+		
+			
+			\pgfsetlinewidth{\pgfstartlinewidth}
+			%
+		\endpgfscope
+		%\pgfpointorigin
+	}
+
+}
+
+%% alim+ symbol
+
+\pgfdeclareshape{alimm}{
+	\anchor{center}{
+		\pgfpointorigin
+	}
+  	\anchor{text}{
+  	%\pgfpointorigin
+	\pgf@x=0pt
+	\pgf@y=-\ctikzvalof{monopoles/alimm/width}\pgf@circ@Rlen
+  	} 	
+  \anchor{value}{
+ 	\north
+ 	}
+	\behindforegroundpath{		
+		\pgf@circ@res@step=\ctikzvalof{monopoles/alimm/width}\pgf@circ@Rlen
+		%\pgftransformrotate{180}
+		\pgfscope		
+			\pgfpathmoveto{\pgfpointorigin}
+			\pgfpathlineto{\pgfpoint{0pt}{-\pgf@circ@res@step*0.5}}
+			\pgfusepath{draw}
+
+			\pgfstartlinewidth=\pgflinewidth
+			%\pgfsetlinewidth{\pgfkeysvalueof{/tikz/circuitikz/bipoles/thickness}\pgfstartlinewidth}
+
+			\pgfpathmoveto{\pgfpoint{-\pgf@circ@res@step}{-\pgf@circ@res@step*0.5}}
+			\pgfpathlineto{\pgfpoint{\pgf@circ@res@step}{-\pgf@circ@res@step*0.5}}
+			\pgfusepath{draw}
+						
+			
+			\pgfsetcolor{\pgfkeysvalueof{/tikz/circuitikz/color}}
+			\pgfusepath{draw}
+		
+			
+			\pgfsetlinewidth{\pgfstartlinewidth}
+			%
+		\endpgfscope
+		%\pgfpointorigin
+	}
+
+}
+
+\endinput
