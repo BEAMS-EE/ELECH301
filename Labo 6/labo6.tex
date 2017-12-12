@@ -38,7 +38,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 6 : Instrumentation d'un moteur\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.2\\ page \thepage}
+\rhead{v1.0.3\\ page \thepage}
 \cfoot{}
 %%
 
@@ -209,7 +209,9 @@ fonctionner correctement.
 Les résultats peuvent être fortement améliorés en utilisant une mesure différentielle.
 Le schéma de principe de ce type d'amplification est le suivant :
 
-%TODO image
+\begin{center}
+\includegraphics[width=10cm]{sch4}
+\end{center}
 
 Le principe est alors d'amplifier la différence de potentiel Vd autour de la résistance et de supprimer
 au mieux la tension Vp. Cette tension représente éventuellement des parasites, mais également divers
@@ -222,7 +224,7 @@ $$V_{MC}=\frac{V_+ + V_-}{2} = V_p + \frac{V_d}{2}$$
 Le schéma devient alors le suivant :
 
 \begin{center}
-\includegraphics[width=10cm]{sch4}
+\includegraphics[width=10cm]{sch5}
 \end{center}
 
 L'amplificateur différentiel est chargé de multiplier la différence de potentiel $V_d$ par un facteur $A_d$ tout
