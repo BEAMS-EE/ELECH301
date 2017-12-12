@@ -38,7 +38,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 6 : Instrumentation d'un moteur\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.4\\ page \thepage}
+\rhead{v1.0.5\\ page \thepage}
 \cfoot{}
 %%
 
@@ -93,7 +93,7 @@ En plus du matériel classique de laboratoire (multimètre, oscilloscope, géné
 
 \newpage
 \section{Préliminaire théorique} %{\normalsize{(1 point)}}}
-Il vous est recommandé de répondre aux exercices des points 1.3, 2.3 et 3 avant d'arriver au
+Il vous est recommandé de répondre aux exercices des points \ref{sec:predet1}, \ref{sec:predet2} et \ref{sec:predet3} avant d'arriver au
 laboratoire.
 
 \section{Objectifs}
@@ -159,7 +159,7 @@ En négligeant la résistance de mesure de $0.1\Omega$, nous arrivons au circuit
 \end{center}
 \vspace*{2cm}
 
-\subsection{Prédéterminations}
+\subsection{Prédéterminations}\label{sec:predet1}
 \Question{Tracez l'évolution temporelle du courant si celui-ci est initialement nul et que la tension $V_{in}$
 varie brutalement de $0V$ à $5V$ à l'instant initial.}{}
 \Question{Supposons maintenant que l'entrée est une onde carrée de rapport cyclique 50\%, tracez
@@ -239,7 +239,7 @@ Le montage différentiel le plus simple s'articule autour d'un ampli-op et de qu
 \includegraphics[width=10cm]{sch6}
 \end{center}
 
-\subsection{Prédéterminations}
+\subsection{Prédéterminations}\label{sec:predet2}
 \Question{
 Exprimez Vout en fonction de Vd et VMC.
 }{}
@@ -279,7 +279,7 @@ premier ordre :
 \includegraphics[width=8cm]{sch7}
 \end{center}
 
-\subsection{Prédéterminations}
+\subsection{Prédéterminations}\label{sec:predet3}
 
 \Question{
 Établissez la fonction de transfert du circuit
