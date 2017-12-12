@@ -38,7 +38,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 6 : Instrumentation d'un moteur\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.3\\ page \thepage}
+\rhead{v1.0.4\\ page \thepage}
 \cfoot{}
 %%
 
@@ -119,7 +119,7 @@ vitesse variable :
 Un générateur, configuré de sorte à fournir une onde en créneaux, alimente un moteur à courant
 continu à travers un ampli de puissance. En jouant sur le signal du générateur, il est
 possible de modifier la vitesse de rotation du moteur.
-Une hélice est connectée au moteur et génère un couple résistant freinant ce dernier
+Une hélice est connectée au moteur et génère un couple résistant freinant ce dernier.
 Afin de s'assurer que le moteur ne sorte pas de ses limites de fonctionnement, vous devez
 mesurer le courant circulant dans le circuit ; ceci se fera à l'aide d'une mesure de la
 tension aux bornes d'une résistance connue de $0.1\Omega$. Cette mesure sera ensuite filtrée
@@ -330,7 +330,7 @@ Réalisez le module de détection à l'aide d'un comparateur MCP6541, spécialem
 }{}
 
 \Question{
-Réglez le montage de sorte à ce que la sortie bascule lorsque le courant atteint 80% de sa
+Réglez le montage de sorte à ce que la sortie bascule lorsque le courant atteint 80\% de sa
 valeur maximale (obtenue en bloquant le moteur à la main lorsque ce dernier est alimenté par
 le plus grand rapport cyclique possible).
 }{}
@@ -371,12 +371,12 @@ A l'aide de la notice, justifiez la table de vérité du bistable RS.
 
 \Question{
 Réalisez le montage en utilisant n'importe lequel des 4 bistables présent dans le circuit
-HEF4043 (veillez à mettre l'entrée E0 à l'état haut).
+HEF4043 (veillez à mettre l'entrée OE à l'état haut).
 }{}
 
 \Question{
 Reliez l'entrée R à un commutateur du protoboard, de sorte à pouvoir relancer le moteur après
-qu'il se soit coupé.
+qu'il s'est coupé.
 }{}
 
 \Question{
