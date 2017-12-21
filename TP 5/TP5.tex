@@ -39,7 +39,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 5 : transistors MOS}
-\rhead{v1.0.1\\ page \thepage}
+\rhead{v1.1.0\\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -542,7 +542,7 @@ En considérant le gain du montage comme linéaire :
 
 \section{Exercices}
 \Question{
-Sur base des courbes disponibles en annexe et de la documentation complète des transistors\footnote{Que vous devez trouver par vous-même}, dimensionner un étage à transistor MOS de gain $32dB$ pour chacun des transistors. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
+Sur base des courbes disponibles en annexe et de la documentation complète des transistors\footnote{Que vous devez trouver par vous-même}, dimensionner un étage à transistor MOS de gain à vide $32dB$ pour chacun des transistors. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
 }{
 On doit réaliser un ampli de gain $32dB=\pm 40$. Avec un seul étage à source commune, le gain sera de $-40$.
 
@@ -562,11 +562,12 @@ La puissance maximum admissible par le BS170 est $P_T=830mW$. %, ce qui nous don
 	Pour ce transistor : $R_D\geq 173\Omega$ %, donc ${I_D}_{Pmax}\leq 69mA$
 %	finalement : $$R_D=\frac{E^2}{4\cdot {P_T}_{max}}$$
 
+Les courbes en annexe ne permettant pas une résolution graphique, il faut utiliser l'expression de la droite de charge~: $I_D = \frac{-1}{R_D} + \frac{E}{R_D}$.
 Si on se place à la moitié de la droite de charge pour cette valeur (qui correspond au point où le transistor dissipe le plus), le point de fonctionnement sera $(12V, 69mA)$.
 
-On en déduit un $g_m$ de $0.2S$ pour $V_{GS}=3.11V$.
+On en déduit via les courbes caractéristiques un $g_m$ de $0.2S$ pour $V_{GS}=3.11V$.
 
-Pour obtenir le gain de $-40$, on doit choisir $R_D=200\Omega$, qui est bien supérieure à celle mentionnée au dessus.
+Pour obtenir le gain de $-40$ et dont l'expression est $-g_m \cdot R_D$, on doit choisir $R_D=200\Omega$, qui est bien supérieure à celle mentionnée au dessus.
 
 %Une des solutions est de diminuer $I_D$, ce qui va diminuer $g_m$ et $R_D$ aura une valeur plus élevée pour compenser.
 
@@ -577,19 +578,16 @@ Pour la fréquence de coupure à l'entrée, si on garde la même topologie qu'à
 Pour l'autre transistor, on trouve :
 $Pmax=2W$
 
-${I_D}_{Pmax}=166mA$, $R_D\geq 72\Omega$
+En suivant le même raisonnement que pour le BS170, on trouve les valeurs suivantes~: $R_D\geq 72\Omega$ et un point de fonctionnement à $(12V, 166mA)$.
+Ainsi, $g_m=2.5S$.
 
-point de fonctionnement : $(12V, 166mA)$
+Cependant, pour obtenir un gain de 40, il faudrait utiliser une résistance $R_D$ de $16 \Omega$, ce qui ne respecte pas la contrainte $R_D > 72 \Omega$. Il faut donc diminuer $g_m$ afin de pouvoir utiliser une résistance de drain plus grande.
 
-$g_m=2.5S$,
-
-$R_D=16\Omega<72\Omega \longrightarrow$ on ne peut pas utiliser ce transistor au milieu de la droite de charge, il est nécessaire de diminuer $g_m$ pour avoir $R_D\geq 72\Omega$.
-
-Nouveau $g_m=0.56S \longleftrightarrow I_D\simeq 40mA<{I_D}_{Pmax}, R_D=72\Omega$, $V_{DS}=21.1V$, $P_Tmax=0.48W<2W$, entrée max : $97.5mV>5mV$, $V_{GS}=0.75V$.
-
-On peut conclure que cet étage ne sature pas en vérifiant bien que $0\leq I_D+i_d(t)\leq 0.33A$. 
-
-Pour ce système $I_D+i_d(t)=40mA+5mV\cdot g_m \sin(\omega t)\in \left[37.2,42.8\right]mA\forall \omega$, ce qui revient à dire que le point de fonctionnement reste en zone de saturation pour toute valeur de la tension d'entrée. Les courbes fournies dans la documentation d'Infineon ne permettent pas de faire une vérification graphique.
+Si $R_D > 72 \Omega$ et $-g_m \cdot R_D$, on a $g_m < 0.56 S$.
+Via la caractéristique, on trouve ensuite $I_D\simeq 40mA$.
+En utilisant l'expression de la droite de charge, il en découle que $V_{DS} = 21.1 V$.
+Enfin, on peut déterminer l'excursion en sortie qui est de $24 V - 21.1V = 2.9 V$.
+Sachant que le gain est de 40, on peut amplifier sans saturation une entrée allant jusqu'à $2.9 V / 40 = 72.5 mV$.
 
 
 }
