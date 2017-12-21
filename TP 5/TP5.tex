@@ -39,7 +39,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 5 : transistors MOS}
-\rhead{v1.0.0\\ page \thepage}
+\rhead{v1.0.1\\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -295,7 +295,7 @@ Rappel TP3 : résoudre ce circuit à AOP avec polarisation (En considérant que 
 % (opamp.+) node[left] {$v_+$}
 % (opamp.-) node[left] {$v_-$}
 % (opamp.out) node[right] {$v_o$}
- (opamp.down) ++ (0,-0.5) node[below] {-12V} -- (opamp.down)
+ (opamp.down) ++ (0,-0.5) node[ground]{} -- (opamp.down)
  (opamp.up) ++ (0,.5) node[above] {12V} -- (opamp.up)
  (opamp.-) -| (-1.5,2) to [R, l=$R2$] (1.5,2) |-  (opamp.out)
  (opamp.+) -| (-1.5,-0.4) to [european voltage source, l_=$V_{C}$,-*] (-1.5,-2) node[ground] {} 
@@ -372,7 +372,8 @@ Soit le circuit suivant :
 			%\ithenelse{\boolen{corrige}}{
 			(4,1) node[circ]{}
 			%}{}
-			(4,1) node[anchor=south west]{\itgv{$0V$}}
+			% (4,1) node[anchor=south west]{\itgv{$0V$}}
+			(4,1) node[ground]{}
 			(4,6) node[anchor=south west]{\itgv{$12V$}}
 			(2,5) node[anchor=south west]{\itgv{$6.2V$}}
 	%		%(1,0) to [short, -o](-1,0)  node[anchor=east] {S}
@@ -421,7 +422,7 @@ Soit le circuit suivant :
 Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
  
  \begin{itemize}
- \item Déterminer le schéma à petit signal du montage présenté à la question précédente.
+ \item Déterminer le schéma à petit signal du montage présenté à la question 4.
  \item Calculer le gain du montage dans la bande passante. Les condensateurs peuvent être assimilés à des court-circuits dans la bande passante du montage.
  \item Calculer les impédances d'entrée et de sortie du montage.
  \item Donner l'expression des impédances d'entrée et de sortie pour toute fréquence (\textit{i.e.} l'approximation du premier point n'est plus valable).
@@ -516,7 +517,7 @@ En considérant le gain du montage comme linéaire :
 \item non
 \item si $V_{DC}$ change, alors $g_m$ change et donc le gain du montage change. Comme le point de fonctionnement sera différent, l'amplitude maximale en sortie changera également.
 \item non, plus $V_{GS}$ augmente, plus l'écart entre les courbes est grand, donc plus $g_m$ est grand. Il suffit de lire la courbe $g_m=f(V_{GS})$ pour le constater.
-\item si la température change, le $g_m$ et donc le gain du montage changera (pour un même $V_{GS}$), le courant de drain et donc $g_m$ seront différents).
+\item si la température change, le $g_m$ et donc le gain du montage changera (pour un même $V_{GS}$), le courant de drain et donc $g_m$ seront différents.
 \item il suffit d'ajouter une résistance de source qui introduit une rétroaction négative qui stabilise les caractéristiques de cet amplificateur. 
 \end{itemize}
 }
@@ -541,7 +542,7 @@ En considérant le gain du montage comme linéaire :
 
 \section{Exercices}
 \Question{
-Sur base des courbes disponibles en annexe et de la documentation complète des transistors\footnote{Que vous devez trouver par vous même}, dimensionner un étage à transistor MOS de gain $32dB$ pour chacun des transistors. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veuillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
+Sur base des courbes disponibles en annexe et de la documentation complète des transistors\footnote{Que vous devez trouver par vous-même}, dimensionner un étage à transistor MOS de gain $32dB$ pour chacun des transistors. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
 }{
 On doit réaliser un ampli de gain $32dB=\pm 40$. Avec un seul étage à source commune, le gain sera de $-40$.
 
