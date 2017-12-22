@@ -36,7 +36,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : analyse de problèmes d’électronique\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.0.0\\ page \thepage}
+\rhead{v1.1.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -197,7 +197,7 @@ La photodiode est assimilable à une source de tension dont l'amplitude est prop
 Sachant que le produit gain--bande passante de l'amplificateur utilisé vaut $10^6$Hz et que la bande passante doit être supérieure à 100kHz, dimensionnez R1 et R2 pour maximiser le gain.
 }
 {%answer
-$GBW=10^6$, $BW=10^5Hz$ donc $G_{max}=10$, amplificateur non inverseur, $G=1+R2/R1$ donc $R2=9\cdot R1=9k\Omega$.
+$GBW=10^6$, $BW=10^5Hz$ donc $G_{max}=10$, amplificateur non-inverseur, $G=1+R2/R1$ donc $R2=9\cdot R1=9k\Omega$.
 Étant donné qu'on ne donne pas davantage de contrainte sur les résitances, on peut choisir une valeur arbitrairement pour $R_1$ ou $R_2$ ($R_1 = 1k\Omega$ dans notre cas).
 }
 
@@ -226,7 +226,7 @@ $GBW=10^6$, $BW=10^5Hz$ donc $G_{max}=10$, amplificateur non inverseur, $G=1+R2/
  {%answer
  On peut résoudre en temporel :% ou en phaseurs
  
- $p(t)=E(t)^2/R=311\cdot\sin^2(2\pi\cdot50t) W=\frac{311}{2}\cdot(1+cos(2\pi\cdot100t))$.
+ $p(t)=E(t)^2/R=311\cdot\sin^2(2\pi\cdot50t) W=\frac{311}{2}\cdot(1-cos(2\pi\cdot100t))$.
 
 En phaseurs :
  $P=E^2/R=E^2\cdot e^{2j\omega}/R$, qui a une moyenne temporelle $>0$
@@ -299,14 +299,14 @@ Soit le filtre suivant :
 Déterminez le module de la fonction de transfert à 100Hz et à 10kHz. Que pouvez-vous conclure sur ce filtre ?
 }
 {%answer
-$$v_{out}=v_{in}\dfrac{R+j2\pi f\cdot L}{R+j2\pi f\cdot L+1/\left(j2\pi f\cdot C\right)}$$
+$$\underline{V}_{out}=\underline{V}_{in}\dfrac{R+j2\pi f\cdot L}{R+j2\pi f\cdot L+1/\left(j2\pi f\cdot C\right)}$$
 à 100Hz :
-$\left| \dfrac{v_{out}}{v_{in}} \right| = 1.13e-3=-58.8dB$
+$\left| \dfrac{\underline{V}_{out}}{\underline{V}_{in}} \right| = 1.13e-3=-58.8dB$
 
 à 10kHz :
-$\left| \dfrac{v_{out}}{v_{in}} \right| = 8.66=18.75dB$
+$\left| \dfrac{\underline{V}_{out}}{\underline{V}_{in}} \right| = 8.66=18.75dB$
 
-C'est un filtre passe haut passif du deuxième ordre. Ce circuit RLC présente un phénomène de résonnance (le gain du filtre passif dépasse 1 à 10kHz)
+C'est un filtre passe-haut passif du deuxième ordre. Ce circuit RLC présente un phénomène de résonnance (le gain du filtre passif dépasse 1 à 10kHz)
 
 La contrainte sur le filtre de la question précédente est respectée.
 }
@@ -319,7 +319,7 @@ La contrainte sur le filtre de la question précédente est respectée.
  \Question
  {
  %question
- En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=100kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, trois étages amplificateurs sont-ils suffisants (justifiez) ?
+ En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=100kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, trois étages amplificateurs supplémentaires sont-ils suffisants (justifiez) ?
 
  }
  {%answer
@@ -336,7 +336,7 @@ La contrainte sur le filtre de la question précédente est respectée.
 Un fois le signal amplifié et filtré, il faut vérifier si son amplitude est suffisante. Un comparateur de tension est suffisant pour cette tâche.
 \Question
 {
-Tracez le schéma d'un circuit permettant de comparer une tension avec une tension continue de 6V.
+Tracez le schéma d'un circuit permettant de comparer une tension avec une tension continue de 5 V.
 }
 {%answer
 Pour réaliser un comparateur, on peut utiliser un ampli-op en saturation.
