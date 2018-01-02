@@ -39,7 +39,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 5 : transistors MOS}
-\rhead{v1.1.0\\ page \thepage}
+\rhead{v1.1.1\\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -562,7 +562,7 @@ La puissance maximum admissible par le BS170 est $P_T=830mW$. %, ce qui nous don
 	Pour ce transistor : $R_D\geq 173\Omega$ %, donc ${I_D}_{Pmax}\leq 69mA$
 %	finalement : $$R_D=\frac{E^2}{4\cdot {P_T}_{max}}$$
 
-Les courbes en annexe ne permettant pas une résolution graphique, il faut utiliser l'expression de la droite de charge~: $I_D = \frac{-1}{R_D} + \frac{E}{R_D}$.
+Les courbes en annexe ne permettant pas une résolution graphique, il faut utiliser l'expression de la droite de charge~: $I_D = \frac{-1}{R_D} \cdot V_{DS} + \frac{E}{R_D}$.
 Si on se place à la moitié de la droite de charge pour cette valeur (qui correspond au point où le transistor dissipe le plus), le point de fonctionnement sera $(12V, 69mA)$.
 
 On en déduit via les courbes caractéristiques un $g_m$ de $0.2S$ pour $V_{GS}=3.11V$.
