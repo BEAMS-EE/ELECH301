@@ -28,7 +28,7 @@
 \usepackage{fancyhdr}
 % \langexam{frenchb}
 
-\newcommand{\version}{v1.1.1}
+\newcommand{\version}{v1.2.0}
 
 \newboolean{koriG}
 \ifx\koriG\undefined
@@ -191,7 +191,7 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 
 		Pour le LM741, on trouve $e_0$ = 1~mv, $I_+$ = 90~nA et $I_-$ = 70~nA, ce qui donne $V_{out} = 9.99 mV$.
 
-		Pour le CA3140A, on trouve $e_0$ = 2~mv, $I_+$ = 10.25~pA et $I_-$ = 9.75~pA, ce qui donne $V_{out} = 2 mV$, l'influence des courants d'entrée sur la sortie est négligeable par rapport aux autres tensions du circuit.
+		Pour le CA3140A, on trouve $e_0$ = 2~mv, $I_+$ = 10.25~pA et $I_-$ = 9.75~pA, ce qui donne $V_{out} = 20 mV$, l'influence des courants d'entrée sur la sortie est négligeable par rapport aux autres tensions du circuit.
 
 		\item La différence est due aux types de transistors utilisés dans chacun des amplis-op.
 		Le LM741 fonctionne avec des transistors bipolaires commandés en courant et consomment donc en permanence un certain courant.
@@ -254,12 +254,12 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 
 		\item La composante continue ayant une pulsation nulle, on peut l'ignorer pour déterminer le type de filtre.
 
-		En revanche, $H_1(\omega_{in}) = - \frac{R_2}{R_1 + \frac{1}{j\omega_{in}C}} = - \frac{j\omega_{in}C \cdot R_2}{j\omega_{in}C + R_1}$. Il s'agit d'un filtre passe-haut.
+		En revanche, $H_1(\omega_{in}) = - \frac{R_2}{R_1 + \frac{1}{j\omega_{in}C}} = - \frac{j\omega_{in}C \cdot R_2}{j\omega_{in}R_1C + 1}$. Il s'agit d'un filtre passe-haut.
 
 		\item Puisqu'on veut un gain de -100, on sait que $R_2 = 100 R_1$.
 
 		Ensuite, on veut que le montage soit fonctionnel entre 20~Hz et 20~kHz. Or, le montage étant un passe haut, il faut s'arranger pour que 20~Hz soit déjà considéré comme une haute fréquence.
-		Autrement dit, l'impédance du condensateur doit être beaucoup plus faible que $R_1$~: $\frac{1}{\omega C} << R_1$, avec $\omega = 2 \pi \cdot 20$.
+		Autrement dit, l'impédance du condensateur doit être beaucoup plus faible que $R_1$~: $1 << \omega R_1C \Leftrightarrow \frac{1}{\omega C} << R_1$, avec $\omega = 2 \pi \cdot 20$.
 
 		En prenant arbitrairement $R_1 = 1k\Omega$, on a $R_2 = 100k\Omega$, et donc $C >> 8 \mu F$.
 		En pratique, un à deux ordres de grandeur suffisent~: prenons $C = 80 \mu F$.
