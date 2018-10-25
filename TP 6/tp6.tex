@@ -36,7 +36,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : analyse de problèmes d’électronique\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.1.0\\ page \thepage}
+\rhead{v1.1.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -187,7 +187,7 @@ La photodiode est assimilable à une source de tension dont l'amplitude est prop
  \end{center}
  }
  {%answer
- L'impédance d'entrée de l'AO est quasi infinie, par conséquent le courant circulant dans la diode est nul. Le point de fonctionnement est donc sur la demi-droite $[0,0; V>0,0)$, par exemple $v_{oc}$ ou $v_{oc}'$.
+ L'impédance d'entrée de l'AO est quasi infinie, par conséquent le courant circulant dans la diode est nul. Le point de fonctionnement est donc sur la demi-droite $[(0,0); (V>0,0)]$, par exemple $v_{oc}$ ou $v_{oc}'$.
  }
 
 \Question
@@ -319,7 +319,7 @@ La contrainte sur le filtre de la question précédente est respectée.
  \Question
  {
  %question
- En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=100kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, trois étages amplificateurs supplémentaires sont-ils suffisants (justifiez) ?
+ En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=10kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, trois étages amplificateurs supplémentaires sont-ils suffisants (justifiez) ?
 
  }
  {%answer
