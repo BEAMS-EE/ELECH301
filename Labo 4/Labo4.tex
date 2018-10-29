@@ -38,7 +38,7 @@
 
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 4 : Transistor MOS\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.0\\ page \thepage}
+\rhead{v1.0.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -90,14 +90,6 @@ Les déterminations des questions \ref{Q:det_rd}, \ref{Q:vout_th} et \ref{Q:capa
 \item d'utiliser le mode XY d'un oscilloscope.
 \end{itemize}
 
-\clearpage
-%TOC ou pas TOC ? TODO, FIXME
-%\setcounter{tocdepth}{1}% 1 niveau dans la toc
-%
-\tableofcontents
-%
-%\setcounter{tocdepth}{4} % to have a full toc in the pdf
-\clearpage
 
 
 \section{Amplifier avec un transistor MOS}
@@ -140,10 +132,10 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 		(0,2) to [short] (1,2)
 		(0,0) to (1,0)
 		(1,2) to [open, v^<=$V_{GS}$](1,0)
-		(1,2) to [short,o-] (2,2)
 		(1,0) to [short, o-] (2,0)
 		(3,2) node[nigfete ] (mos) {}
 		(3,0) to [short] (mos.S)
+		(1,2) to [short] (mos.G)
 		(2,0) to (3,0)
 		(mos.D) to [short, i<=$I_D$](3,3)
 		(3,3) to [R,l=$R_D$ ] (3,5)
@@ -236,10 +228,10 @@ La résistance sert à \og convertir \fg le courant qui circule dans le transist
 		(0,2) to [short] (1,2)
 		(0,0) to (1,0)
 		(1,2) to [open, v^<=$v_{in}$](1,0)
-		(1,2) to [short,o-] (2,2)
 		(1,0) to [short, o-] (2,0)
 		(3,2) node[nigfete ] (mos) {}
 		(mos.S) to [short] (3,0)
+		(1,2) to [short] (mos.G)
 		(2,0) to (3,0)
 		(mos.D) to [short](3,3) %, i<=$I_D$
 		(3,3) to [R, l=$\SI{330}{\ohm}$] (3,5)
