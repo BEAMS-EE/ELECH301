@@ -38,7 +38,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 1 : Filtrage\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.3\\ page \thepage}
+\rhead{v1.0.4\\ page \thepage}
 \cfoot{}
 %%
 
@@ -160,9 +160,10 @@ Le circuit RC passe-haut peut être vu comme un quadripôle :
 \begin{center}
 \begin{circuitikz} \draw
 (0,0)   node[ground]{}
-		to[american voltage source, v=$V_{in}$] 	(0,3)
+		to[american voltage source, v=$V_{in}$, invert] 	(0,3)
 		to[C, l=$C$]									(3,3)
-		to[R, l_=$R$, v^=$V_{out}$]   						    (3,0)--(0,0)
+		(3,0) to[R, l=$R$, v=$V_{out}$] (3,3)
+		(3,0)--(0,0)
 ;
 \end{circuitikz}
 \end{center}
@@ -205,7 +206,8 @@ Câblez le montage suivant :
 		to[sinusoidal voltage source, v=$V{in}$] 	(0,3)
 		to[R, l=$R_G$]									(2,3)
 		to[C, l=$10nF$]   						    (5,3)
-		to[R, l=$10k\Omega$, v=$V{out}$]	                        (5,0)--(0,0)
+		(5,0) to[R, l=$10k\Omega$, v=$V{out}$] (5,3)
+		(5,0)--(0,0)
 
 (0,4.5) node[] {Générateur}
 ;
@@ -229,15 +231,16 @@ On peut utiliser l’approche intuitive sur tous les quadripôles qui ont une st
 \begin{center}
 \begin{circuitikz} \draw
 (0,0)   node[ground]{}
-		to[american voltage source, v=$V_{in}$] 	(0,3)
+		to[american voltage source, v=$V_{in}$, invert] 	(0,3)
 		to[R, l=$R$]									(3,3)
 		to[L, l=$L$]									(6,3)
-		to[C, l_=$C$, v^=$V_{out}$]   						    (6,0)--(0,0)
+		(6,0) to[C, l=$C$, v=$V_{out}$] (6,3)
+		(6,0)--(0,0)
 ;
 \end{circuitikz}
 \end{center}
 
-$$H(j\omega)=\frac{\underline{V}_{out}(j\omega)}{\underline{V}_{in}(j\omega)}=\frac{Z_C(j\omega}{Z_{tot}(j\omega}\ avec\ Z_{tot}=Z_R+Z_L+Z_C$$
+$$H(j\omega)=\frac{\underline{V}_{out}(j\omega)}{\underline{V}_{in}(j\omega)}=\frac{Z_C(j\omega)}{Z_{tot}(j\omega)}\ avec\ Z_{tot}=Z_R+Z_L+Z_C$$
 
 \subsubsection{Prédéterminations}
 \Question
@@ -282,7 +285,8 @@ $100kHz$ pour $R = 0\Omega$, $R = 390\Omega$ et $R = 10k\Omega$ (utilisez le mul
 		to[R, l=$R_G$]									(2,3)
 		to[R, l=$R$]									(4,3)
 		to[L, l=$8.2mH$]									(6,3)
-		to[C, l_=$33nF$, v^=$V_{out}$]   						    (6,0)--(0,0)
+		(6,0) to[C, l=$33nF$, v=$V_{out}$] (6,3)
+		(6,0)--(0,0)
 
 (0,4.5) node[] {Générateur}
 ;
