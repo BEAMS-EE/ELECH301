@@ -63,7 +63,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Diodes et alimentations\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.0.1\\ page \thepage}
+\rhead{v2.0.2\\ page \thepage}
 \cfoot{}
 %%
 
@@ -123,7 +123,7 @@ Cette manipulation a pour but d'illustrer :
 
 \subsection{Matériel}
 \begin{itemize}
-\item Résistances~: 100 \ohm, 150 \ohm, 330 \ohm, 1 k\ohm, 3.3 k\ohm.
+\item Résistances~: 100 \ohm, 150 \ohm, 330 \ohm, 1 k\ohm.
 \item Diodes~: 1N5392 et LED TLHR5401.
 \item Condensateurs~: 220 \textmu F
 \item Un transformateur 220:9 V.
@@ -322,7 +322,6 @@ Il existe plusieurs façons de réaliser cet étage ; dans ce labo, nous étudie
 \end{itemize}
 
 
-\newpage
 \section{Redressement simple alternance}
 Nous allons nous intéresser au deuxième étage de l'alimentation.
 
@@ -449,7 +448,6 @@ Cette formule permet de dimensionner la valeur de la capacité à utiliser pour 
 {}%R
 	\label{Q:15}
 
-\newpage
 \section{Redressement double alternance}
 
 Le redresseur simple alternance a le défaut majeur de ne redresser qu'une seule alternance (et également de consommer un courant continu sur le réseau alternatif\footnote{Pour s'en rendre compte, effectuez une transformée de Fourier du courant délivré par la source ou calculez sa valeur moyenne. La circulation de courant continu sur un réseau alternatif pose un certain nombre de problèmes détaillés dans les différents cours de M. Maun.}).
@@ -528,7 +526,6 @@ Voici le schéma électrique d'un redresseur double alternance :
 	\label{Q:21}
 
 
-\newpage
 \section{Régulation à diode Zener}
 Le circuit précédent produit une tension quasiment continue mais dont l'amplitude n'est pas précisément connue et peut varier assez fortement ($\pm 10\%$). Nous devons maintenant la réguler afin d'obtenir une tension continue de valeur connue indépendante des variations du réseau. Nous allons utiliser une diode Zener. D'autres composants permettant d'effectuer des régulations plus précises existent.
 
@@ -662,7 +659,7 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 	%Q
 	Déduisez-en la caractéristique $V_{out} = f(I_{out})$ du montage.
 	%
-	Justifiez l'appellation «régulateur de tension» de ce circuit.
+	Justifiez l'appellation «~régulateur de tension~» de ce circuit.
 }
 {}%R
 	\label{Q:24}
