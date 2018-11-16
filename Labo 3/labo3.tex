@@ -247,7 +247,7 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 	
 \Question
 {
-	En prenant $R=\lbrace 100, 330, 1000, \infty \rbrace \Omega$ et la tension de seuil indiquée dans la documentation de la LED \href{http://www.vishay.com/docs/83012/tlhg540.pdf}{TLHR5401} ($V_F$), mesurez et placez les 4 points correspondants sur le graphe de la Figure~\vref{fig:carac_LED}. Utilisez le protoboard et $V_{dc}=5V$.
+	En prenant $R=\lbrace 100, 150, 330, 1000, \infty \rbrace \Omega$ et la tension de seuil indiquée dans la documentation de la LED \href{http://www.vishay.com/docs/83012/tlhg540.pdf}{TLHR5401} ($V_F$), mesurez et placez les 5 points correspondants sur le graphe de la Figure~\vref{fig:carac_LED}. Utilisez le protoboard et $V_{dc}=5V$.
 }
 {Voir graphe.}%R
 	\label{Q:1}
@@ -256,14 +256,15 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 {
 	L'approximation I(V) idéalisée avec seulement la tension de seuil est-elle une bonne approximation ?
 }
-{Oui}%R
+{On obtient quatre tensions différentes, donc l'approximation n'est pas parfaite.
+Elle est néanmoins suffisante pour la suite des exercices.}%R
 	\label{Q:2}
 
 \Question
 {
 	Indiquez l'état de la diode sur le graphe de la page précédente en fonction de I.
 }
-{}
+{Elle est bloquante pour une tension inférieure à $V_{th} = 2 V$, passante sinon.}
 	\label{Q:3}
 	
 \Question
@@ -284,7 +285,7 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 {
 	Quelles précautions doivent être prises lors du fonctionnement en direct ? Même question pour un fonctionnement en inverse.
 }
-{Le courant maximum ne doit pas être dépassé. En inverse, la tension de claquage ne doit pas être atteinte}%R
+{Le courant maximum ne doit pas être dépassé, il faut donc placer une résistance en série. En inverse, la tension d'avalanche ne doit pas être atteinte.}%R
 	\label{Q:6}
 
 
@@ -385,7 +386,7 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 {
 	Justifiez la polarité utilisée pour la capacité.
 }
-{Redresseur simple alternance, tension positive à la cathode/ rapport à la charge.}%R
+{Redresseur simple alternance, tension positive à la cathode par rapport à la charge.}%R
 	\label{Q:10}
 
 \Question
@@ -415,7 +416,7 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 \item Quelle est la forme d'onde dans chacune de ces phases ?
 \end{itemize}
 }
-{}%R
+{On suit le sinus de la source durant la période de charge, tandis qu'on a une exponentielle décroissante durant celle de décharge.}%R
 	\label{Q:13}
 
 
@@ -435,7 +436,18 @@ La tension de sortie peut être décomposée en une composante continue et une c
 	\item la décharge de la capacité est linéaire
 	\end{itemize}
 }
-{}%R
+{
+Loi de décharge d'un condensateur : $V_c(t) = V_m e^{-t/RC}$. On peut en déterminer son approximation au premier ordre avec un développement Taylor~: $V_c(t) = V_m (1-\frac{t}{RC})$.
+Ce qui nous intéresse, c'est uniquement «~l'ondulation~» $\Delta V$.
+Nous avons ainsi~: 
+\begin{align*}
+\Delta V & = V_f - V_i \\
+& = V_c(t_f) - V_c(t_i) \\
+& = V_m (1-\frac{t_f}{RC}) - V_m (1 - \frac{t_i}{RC})\\
+& = V_m (\frac{t_i - t_f}{RC}) \\
+& = - V_m (\frac{\Delta t}{RC})
+\end{align*}
+}%R
 	\label{Q:14}
 
 
@@ -445,7 +457,15 @@ Cette formule permet de dimensionner la valeur de la capacité à utiliser pour 
 {
 	Mesurez $\Delta_V$ et comparez à la valeur calculée pour les mêmes paramètres. L'approximation faite est-elle valable, optimiste ou pessimiste ?
 }
-{}%R
+{
+Pour le redresseur simple alternance, la fréquence est de 50~Hz, ce qui correspond à une prédiode $T$ de 20~ms.
+En pratique, $\Delta t$ sera légèrement plus faible que $T$, étant donné qu'il y a une courte période de charge à soustraire.
+
+Avec une charge de $180 \Omega$, un condensateur de $220 µF$, une amplitude $V_m$ de $9\cdot\sqrt{2}$ et un $\Delta t$ de 20~ms, on obtient un $\Delta V$ de $6.428 V$.
+
+Avec une période réduite à 18~ms, on obtient des résultats plus proches de la réalité~: $5.78 V$ pour $180 \Omega$, $3.15 V$ pour $330 \Omega$ et $1.04 V$ pour $1 k\Omega$.
+
+}%R
 	\label{Q:15}
 
 \section{Redressement double alternance}
@@ -483,14 +503,21 @@ Voici le schéma électrique d'un redresseur double alternance :
 			Expliquez pourquoi il n'est \textbf{pas} possible de mesurer $V_{ac}$ et $V_{charge}$ en même temps avec un oscilloscope à deux canaux non isolés ?
 			Justifier en quoi cela pourrait endommager le circuit ?%\footnote{Nous rappelons à nos aimables lecteurs que cette question a inspiré un certain nombre de questions d'examens et que l'assistant qui les écrit a encore pas mal d'idées à utiliser.} ?
 }
-{}%R
+{
+La diode en bas à droite serait courcuitée, étant donné qu'elle aurait la masse à chacune de ses bornes.
+Ce serait alors la diode en bas à gauche qui serait dans le pétrin, se retrouvant seule dans une boucle avec $V_{ac}$, imposant une forte tension négative à ses bornes.
+La diode tomberait en avalance sans aucun composant pour y limiter le courant, la faisant griller sur place.
+
+}%R
 	\label{Q:16}
 	
 \Question
 {
 	Expliquez les avantages de ce circuit par rapport au précédent.
 }
-{}%R
+{
+La période de décharge est divisée par 2, on peut donc se contenter d'un condensateur ayant une capacité deux fois plus faible.
+}%R
 	\label{Q:17}
 
 \Question
@@ -513,7 +540,9 @@ Voici le schéma électrique d'un redresseur double alternance :
 	Que devient la formule d'approximation permettant de déterminer $\Delta_V$ ? 
 }
 %	Vérifiez expérimentalement.
-{}%R
+{
+$\Delta V = - V_m (\frac{\Delta t}{2RC})$
+}%R
 	\label{Q:20}
 
 
@@ -580,14 +609,21 @@ Soit le circuit de la Figure~\vref{fig:regulateur}.
 \Question
 {
 	En supposant $V_2>V_{out}$, prédéterminez :
-	\begin{itemize}
+	\begin{enumerate}
 	\item l'état de la diode Zener
 	\item la tension $V_{out}$
 	\item la valeur du courant traversant la diode $I_z$ %\marginpar{ajouter $I_z$ aux circuits}
 	\item les valeurs des puissances dissipées par les différents éléments du circuit
-	\end{itemize}
+	\end{enumerate}
 }
-{}%R
+{
+\begin{enumerate}
+\item En avalanche.
+\item $V_{out}$ = $V_z$
+\item $V_z = V_2 - V_R = V_2 - R\cdot I_z \Leftrightarrow I_z = \frac{V_2 - V_z}{R}$
+\item $P_R = V_R \cdot I_z = R\cdot I_z^2 = (V_2 - V_z)^2$ et $P_D = V_z \cdot I_z = \frac{V_z \cdot (V_2 - V_z)}{R}$
+\end{enumerate}
+}%R
 	\label{Q:21}
 
 
@@ -624,18 +660,18 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 \Question
 {
 	Indiquez l'état de la diode, exprimez et calculez $I_{\mbox{out}}$ et la puissance dissipée par les différents éléments ($R, D, R_{\mbox{ch}}$) dans les 3 cas suivants :
-	\begin{itemize}
+	\begin{enumerate}
 	\item la charge est un court-circuit
 	\item la charge est un circuit ouvert
 	\item la charge est telle que le courant circulant dans la diode est négligeable devant les autres courants circulant dans le circuit.
-	\end{itemize}
+	\end{enumerate}
 }
 {
-	\begin{itemize}
-		\item CC : $P_{\mbox{charge}}=0$, $P_R=V_2^2/R$, $P_D=0$, la diode est bloquée
-		\item CO :  $P_{\mbox{charge}}=0$, $P_R=\left(V_2-V_z\right)^2/R$, $P_D=V_z\cdot \left(V_2-V_z\right)/R$, la diode est passante en inverse
-		\item $I_D\#0$ : $P_{\mbox{charge}}=V_z\cdot \left(V_2-V_z\right)/R$, $P_R=\left(V_2-V_z\right)^2/R$, $P_D\#0$, la diode est passante en inverse (mais à la limite)
-		\end{itemize}	
+	\begin{enumerate}
+		\item CC : $I_{out} = \frac{V_2}{R}$, $P_{\mbox{charge}}=0$, $P_R=V_2^2/R$, $P_D=0$, la diode est bloquante.
+		\item CO : $I_{out} = 0$, $P_{\mbox{charge}}=0$, $P_R=\left(V_2-V_z\right)^2/R$, $P_D=V_z\cdot \left(V_2-V_z\right)/R$, la diode en avalanche
+		\item $I_z\simeq 0$ : $I_{out} = \frac{V_2 - V_z}{R} = \frac{V_z}{V_{out}}$ (on dimensionne la charge pour être dans ce cas limite), $P_{\mbox{charge}}=\frac{V_z\cdot \left(V_2-V_z\right)}{R}$, $P_R=\frac{\left(V_2-V_z\right)^2}{R}$, $P_D = V_z \cdot I_z \simeq 0$, la diode est tout juste en avalanche.
+		\end{enumerate}	
 	}%R
 	\label{Q:22}
 
@@ -643,15 +679,34 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 {
 	%Calculez les valeurs numériques correspondant aux 3 cas de la question~\ref{Q:23b}. 
 	$R$ et $D$ ne doivent pas dissiper plus que leur puissance maximale admissible quelle que soit la charge. %, cela revient à choisir le cas le plus contraignant.
-	\begin{itemize}
+	\begin{enumerate}
 	\item Pour quelle valeur de $I_{out}$ la puissance dissipée par la diode est-elle maximale ?
 	\item Pour quelle valeur de $I_{out}$ la puissance dissipée par la résistance $R$ est-elle maximale ? 
 	\item Déduire la valeur minimale de $R$ des 2 calculs précédents (tous les composants doivent survivre).
 	\item Quel est le courant maximum que ce circuit peut fournir à la charge (en méritant encore son nom, \textit{i.e.} avec une tension de sortie régulée) ?
 	\item Quelle est la résistance de charge correspondante ?
-	\end{itemize}
+	\end{enumerate}
 }
-{}%R
+{
+	\begin{enumerate}
+	\item $P_D = I_z \cdot V_z$, or $I = I_z + I_{out} = \frac{V_2 - V_z}{R} \Leftrightarrow I_z = I - I_{out} = \frac{V_2 - V_z}{R} - I_{out}$.
+	Ainsi, $P_D = V_z\cdot (\frac{V_2 - V_z}{R} - I_{out})$ est maximum lorsque $I_{out} = 0$.
+	\item $P_R = V_R \cdot I = \frac{V_R^2}{R} = \frac{(V_2 - V_z)^2}{R}$, avec $V_z = V_{out} = R_{ch} \cdot I_{out}$, on obtient donc $P_R = \frac{(V_2 - R_{ch} \cdot I_{out})^2}{R}$.
+	Quand cette valeur est-elle maximale ?
+	\begin{itemize}
+		\item Lorsque $I_{out} = 0$, mais on se trouve alors dans le cas d'un circuit ouvert (sur la charge) et la diode sera forcément passante, consommant un certain courant $I_z$ et dissipant une partie de la puissance de $R$ (voir question 23).
+		\item Losque $R_{ch} = 0$, c'est-à-dire losque la charge est remplacée par un court-circuit.
+		La diode sera alors bloquante et la puissance dissipée dans la résistance sera de $\frac{V_2^2}{R}$, au lieu de $\frac{(V_2 - V_z)^2}{R}$ lorsque la diode est passante.
+	\end{itemize}
+	\item $P_{D, max} = V_z \cdot \frac{V_2 - V_2}{R} \leq 1W \Leftrightarrow R \geq V_z \cdot \frac{V_2 - V_z}{1 W} = 35.49 \Omega$.
+
+	$P_{R, max} = \frac{V^2}{R} \leq 1W \Leftrightarrow R \geq \frac{V^2}{1W} = 169 \Omega$.
+	\item $I_z \simeq = 0$ et $V_{out} = V_z = 9.1 V$.
+
+	Si $I_z \simeq = 0 \Rightarrow I_{out} = I = \frac{V_2 - V_z}{R} \Leftrightarrow I_{out} = \frac{V_2 - V_z}{R} = 23mA$.
+	\item $V_{out} = V_z = I_{out} \cdot R_{ch} \Leftrightarrow R_{ch} = \frac{V_z}{I_{out}} = 394.33 \Omega$.
+	\end{enumerate}
+}%R
 	\label{Q:23}
 
 \Question
@@ -661,7 +716,15 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 	%
 	Justifiez l'appellation «~régulateur de tension~» de ce circuit.
 }
-{}%R
+{
+Partie plateau suivie par une droite décroissante.
+
+La première partie correspond à une grosse charge, un faible courant $I_{out}$ et une diode Zener en avalanche. La charge est donc régulée.
+
+La partie décroissante correspond à un comportement en diviseur résistif lorsque la charge est trop importante et que la diode devient bloquante.
+Déterminons l'équation de cette droite~: $V_{out} = V_2 \cdot \frac{R_{ch}}{R + R_{ch}}$ et $V_{out} = R_{ch} \cdot I_{out}$. Ainsi, $R_{ch} = \frac{V_{out}}{I_{out}}$, et donc $V_{out} = V_2 \cdot \frac{V_{out}/I_{out}}{R+ V_{out}/I_{out}} = V_2 \cdot \frac{V_{out}}{R\cdot I_{out} + V_{out}} \Leftrightarrow V_2 = R\cdot I_{out} + V_{out} \Leftrightarrow V_{out} = V_2 - R\cdot I_{out}$.
+%TODO Add a graph of that stuff.
+}%R
 	\label{Q:24}
 
 %
@@ -687,7 +750,10 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 	%
 	Discutez le résultat obtenu.
 }
-{}%R
+{
+$\eta = \frac{P_{out}}{P_{in}} = \frac{P_{ch}}{P_{V2}} = \frac{R_{ch} \cdot I_{out}^2}{V_2 \cdot I} = \frac{R_{ch} \cdot I_{out}^2}{V_2 \cdot \frac{V_2 - V_z}{R}}
+$
+}%R
 	\label{Q:25}
 
 \vspace{-0.5cm}
