@@ -31,14 +31,21 @@
 
 \langexam{frenchb}
 
+\newboolean{koriG}
+\ifx\koriG\undefined
 \correction{false}
+\else
+\correction{true}
+\fi
+
+% \correction{false}
 %\correction{true}
 
 \author{The Fantastic Four} %<3
 
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 4 : Transistor MOS\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.1\\ page \thepage}
+\rhead{v1.1.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -160,7 +167,6 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 Déterminer $R_D$ tel que le transistor ne dissipe pas plus de $400mW$. Aide : la puissance dissipée dans le transistor est maximum lorsque $V_{DS}=6V$ pour ce montage.
 }
 {
-Voir schéma \vref{fig:scidvgs}.
 
 $P_T$ est la puissance dissipée par le \textbf{transistor}.
 
@@ -198,7 +204,7 @@ Reportez vos mesures sur le graphe fourni en annexe.
 Cette caractéristique est-elle linéaire ? Dans quelle mesure cette source de courant commandée en tension est-elle utilisable pour amplifier ?
 }
 {
-Non
+Non. Uniquement pour de petits signaux en entrée.
 }
 
 
@@ -306,7 +312,7 @@ On ajoute une capacité de découplage en entrée et en sortie et un pont résis
 		(0,1) to [short,o-] (9,1)
 		(4,6) to [short] (9,6)
 		(0,3) node[anchor=east] {In} to [short,o-] (1,3)
-		(0,3) to [open, v_=$V_{in}$]  (0,1)
+		(0,1) to [open, v^=$V_{in}$]  (0,3)
 		(1,3) to [C=$C_{in}$ ](1.5,3)
 		(1.5,3) to [short,-*] (2,3)
 %
@@ -323,8 +329,8 @@ On ajoute une capacité de découplage en entrée et en sortie et un pont résis
 		(mos.S) to [short] (4,1)
 		(4.25,3.5) to [C, l^=$C{out}$] (6,3.5) to  [short](6,3.5) to [short,-o](6.5,3.5)node [anchor=south] {Out}
 		(6,3.5) to [generic, l_=$R_{ch}$] (6,1)
-		(6.5,3.5) to [open,v^=$V_{out}$] (6.5,1)
-		(9,1) to [battery, l_=$E$](9,6)
+		(6.5,1) to [open,v_=$V_{out}$] (6.5,3.5)
+		(9,6) to [battery, l=$E$](9,1)
 		;\end{circuitikz}
 \end{center}
 }
@@ -346,7 +352,7 @@ Les réponses aux questions \ref{Q:gain} à \ref{Q:pchg} doivent être étayées
 {
 $$V_{ds}=-g_m\cdot R_D \cdot V_{in}$$
 
-Bien que cette relation soit valable quelque-soit le régime de fonctionnement du transistor, seule la partie où le $g_m\neq 0$ est intéressante pour l'application.
+Bien que cette relation soit valable quel que soit le régime de fonctionnement du transistor, seule la partie où le $g_m\neq 0$ est intéressante pour l'application.
 
 Utilisation du mode XY :
 mettre un signal triangulaire ($1kHz$, qqes V) à l'entrée du montage, afficher $V_{out}=f(V_{in})$ sur l'oscillo.
@@ -419,24 +425,24 @@ Le gain diminue. Il suffit d'étudier le schéma petit signal pour s'en convainc
 	\begin{circuitikz}[scale=0.8]\draw
 	(1,0) to [short,o-o] (11,0)
 	(1,3) node[anchor=east] {In} to [short,o-] (1,3)
-	(1,3) to [open, v_=$V_{in}$]  (1,0)
+	(1,0) to [open, v^=$V_{in}$]  (1,3)
 	(1,3) to [short] (3,3)
 	(2,3) to [R, l_=$R_{b1}$](2,0)
 	(3,3) to [R=$R_{b2}$](3,0)
 	(3,3) to [short,-o](4,3) node [anchor=west] {}
-	(4,3) to [open, v^=$V_{g}$](4,0)
+	(4,0) to [open, v_=$V_{g}$](4,3)
 	(6,3) to [cI=$g_m \cdot V_{g}$] (6,0)
 	(8.5,0) to [R,l_=$R_D$] (8.5,3)
 	(10,3) to [generic, l=$R_{ch}$] (10,0)
 
 	(6,3) to [short,-o] (11,3) node [anchor=west] {Out}
-	(11,3) to [open, v^=$V_{out}$](11,0)
+	(11,0) to [open, v_=$V_{out}$](11,3)
 	;\end{circuitikz}
 \end{center}
 
 Comme le gain dépend de la charge, cet étage n'est pas adapté à l'amplification de puissance.
 
-Faire 2 tests : mettre $330\Omega$ et $100k\Omega$ en sortie.
+Faire deux tests : mettre $330\Omega$ et $100k\Omega$ en sortie.
 }
 
 \section{Synthèse -- dimensionnement d'un étage}
