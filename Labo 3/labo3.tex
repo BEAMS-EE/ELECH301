@@ -11,7 +11,6 @@
 \usepackage{hyperref}% hyperliens
 \usepackage{tikz}
 \usetikzlibrary{babel,positioning,calc}
-%\usepackage[]{circuitikz}
 \usepackage{textcomp}
 % \usepackage{minted}
 \usepackage[long]{datetime}
@@ -63,7 +62,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Diodes et alimentations\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.0.2\\ page \thepage}
+\rhead{v2.1.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -78,11 +77,6 @@ pdftitle={LABO 3 [ELEC-H-301] Électronique appliquée: Diodes et alimentations}
 pdfauthor={The Fantastic Four, 2017 ULB - BEAMS  },
 pdfsubject={Filtrage}
 }
-
-%\date{\vspace{-1cm}\mydate\today}
-%\title{\vspace{-2cm} Labo \no 6\\ Électronique appliquée [ELEC-H-301]\\Réalisation d'un ampli à transistor\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
-
-%\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
 
 \setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
 \setlength{\parindent}{0pt}
@@ -114,9 +108,6 @@ Cette manipulation a pour but d'illustrer :
 \end{itemize}
 
 
-%\item Être capable de calculer un gain et une résistance de sortie en utilisant un schéma équivalent.
-%\item Être capable de tracer un diagramme de Bode.
-%\item Avoir compris les principes de la polarisation.
 
 \end{itemize}
 
@@ -153,11 +144,6 @@ Le TP 4 portant sur les diodes fait également office de prédéterminations.
 %\clearpage
 \newpage
 \pagestyle{fancy}
-%\begin{Q}
-%	À quelle condition cette source est-elle linéaire ?
-%	\label{Q:1}
-%	\reponse{$g$ doit être constant.}
-%\end{Q}
 
 \section{Concepts}
 Les circuits électroniques ont besoin d'être alimentés par des sources de tension continue. Dans la plupart des cas, l'amplitude de ces tensions d'alimentation doit être de l'ordre de quelques volts ou quelques dizaines de volts (les plus courantes sont $2.5V$, $3.3V$, $5V$, $12V$ et $15V$).
@@ -190,12 +176,8 @@ Les conventions pour le tracé de caractéristique I/V pour les diodes sont «~c
 \end{figure}
 
 \marginpar{\color{white}6dd9a4cc75f4c05c00780b57a702246076eeab706d614a915428c03372ddf7ad445c006d38cedcd6a4749e838125d94a3fdff36a9131771074bc3c98df9b11c6}
-%\ifthenelse{\boolean{corrige}}{Bonus : Quelle(s) diodes ont permis à leur inventeur(s) d'obtenir un prix Nobel ?}{Bonus : Quelle(s) diodes ont permis à leur inventeur(s) d'obtenir un prix Nobel ?}
-%et une petite citation par ici\dots
-%QR diode
-%QR LED
-%QR pont
-%QR blague
+
+
 \begin{figure}[h!]
 	\vspace{-0.5cm}
 	\begin{center}
@@ -209,10 +191,8 @@ Les conventions pour le tracé de caractéristique I/V pour les diodes sont «~c
 \caption{QR codes cliquables vers la documentation des composants}
 \label{fig:}
 \end{figure}
-%{TLHR5401}
-%\begin{center}
-%\ifthenelse{\boolean{corrige}}{\includegraphics[height=3.5cm]{Fred_Stiller.jpeg}}{\includegraphics[height=2.5cm]{Fred_Stiller.jpeg}}
-%\end{center}
+
+
 
 \newpage
 \subsubsection{Caractéristique I/V}
@@ -289,12 +269,6 @@ Elle est néanmoins suffisante pour la suite des exercices.}%R
 	\label{Q:6}
 
 
-%Vcc/R/LED
-
-%Pour R=330, 1k, 3k,Vcc=5/-5V relever I et V et placer les points sur le graphe précédent
-
-%Le modèle 
-%\newpage
 \section{Structure d'une alimentation AC/DC}
 Il existe plusieurs types d'alimentations AC/DC. Le type le plus simple (l'alimentation linéaire) possède la structure suivante:
 
@@ -344,17 +318,17 @@ Voici le schéma d'un redresseur simple alternance :
 
 \Question
 {
-	Tracez l'allure du courant circulant dans le circuit en fonction du temps.
+	Tracez la tension aux deux bornes de la diode. Précisez l'état de la diode. Utilisez une tension de seuil de 1V pour simplifier (\textit{cf} \href{http://www.protostack.com/download/1N5391-9.pdf}{documentation 1N5392}).%\marginpar{donner un graphe ???}
 }
-{Courbe rouge $I_{ch}$\\
-	\includegraphics[width=\linewidth]{mesures/simple_alternance.pdf}}%R
+{Courbes $V_{ac}$ et $V_{ch}$ du graphe précédent.}%R
 	\label{Q:7}
 
 \Question
 {
-	Tracez sur un même graphe la tension aux deux bornes de la diode. Précisez l'état de la diode. Utiliser une tension de seuil de 1V pour simplifier (\textit{cf} \href{http://www.protostack.com/download/1N5391-9.pdf}{documentation 1N5392}).%\marginpar{donner un graphe ???}
+	Tracez sur un même graphe l'allure du courant circulant dans le circuit en fonction du temps.
 }
-{Courbes $V_{ac}$ et $V_{ch}$ du graphe précédent.}%R
+{Courbe rouge $I_{ch}$\\
+	\includegraphics[width=\linewidth]{mesures/simple_alternance.pdf}}%R
 	\label{Q:8}
 
 \Question
@@ -715,35 +689,20 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 	Déduisez-en la caractéristique $V_{out} = f(I_{out})$ du montage.
 	%
 	Justifiez l'appellation «~régulateur de tension~» de ce circuit.
+
 }
 {
-Partie plateau suivie par une droite décroissante.
 
-La première partie correspond à une grosse charge, un faible courant $I_{out}$ et une diode Zener en avalanche. La charge est donc régulée.
+\begin{center}
+\includegraphics[]{zener-vout-iout.pdf}
+\end{center}
 
-La partie décroissante correspond à un comportement en diviseur résistif lorsque la charge est trop importante et que la diode devient bloquante.
-Déterminons l'équation de cette droite~: $V_{out} = V_2 \cdot \frac{R_{ch}}{R + R_{ch}}$ et $V_{out} = R_{ch} \cdot I_{out}$. Ainsi, $R_{ch} = \frac{V_{out}}{I_{out}}$, et donc $V_{out} = V_2 \cdot \frac{V_{out}/I_{out}}{R+ V_{out}/I_{out}} = V_2 \cdot \frac{V_{out}}{R\cdot I_{out} + V_{out}} \Leftrightarrow V_2 = R\cdot I_{out} + V_{out} \Leftrightarrow V_{out} = V_2 - R\cdot I_{out}$.
-%TODO Add a graph of that stuff.
+Déterminons l'équation de la droite décroissante~: $V_{out} = V_2 \cdot \frac{R_{ch}}{R + R_{ch}}$ et $V_{out} = R_{ch} \cdot I_{out}$. Ainsi, $R_{ch} = \frac{V_{out}}{I_{out}}$, et donc $V_{out} = V_2 \cdot \frac{V_{out}/I_{out}}{R+ V_{out}/I_{out}} = V_2 \cdot \frac{V_{out}}{R\cdot I_{out} + V_{out}} \Leftrightarrow V_2 = R\cdot I_{out} + V_{out} \Leftrightarrow V_{out} = V_2 - R\cdot I_{out}$.
+
 }%R
 	\label{Q:24}
 
-%
-%\begin{Q}
-%	%Discutez les états possibles de la diode en fonction de la valeur de $I_{out}$. $I_{out}$ peut varier de $0$ à une valeur maximale à déterminer dépendant de $R$.
-%	
-%	
-%	
-%	
-%	\label{Q:25}
-%	\reponse{}%R
-%\end{Q}
-%\subsubsection{Choix de design}
-%\begin{Q}
-%	
-%	\label{Q:24}
-%	\reponse{}%R
-%\end{Q}
-%
+
 \Question
 {
 	Établissez l'expression du rendement du montage en fonction de $I_{out}$.
@@ -757,16 +716,7 @@ $
 	\label{Q:25}
 
 \vspace{-0.5cm}
-%
-%
-%\begin{Q}
-%	Déterminez la valeur de R permettant de fournir la puissance la plus grande possible à la charge.
-%	
-%	
-%	Quelle est alors la résistance de charge minimum que ce circuit peut alimenter correctement ?
-%	\label{Q:26}
-%	\reponse{}%R
-%\end{Q}
+
 \subsection{Manipulation}
 \Question
 {
@@ -779,34 +729,41 @@ $
 {
 	Tracez la caractéristique de sortie du circuit en relevant les points de fonctionnement pour différentes valeurs de résistance de charge. Comparez avec vos prédéterminations.
 }
-{}%R
+{
+\begin{center}
+\includegraphics[]{zener-carac-charge.pdf}
+\end{center}
+
+Déterminons l'équation des différentes droites de charge tracées en rouge ci-dessus.
+
+\begin{itemize}
+\item Ordonnée à l'origine.
+
+\begin{align*}
+V_2 - V_R - V_z & = 0 \\
+\Leftrightarrow V_2 - V_R - 0 & = 0 \\
+\Leftrightarrow V_2 & = V_R
+\end{align*}
+Étant donné que $R_{ch} = 0$, on a $I = I_z = \frac{V_R}{R} = \frac{V_2}{R}$.
+
+\item Abscisse à l'origine.
+
+\begin{align*}
+V_{out} & = V_2 - V_R\\
+& = V_2 - R \cdot I \\
+& = V_2 - R \cdot (I_{out} + I_z) \\
+& = V_2 - R \cdot I_{out} \mbox{, étant donné que nous avons une charge infinie.} \\
+& = V_2 - R \cdot \frac{V_{out}}{R_{ch}} \\
+& = \frac{V_2}{1+ \frac{R}{R_{ch}}} = V_z
+\end{align*}
+\end{itemize}
+
+Maintenant que nous avons deux points sur la droite de charge, nous pouvons en déterminer l'équation~:
+\[I_z = - \frac{R + R_{ch}}{R \cdot R_{ch}} \cdot V_z + \frac{V_2}{R}\]
+
+
+
+}%R
 	\label{Q:27}
 
-% \Question
-% {
-% 	Quel est le prénom de Zener ? Quel est le prénom de Graetz ?
-% %	\includegraphics[width=5cm]{figures/Clarence_Zener.jpg}
-% %	« Clarence Zener » par Mcapdevila — {Modified:http://histo.cat/1/Clarence_Zener.jpg. Sous licence Creative Commons Attribution-Share Alike 3.0 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Clarence_Zener.jpg#mediaviewer/File:Clarence_Zener.jpg
-% \begin{center}
-% %\includegraphics[width=2cm]{figures/QR_zener.pdf}
-% \end{center}
-% }
-% {Clarence Melvin Zener et Leo Graetz}%R
-% 	\label{Q:28}
-
-% %
-% \vspace{-1.25cm}
-% \begin{figure*}[h!]
-% \vspace{-1cm}
-% 	\begin{center}
-% 	\subfloat[Redresseur à mercure, BEAMS -- Laboratoire~d'électricité~bâtiment~L]{\includegraphics[width=4cm]{figures/IMG_3843rs2.jpg}}\hspace{1cm}
-% 	\subfloat[Redresseur au Sélénium {\tiny \textit{transferred to fr.wikipedia Commons by User : Bloody-libu Public domain via Wikimedia Commons}}]{\includegraphics[width=4cm]{figures/Redresseur_Seleniums.jpg} 
-% 	}\hspace{1cm}
-% 	\subfloat[Diode~à~vide, BEAMS -- Laboratoire~d'électronique bâtiment~U]{\includegraphics[width=3cm]{figures/diode_viders.jpg}}
-% 	%		\includegraphics[width=15cm]{figures/-crop.pdf}
-% 	\end{center}\vspace{-0.75cm}
-% \caption{Redresseurs d'un autre temps\dots}
-% \vspace{-0.5cm}
-% \label{fig:}
-% \end{figure*}
 \end{document}
