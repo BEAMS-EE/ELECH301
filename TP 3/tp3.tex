@@ -28,7 +28,7 @@
 \usepackage{fancyhdr}
 % \langexam{frenchb}
 
-\newcommand{\version}{v1.2.0}
+\newcommand{\version}{v1.2.1}
 
 \newboolean{koriG}
 \ifx\koriG\undefined
@@ -99,11 +99,12 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 }
 {
 	Il s'agit d'une imperfection des amplificateurs opérationnels réels.
-	Un ampli-op idéal a une impédance d'entrée infinie, mais ce n'est pas le cas d'un ampli-op réel.
-	Dans ce dernier cas, un faible courant «~de polarisation~» entre par les entrées de l'ampli-op.
+	Dans ces derniers, un faible courant «~de polarisation~» entre par ses entrées.
 	On nommera $I_+$ et $I_-$ les courant entrant respectivement dans les entrées non-inverseuse et inverseuse.
 
 	Ces courants sont indirectement renseignés dans les datasheets sous la forme de $I_{offset} = I_+ - I_-$ et $I_{bias} = \frac{I_+ + I_-}{2}$.
+
+	Attention, ils ne sont pas à confondre avec les courants pouvant être dus à une impédance d'entrée non-infinie.
 }
 
 \Question{%Storey 5th, 16.22
