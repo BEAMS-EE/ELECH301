@@ -17,6 +17,3 @@ Les énoncés et corrigés de ce dépôt suivent la sémantique de version MAJEU
 1) Un incrément de x entraîne une réinitialisation de y et z
 2) Un incrément de y entraîne une réinitialisation de z
 3) Toute modification du contenu de l'énoncé ou du corrigé entraîne une modification de la version.
-
-
-test
