@@ -91,7 +91,7 @@ En plus du matériel classique de laboratoire (multimètre, oscilloscope, géné
 \item Résistances : 1 de $1k\Omega$, 2 de $2,7k\Omega$, 2 de $4,7k\Omega$, 2 de $22k\Omega$, 1 de $39k\Omega$, et 2 de $100k\Omega$.
 \item Potentiomètres : 3 de $100k\Omega$.
 \item Condensateurs : 2 de $100nF$, 1 de $330nF$, et 1 de $1\mu F$.
-\item Un haut-parleur, une antenne et un protoboard.
+\item Un haut-parleur, un câble jack et un protoboard.
 \end{itemize}
 
 \newpage
@@ -112,14 +112,16 @@ A la fin de ce laboratoire, vous devez  :
 
 \section{Manipulation}
 \subsection{Définition du problème}
-On désire réaliser un amplificateur dans la gamme des fréquences audio. Il sera utilisé pour amplifier le signal provenant d'un récepteur radio AM et piloter un haut-parleur (HP).
+Le but de ce laboratoire est de réaliser une chaîne d'amplification audio.
+La source sera fournie par la sortie audio d'un ordinateur ou de votre téléphone via le connecteur jack 3.5 mm.
+\textit{Note : }Étant donné que cette sortie est déjà amplifiée, afin qu'on puisse par exemple y connecter une paire d'écouteurs, nous allons artificiellement dégrader le signal à l'aide d'un diviseur résistif.
 
 On dispose des informations suivantes :
 \vspace{3mm}
 \begin{itemize}
-\item Le récepteur AM fournit un signal d'amplitude supérieure à 5mV crête, avec une impédance de sortie d'environ $100k\Omega$.
-\item Le HP se comporte comme une résistance de $16\Omega$ dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500mW.
-\item La plage des fréquences audio s'étend de 20Hz à 20kHz.
+\item Vous deez régler votre source pour qu'elle produise un signal d'environ 20 mV crête à la sortie du diviseur résistif, avec une impédance de sortie d'environ $100k\Omega$.
+\item Le HP se comporte comme une résistance de $16\Omega$ dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500 mW.
+\item La plage des fréquences audio s'étend de 20 Hz à 20 kHz.
 \item On désire pouvoir régler le volume sonore.
 \end{itemize}
 
@@ -200,13 +202,13 @@ Les HP ne supportent pas qu'on leur applique des tensions continues ; en effet, 
 \subsubsection{Etage de sortie}
 On peut remarquer que la résistance de charge est de faible valeur ; cela implique qu'il faut pouvoir lui fournir un courant important :
 $$I_{out,max}=\frac{V_{out,max}}{R_{H.P.}}=\frac{4V}{16\Omega}=250mA$$
-C'est beaucoup plus que ce que peut fournir un TLE2061P. Il faut donc ajouter un 3ème étage, appelé étage de sortie, dont le rôle est de fournir le courant nécessaire à la charge. Il existe des amplis-op spécialement conçus pour réaliser ces étages de sortie.\\
+C'est beaucoup plus que ce que peut fournir un TLE2061P. Il faut donc ajouter un 3e étage, appelé étage de sortie, dont le rôle est de fournir le courant nécessaire à la charge. Il existe des amplis-op spécialement conçus pour réaliser ces étages de sortie.\\
 Les fabricants conseillent d'utiliser ces amplis-op dans des montages dont le gain est faible (typiquement A = 1), pour optimiser leurs performances. Leur but n'est pas d'amplifier leur tension d'entrée, mais de fournir le courant
 nécessaire à la charge.
 
-On utilisera l'ampli-op NJM2113 (JRC-K002A); il peut fournir une puissance de 400mW à une charge de $16\Omega$. Il a été spécialement conçu pour les applications demandant une faible puissance sonore : GSM, baladeur, discman, carte son, etc.
+On utilisera l'ampli-op NJM2113 (JRC-K002A) ; il peut fournir une puissance de 400 mW à une charge de $16\Omega$. Il a été spécialement conçu pour les applications demandant une faible puissance sonore : GSM, baladeur, carte son, etc.
 
-Malheureusement, ces appareils ne disposent en général que d'une source de tension de 5V (produite en régulant la tension de la batterie ou des piles) ; il est donc impossible d'alimenter les ampli-op de manière symétrique (+12V/- 12V, +5V/-5V, etc). Le NJM2113 a donc été spécialement conçu pour être alimenté en +5V/0V.\\
+Malheureusement, ces appareils ne disposent en général que d'une source de tension de 5V (produite en régulant la tension de la batterie ou des piles) ; il est impossible d'alimenter les ampli-op de manière symétrique (+12V/- 12V, +5V/-5V, etc). Le NJM2113 a donc été spécialement conçu pour être alimenté en +5V/0V.\\
 Cela a une conséquence importante (et gênante) : les limites d'écrêtage de l'ampli ne sont plus symétrique et en particulier, le signal de sortie ne peut plus devenir négatif.\\
 On ne peut donc pas amplifier directement notre signal (qui est purement alternatif) avec cet ampli.\\
 On doit lui ajouter une composante continue, pour que le signal de sortie ne devienne jamais négatif :
@@ -272,7 +274,7 @@ Nous avons à présent un amplificateur capable d'amplifier un signal dans la ga
 Nous pouvons encore améliorer notre montage en lui ajoutant un contrôle basses/aigus.\\
 Pour pouvoir amplifier différemment les basses et les aigus, il faut d'abord les séparer; cela se fait au moyen de deux filtres : un filtre passe-bas et un filtre passe-haut (filtres RC).\\
 Ensuite, on amplifie chacun des deux signaux obtenus à la sortie des filtres avec un étage amplificateur à gain variable entre $0$ et $1$.\\
-Finalement, on "remélange" les deux signaux avec un montage sommateur :
+Finalement, on « remélange » les deux signaux avec un montage sommateur :
 \begin{center}
 \includegraphics[width=10cm]{figures/AOPsommateur}
 \end{center}
@@ -321,7 +323,7 @@ Pour calculer la fréquence de coupure du filtre, il faut tenir compte de l'imp�
 
 La fréquence de coupure est donc $605Hz$.
 L'ampli inverseur nous permet d'avoir un gain variable entre $0$ et $1$ (avec un déphasage de $180^{o}$).
-Le mélange des deux signaux obtenus se fait en transformant le 2ème étage en sommateur. On peut remarquer qu'il n'est pas nécessaire de placer une capacité en série avec l'entrée du signal des aigus dans le sommateur puisqu'il est déjà passé par un filtre passe-haut.
+Le mélange des deux signaux obtenus se fait en transformant le 2e étage en sommateur. On peut remarquer qu'il n'est pas nécessaire de placer une capacité en série avec l'entrée du signal des aigus dans le sommateur puisqu'il est déjà passé par un filtre passe-haut.
 
 \subsubsection{Schéma final}
 Le schéma final de notre amplificateur audio est donné à la page suivante.
@@ -336,7 +338,7 @@ Réalisez, sur protoboard, l'ampli audio que nous avons dimensionné ci-dessus. 
 \Question
 {
 Observez que $V_{o1}$ et $V_{o2}$ simultanément sur les deux canaux de l'oscilloscope et remarquez qu'ils ont bien la même composante continue et des composantes alternatives en opposition de phase.\\
-\textbf{ATTENTION}, vous ne pouvez pas observer $V_{o2} - V_{o1}$ à l'oscilloscope. Pourquoi?
+\textbf{ATTENTION}, vous ne pouvez pas observer $V_{o2} - V_{o1}$ sur un seul canal de l'oscilloscope. Pourquoi ?
 }
 {}
 
@@ -355,7 +357,7 @@ Relevez les fréquences de coupure des filtres aigus et basses (en plaçant le v
 
 \Question
 {
-Branchez le HP et la radio AM à votre ampli. Ecoutez l'effet du contrôle basses/aigus.
+Branchez le HP et votre source à votre ampli. Ecoutez l'effet du contrôle basses/aigus.
 }
 {}
 
