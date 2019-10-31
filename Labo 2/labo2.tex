@@ -37,7 +37,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 2 : Conception et réalisation d'un amplificateur audio\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.3\\ page \thepage}
+\rhead{v2.0.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -88,11 +88,13 @@ En particulier, vous devez être capable de résoudre des problèmes semblables 
 En plus du matériel classique de laboratoire (multimètre, oscilloscope, générateur de fonction, câbles, etc.), cette séance nécessite les composants suivants:
 \begin{itemize}
 \item Ampli-ops (AOP): 4 AOP TLE2061 et 1 NJM2113 (JRC-K002A).
-\item Résistances : 1 de $1k\Omega$, 2 de $2,7k\Omega$, 2 de $4,7k\Omega$, 2 de $22k\Omega$, 1 de $39k\Omega$, et 2 de $100k\Omega$.
+\item Résistances : 1 de $1k\Omega$, 2 de $2,7k\Omega$, 4 de $22k\Omega$, 1 de $39k\Omega$, et 2 de $100k\Omega$.
 \item Potentiomètres : 3 de $100k\Omega$.
 \item Condensateurs : 2 de $100nF$, 1 de $330nF$, et 1 de $1\mu F$.
 \item Un haut-parleur, un câble jack et un protoboard.
 \end{itemize}
+
+\textbf{Note :} Il est \textbf{déconseillé} de prendre tous les composants au début du laboratoire. Construisez un étage à la fois et ne prenez que les composants utiles pour ce dernier.
 
 \newpage
 \section{Prédéterminations} %{\normalsize{(1 point)}}}
@@ -119,7 +121,7 @@ La source sera fournie par la sortie audio d'un ordinateur ou de votre télépho
 On dispose des informations suivantes :
 \vspace{3mm}
 \begin{itemize}
-\item Vous deez régler votre source pour qu'elle produise un signal d'environ 20 mV crête à la sortie du diviseur résistif, avec une impédance de sortie d'environ $100k\Omega$.
+\item Vous devez régler votre source pour qu'elle produise un signal d'environ 25 mV crête à la sortie du diviseur résistif, avec une impédance de sortie d'environ $100k\Omega$.
 \item Le HP se comporte comme une résistance de $16\Omega$ dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500 mW.
 \item La plage des fréquences audio s'étend de 20 Hz à 20 kHz.
 \item On désire pouvoir régler le volume sonore.
@@ -151,7 +153,7 @@ Déduisez-en le gain maximum du montage.
 {}
 
 \subsubsection{Calcul du nombre d'étages nécessaire}
-On a vu, dans les exercices de la séance précédente, qu'il est préférable d'utiliser des amplis-op ayant de très faibles courants d'entrée lorsque la source du signal a une grande impédance. Nous utiliserons donc des TLE2061P (ou des TL081) pour ce montage.
+Nous utiliserons donc des TLE2061P (ou des TL081) pour ce montage.
 \Question
 {
 Calculez le gain maximum d'un étage à TLE2061P qui respecte la bande passante voulue.
@@ -173,23 +175,29 @@ Le 1er étage doit être un étage non inverseur. Expliquez pourquoi.
 
 Le choix du deuxième étage est moins strict, nous choisirons le montage inverseur pour pouvoir annuler totalement le gain.
 
-On peut diviser le gain entre les deux étages librement (tant qu'on ne dépasse le gain maximum pour un étage) ; on a choisi 40 pour le premier étage et 20 pour le second.
+On peut diviser le gain entre les deux étages librement (tant qu'on ne dépasse le gain maximum pour un étage) ; on a choisi 40 pour le premier étage et 4 pour le second.
 
 On obtient donc un 1er schéma pour notre ampli audio :
 \begin{center}
-\includegraphics[width=14cm]{figures/AOP2etages}
+\includegraphics[width=14cm]{figures/AOP2etages.png}
+\end{center}
+Avec les composants suivants~:
+\begin{center}
+\begin{tabular}{|c||c||c||c||c||c|}\hline
+$R_1 = 10 k\Omega$ & $R_2 = 100 k\Omega$ & $R_3 = 1 k\Omega$ & $R_4 = 39 k\Omega$ & $R_5 = 22 k\Omega$ & $R_6 = 100 k\Omega$ \\ \hline
+\end{tabular}
 \end{center}
 
-Le potentiomètre P1 est utilisé comme résistance variable et nous permet ainsi de faire varier le gain total du montage de 0 à 800.
+\textit{Note :} En pratique, nous utiliserons une résistance de $22 k\Omega$ dans le deuxième étage, valeur bien plus commune que $25 k\Omega$. Le gain de cet étage sera donc de 4.54 au lieu de 4 comme dimmensionné.
+
+Le potentiomètre $R_6$ est utilisé comme résistance variable et nous permet ainsi de faire varier le gain total du montage de 0 à 160 (181 en réalité).
 
 \subsubsection{Effet des imperfections}
-Calculons la tension de décalage à la sortie de notre ampli :
-\begin{center}
-\includegraphics[width=14cm]{figures/AOPimperfections}
-\end{center}
+
 \Question
 {
-Calculez l'effet des tensions de décalage des deux amplis-op sur la tension de sortie.
+Calculez l'effet des tensions de décalage d'entrée des deux amplis-op sur la tension de sortie.
+\textit{Note :} Pour cette question, on ignore donc la contribution des courants de polarisation et de décalage, ainsi que la contribution de la source de tension.
 }
 {}
 \Question
@@ -199,7 +207,7 @@ Vérifiez que l'effet des courants d'entrée est négligeable.
 {}
 Les HP ne supportent pas qu'on leur applique des tensions continues ; en effet, la partie électrique d'un HP est essentiellement composée d'une bobine dont l'impédance est quasi nulle en continu. Il faudra donc éliminer cette composante continue.
 
-\subsubsection{Etage de sortie}
+\subsubsection{Étage de sortie}
 On peut remarquer que la résistance de charge est de faible valeur ; cela implique qu'il faut pouvoir lui fournir un courant important :
 $$I_{out,max}=\frac{V_{out,max}}{R_{H.P.}}=\frac{4V}{16\Omega}=250mA$$
 C'est beaucoup plus que ce que peut fournir un TLE2061P. Il faut donc ajouter un 3e étage, appelé étage de sortie, dont le rôle est de fournir le courant nécessaire à la charge. Il existe des amplis-op spécialement conçus pour réaliser ces étages de sortie.\\
@@ -262,24 +270,24 @@ Le circuit NJM2113 intègre presque toute cette solution :
 \includegraphics[width=10cm]{figures/NJM}
 \end{center}
 
-Le circuit intégré (partie encadrée) contient : les 2 amplis-op, les résistances de rétroaction du 2ème ampli et un diviseur résistif pour créer la tension continue $E$ de $2,5V$.\\
+Le circuit intégré (partie encadrée) contient : les 2 amplis-op, les résistances de rétroaction du 2e ampli et un diviseur résistif pour créer la tension continue $E$ de $2,5V$.\\
 Nous devons ajouter à l'extérieur : les résistances de rétroaction du 1er ampli, le condensateur du filtre passe-haut et un condensateur de grande valeur en parallèle sur la tension continue de $2,5V$ ($C3$). Ce condensateur sert à stabiliser la tension continue (il forme un filtre passe-bas avec le diviseur résistif).\\
 Le schéma complet de notre ampli audio devient :
 \begin{center}
-\includegraphics[width=16cm]{figures/AOP3etages}
+\includegraphics[width=16cm]{figures/montage_complet_sans_bassesaigus.png}
 \end{center}
 
 \subsubsection{Ajout d'un contrôle basses/aigus}
-Nous avons à présent un amplificateur capable d'amplifier un signal dans la gamme audio avec un gain variable de $0$ à $800$, et de fournir la puissance nécessaire à notre HP, sans risque de le détruire.\\
+Nous avons à présent un amplificateur capable d'amplifier un signal dans la gamme audio avec un gain variable de $0$ à $160$, et de fournir la puissance nécessaire à notre HP, sans risque de le détruire.\\
 Nous pouvons encore améliorer notre montage en lui ajoutant un contrôle basses/aigus.\\
 Pour pouvoir amplifier différemment les basses et les aigus, il faut d'abord les séparer; cela se fait au moyen de deux filtres : un filtre passe-bas et un filtre passe-haut (filtres RC).\\
 Ensuite, on amplifie chacun des deux signaux obtenus à la sortie des filtres avec un étage amplificateur à gain variable entre $0$ et $1$.\\
 Finalement, on « remélange » les deux signaux avec un montage sommateur :
 \begin{center}
-\includegraphics[width=10cm]{figures/AOPsommateur}
+\includegraphics[width=7cm]{figures/AOPsommateur}
 \end{center}
 
-Il faut choisir la position de ce contrôle dans notre montage; il y a priori 4 emplacements possibles : avant l'étage d'entrée, avant le 2ème étage, avant l'étage de sortie et avant le HP.
+Il faut choisir la position de ce contrôle dans notre montage; il y a priori 4 emplacements possibles : avant l'étage d'entrée, avant le 2e étage, avant l'étage de sortie et avant le HP.
 
 \Question
 {
@@ -287,8 +295,8 @@ Expliquez lesquelles de ces solutions sont bonnes et pourquoi.
 }
 {}
 
-On a choisi de placer notre équaliseur avant le 2ème étage.
-Il reste à choisir la fréquence de coupure de nos deux filtres ; la 1ère idée qui vient à l'esprit est de placer la fréquence de coupure au milieu de la bande audio, pour la diviser en deux parts égales.
+On a choisi de placer notre égaliseur avant le 2e étage.
+Il reste à choisir la fréquence de coupure de nos deux filtres ; la première idée qui vient à l'esprit est de placer la fréquence de coupure au milieu de la bande audio, pour la diviser en deux parts égales.
 C'est une bonne idée, mais il y a une subtilité : l'oreille humaine possède une sensibilité logarithmique de la fréquence.
 
 Pour s'en persuader, il suffit de regarder les fréquences des notes de musique.
@@ -308,18 +316,23 @@ De ceci, on peut déduire que la fréquence séparant les basses des aigus doit 
 
 Le schéma de notre contrôle basses/aigus est donc :
 \begin{center}
-\includegraphics[width=12cm]{figures/AOPfiltres}
+\includegraphics[width=12cm]{figures/egaliseur_sommateur.png}
 \end{center}
 
 Pour expliquer son fonctionnement, prenons le bloc Filtre + volume des basses :
 \begin{center}
-\includegraphics[width=10cm]{figures/AOPfiltrebasse}
+\includegraphics[width=8cm]{figures/AOPfiltrebasse}
 \end{center}
 Il s'agit en fait de deux blocs mis en cascade : un filtre RC passe-bas et un ampli inverseur.
 Pour calculer la fréquence de coupure du filtre, il faut tenir compte de l'impédance d'entrée de l'ampli :
 \begin{center}
-\includegraphics[width=14cm]{figures/AOPfiltreRC}
+\includegraphics[width=14cm]{figures/filter.png}
+
+\begin{tabular}{|c||c||c|}\hline
+$R_3 = 2.7 k\Omega$ & $R_4 = 100 k\Omega$ & $C_1 = 100 nF$ \\ \hline
+\end{tabular}
 \end{center}
+
 
 La fréquence de coupure est donc $605Hz$.
 L'ampli inverseur nous permet d'avoir un gain variable entre $0$ et $1$ (avec un déphasage de $180^{o}$).
@@ -331,7 +344,8 @@ Le schéma final de notre amplificateur audio est donné à la page suivante.
 \subsection{Manipulation}
 \Question
 {
-Réalisez, sur protoboard, l'ampli audio que nous avons dimensionné ci-dessus. Pensez à respecter les conseils qui vous sont donnés dans l'annexe.
+Réalisez, sur protoboard, l'ampli audio que nous avons dimensionné ci-dessus.
+\textit{Note :} Utilisez une sinusoïde issue du générateur comme source de tension dans un premier temps.
 }
 {}
 
@@ -360,10 +374,21 @@ Relevez les fréquences de coupure des filtres aigus et basses (en plaçant le v
 Branchez le HP et votre source à votre ampli. Ecoutez l'effet du contrôle basses/aigus.
 }
 {}
-
+\begin{minipage}{.7\textwidth}
 \begin{center}
-\includegraphics[width=26cm, angle=90]{figures/AOPmontagetotal}
+\includegraphics[width=26cm, angle=90]{figures/montage_complet.png}
 \end{center}
-
+\end{minipage}
+\begin{minipage}{.25\textwidth}
+\begin{center}
+\rotatebox{90}{
+\begin{tabular}{|c|c|c|c|c|c|}\hline
+$R_1 = 1 k\Omega$ & $R_2 = 39 k\Omega$ & $R_3 = 2.7 k\Omega$ & $R_4 = 100 k\Omega$ & $R_5 = 100 k\Omega$ & $R_6 = 2.7 k\Omega$ \\ \hline
+$R_7 = 100 k\Omega$ & $R_8 = 100 k\Omega$ & $R_9 = 22 k\Omega$ & $R_{10} = 22 k\Omega$ & $R_{11} = 100 k\Omega$ & $R_{12} = 22 k\Omega$ \\ \hline
+$R_{13} = 22 k\Omega$ & $C_1 = 100 nF$ & $C_2 = 100 nF$ & $C_3 = 330 nF$ & $C_4 = 1 \mu F$ & \\ \hline
+\end{tabular}
+}
+\end{center}
+\end{minipage}
 
 \end{document}
