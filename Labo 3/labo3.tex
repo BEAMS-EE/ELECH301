@@ -62,7 +62,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Diodes et alimentations\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.1.0\\ page \thepage}
+\rhead{v2.2.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -115,7 +115,7 @@ Cette manipulation a pour but d'illustrer :
 \subsection{Matériel}
 \begin{itemize}
 \item Résistances~: 100 \ohm, 150 \ohm, 330 \ohm, 1 k\ohm.
-\item Diodes~: 1N5392 et LED TLHR5401.
+\item Diodes~: GP15B et LED TLHR5401.
 \item Condensateurs~: 220 \textmu F
 \item Un transformateur 220:9 V.
 \item Plaquettes de composants discrets~: diode Zener, condensateur électrolytique, pont redresseur, résistance de 180 \ohm~ et charges (quatre résistances).
@@ -183,7 +183,7 @@ Les conventions pour le tracé de caractéristique I/V pour les diodes sont «~c
 	\begin{center}
 		%\subfloat[Préemption avec invalidation de la mémoire cache]{\label{fig:preemption_cacheinv}\includegraphics[width=8.5cm]{figures/preemption-crop.pdf}}%\hspace*{0.5cm}
 		\subfloat[TLHR5401]{\href{http://www.vishay.com/docs/83012/tlhg540.pdf}{\includegraphics[width=2.7cm]{figures/QR_LED.pdf}}}\hspace{0.5cm}
-		\subfloat[1N5392]{\href{http://www.protostack.com/download/1N5391-9.pdf}{\includegraphics[width=2.7cm]{figures/QR_1N5392.pdf}}}\hspace{0.5cm}
+		\subfloat[GP15B]{\href{https://www.vishay.com/docs/88638/gp15a.pdf}{\includegraphics[width=2.7cm]{figures/Unitag_QRCode_1572871791625.png}}}\hspace{0.5cm}
 		\subfloat[Pont de Graetz]{\href{http://diotec.com/tl_files/diotec/files/pdf/datasheets/b40c2300}{\includegraphics[width=2.7cm]{figures/QR_PONT.pdf}}}\hspace{0.5cm}
 		\subfloat[{\tiny «Electronique», \textit{Fantøme}}]{\hspace{0.cm}\href{https://www.youtube.com/watch?v=sAWEYLPyovA}{\includegraphics[width=2.7cm]{figures/QR_Fantome.pdf}}\hspace{1.25cm}}
 		%http://diotec.com/tl_files/diotec/files/pdf/datasheets/b40c2300
@@ -256,7 +256,7 @@ Elle est néanmoins suffisante pour la suite des exercices.}%R
 
 \Question
 {
-	Que se passe-t-il si la diode est mise en inverse ($V_{dc}<0V$ ou diode inversée) ?  Que peut on dire du courant la traversant (faire une mesure) ? Est-elle éclairée ?
+	Que se passe-t-il si la diode est mise en inverse ($V_{dc}<0V$ ou diode inversée) ?  Que peut-on dire du courant la traversant (faire une mesure) ? Est-elle éclairée ?
 }
 {La led est en inverse et est éteinte. Le courant la traversant est très faible : $\approx 50\mu A$ }%R
 	\label{Q:5}
@@ -292,7 +292,7 @@ Le redressement a pour but de transformer une tension purement alternative (sans
 Le lissage a pour but d'atténuer la partie alternative de la tension redressée, pour rendre celle-ci principalement continue.
 Dans la pratique, on aura une tension $V2$ qui sera la somme d'une composante continue (qui est celle qui nous intéresse) et d'une composante alternative non sinusoïdale résiduelle, le \textit{«~ripple~»}, de faible amplitude.
 
-\item Le \textbf{3\ieme étage} a pour but de réguler l'amplitude de la tension de sortie. En effet, la tension $V2$ n'est pas parfaitement continue, de plus, l'amplitude de sa composante continue dépend de celle de la source, qui peut fluctuer fortement ($\pm10\%$\footnote{La tension du réseau peut avoir une telle variation, demandez à M. Maun.}). %\marginpar{renommer correctement V1/2/out}
+\item Le \textbf{3\ieme étage} a pour but de réguler l'amplitude de la tension de sortie. En effet, la tension $V2$ n'est pas parfaitement continue, de plus, l'amplitude de sa composante continue dépend de celle de la source, qui peut fluctuer fortement ($\pm10\%$\footnote{La tension du réseau peut avoir une telle variation, demandez à Pierre Henneaux.}). %\marginpar{renommer correctement V1/2/out}
 Il existe plusieurs façons de réaliser cet étage ; dans ce labo, nous étudierons le plus simple, basé sur une diode Zener.
 \end{itemize}
 
@@ -318,7 +318,7 @@ Voici le schéma d'un redresseur simple alternance :
 
 \Question
 {
-	Tracez la tension aux deux bornes de la diode. Précisez l'état de la diode. Utilisez une tension de seuil de 1V pour simplifier (\textit{cf} \href{http://www.protostack.com/download/1N5391-9.pdf}{documentation 1N5392}).%\marginpar{donner un graphe ???}
+	Tracez la tension aux deux bornes de la diode. Précisez l'état de la diode. Utilisez une tension de seuil de 1V pour simplifier (\textit{cf} \href{https://www.vishay.com/docs/88638/gp15a.pdf}{documentation GP15B}).%\marginpar{donner un graphe ???}
 }
 {Courbes $V_{ac}$ et $V_{ch}$ du graphe précédent.}%R
 	\label{Q:7}
@@ -444,7 +444,7 @@ Avec une période réduite à 18~ms, on obtient des résultats plus proches de l
 
 \section{Redressement double alternance}
 
-Le redresseur simple alternance a le défaut majeur de ne redresser qu'une seule alternance (et également de consommer un courant continu sur le réseau alternatif\footnote{Pour s'en rendre compte, effectuez une transformée de Fourier du courant délivré par la source ou calculez sa valeur moyenne. La circulation de courant continu sur un réseau alternatif pose un certain nombre de problèmes détaillés dans les différents cours de M. Maun.}).
+Le redresseur simple alternance a le défaut majeur de ne redresser qu'une seule alternance (et également de consommer un courant continu sur le réseau alternatif\footnote{Pour s'en rendre compte, effectuez une transformée de Fourier du courant délivré par la source ou calculez sa valeur moyenne. La circulation de courant continu sur un réseau alternatif pose un certain nombre de problèmes détaillés dans les différents cours de Pierre Henneaux.}).
 
 Ce défaut peut être corrigé et le courant fourni par le réseau peut être alternatif si la deuxième alternance du signal est mise à contribution. Un redresseur double alternance\footnote{Le pont redresseur à 4 diodes est aussi appelé «~Pont de Graetz~»}  aura également moins d'ondulation.
 
