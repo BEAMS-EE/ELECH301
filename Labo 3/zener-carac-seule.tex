@@ -80,7 +80,6 @@
 	samples=100
 	]
 	{0.9*(x-1)^2};
-	% \addlegendentry{$V_{in}$}
 	\addplot[%
 	% red,
 	domain=0:1,
@@ -88,53 +87,6 @@
 	samples=100
 	]
 	{0};
-	\addplot[%
-	red,
-	domain=0:3,
-	thick,
-	samples=100
-	]
-	{-x+3};
-	\addplot[%
-	red,
-	domain=0:2,
-	thick,
-	samples=100
-	]
-	{-1.5*x+3};
-	\addplot[%
-	red,
-	domain=0:1,
-	thick,
-	samples=100
-	]
-	{-3*x+3};
-	\addplot[%
-	red,
-	domain=0:0.5,
-	thick,
-	samples=100
-	]
-	{-6*x+3};
 	\end{axis}
-	% \draw[dashed] (4.55,0) -- (4.55,5);
-	\draw[decorate, decoration={brace, amplitude=5pt}] ([yshift=-0.2cm]2.5,0)-- node[below=0.25cm, text width=2cm, align=center]
-         {$V_{out} < V_{BR}$}([yshift=-0.2cm]0,0); % Pour avoir une accolade avec la pointe vers le bas, d'abord donner la coordonnee de droite.
-	\draw[decorate, decoration={brace, amplitude=5pt}] ([yshift=-0.2cm]6.85,0)-- node[below=0.25cm, text width=4cm, align=center]
-         {$V_{out} > V_{BR}$}([yshift=-0.2cm]2.5,0); % Pour avoir une accolade avec la pointe vers le bas, d'abord donner la coordonnee de droite.
-    \draw [<-] (0,4.5) to [out=10,in=170] node[above]{$R_{ch} \searrow$} (6.85,4.5);
-% Note that I had to replace the – by “to”.  Notice how the angles work:
-% •
-% When the curves goes “out” of (0,0), you put a needle with one extremity
-% on the starting point and the other one facing right and you turn it coun-
-% terclockwise until it is tangent to the curve.  The angle by which you have
-% to turn the needle gives you the “out” angle.
-% •
-% When the curves goes “in” at (2,1.5), you put a needle with one extremity
-% on the arrival point and the other one facing right and you turn it coun-
-% terclockwise until it is tangent to the curve.  The angle by which you have
-% to turn the needle gives you the “in” angle.
-% https://cremeronline.com/LaTeX/minimaltikz.pdf
-% A very minimal introduction to TikZ, by Jacques Cremer
 	\end{tikzpicture}
 \end{document}

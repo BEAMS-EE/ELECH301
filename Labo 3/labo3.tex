@@ -62,7 +62,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Diodes et alimentations\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.2.0\\ page \thepage}
+\rhead{v2.3.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -644,7 +644,7 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 	\begin{enumerate}
 		\item CC : $I_{out} = \frac{V_2}{R}$, $P_{\mbox{charge}}=0$, $P_R=V_2^2/R$, $P_D=0$, la diode est bloquante.
 		\item CO : $I_{out} = 0$, $P_{\mbox{charge}}=0$, $P_R=\left(V_2-V_z\right)^2/R$, $P_D=V_z\cdot \left(V_2-V_z\right)/R$, la diode en avalanche
-		\item $I_z\simeq 0$ : $I_{out} = \frac{V_2 - V_z}{R} = \frac{V_z}{V_{out}}$ (on dimensionne la charge pour être dans ce cas limite), $P_{\mbox{charge}}=\frac{V_z\cdot \left(V_2-V_z\right)}{R}$, $P_R=\frac{\left(V_2-V_z\right)^2}{R}$, $P_D = V_z \cdot I_z \simeq 0$, la diode est tout juste en avalanche.
+		\item $I_z\simeq 0$ : $I_{out} = \frac{V_2 - V_z}{R} = \frac{V_z}{R_{ch}}$ (on dimensionne la charge pour être dans ce cas limite), $P_{\mbox{charge}}=\frac{V_z\cdot \left(V_2-V_z\right)}{R}$, $P_R=\frac{\left(V_2-V_z\right)^2}{R}$, $P_D = V_z \cdot I_z \simeq 0$, la diode est tout juste en avalanche.
 		\end{enumerate}	
 	}%R
 	\label{Q:22}
@@ -653,31 +653,46 @@ Ajoutons une charge à ce beau circuit, nous obtenons :
 {
 	%Calculez les valeurs numériques correspondant aux 3 cas de la question~\ref{Q:23b}. 
 	$R$ et $D$ ne doivent pas dissiper plus que leur puissance maximale admissible quelle que soit la charge. %, cela revient à choisir le cas le plus contraignant.
+	Les questions suivantes ont pour but de vous faire dimensionner la résistance $R$ afin de respecter ces contraintes.
 	\begin{enumerate}
+	\item Afin de déterminer ces puissances, doit-on considérer la diode Zener en avalanche ou bloquante~?
 	\item Pour quelle valeur de $I_{out}$ la puissance dissipée par la diode est-elle maximale ?
-	\item Pour quelle valeur de $I_{out}$ la puissance dissipée par la résistance $R$ est-elle maximale ? 
-	\item Déduire la valeur minimale de $R$ des 2 calculs précédents (tous les composants doivent survivre).
-	\item Quel est le courant maximum que ce circuit peut fournir à la charge (en méritant encore son nom, \textit{i.e.} avec une tension de sortie régulée) ?
+	\item Pour quelle valeur de $I_{out}$ la puissance dissipée par la résistance $R$ est-elle maximale ?
+	\item Déduisez la valeur minimale de $R$ des 2 calculs précédents (tous les composants doivent survivre).
+	\item Quel est le courant maximum que ce circuit peut fournir à la charge (en méritant encore son nom de régulateur de tension, \textit{i.e.} avec une tension de sortie régulée) ?
 	\item Quelle est la résistance de charge correspondante ?
 	\end{enumerate}
 }
 {
 	\begin{enumerate}
+	\item Si la diode est bloquante, il n'y a aucune puissance produite ou consommée dans le circuit. Nous allons donc considérer que la diode est en avalanche.
+
 	\item $P_D = I_z \cdot V_z$, or $I = I_z + I_{out} = \frac{V_2 - V_z}{R} \Leftrightarrow I_z = I - I_{out} = \frac{V_2 - V_z}{R} - I_{out}$.
 	Ainsi, $P_D = V_z\cdot (\frac{V_2 - V_z}{R} - I_{out})$ est maximum lorsque $I_{out} = 0$.
+	
 	\item $P_R = V_R \cdot I = \frac{V_R^2}{R} = \frac{(V_2 - V_z)^2}{R}$, avec $V_z = V_{out} = R_{ch} \cdot I_{out}$, on obtient donc $P_R = \frac{(V_2 - R_{ch} \cdot I_{out})^2}{R}$.
 	Quand cette valeur est-elle maximale ?
 	\begin{itemize}
-		\item Lorsque $I_{out} = 0$, mais on se trouve alors dans le cas d'un circuit ouvert (sur la charge) et la diode sera forcément passante, consommant un certain courant $I_z$ et dissipant une partie de la puissance de $R$ (voir question 23).
+		\item Lorsque $I_{out} = 0$, on se trouve alors dans le cas d'un circuit ouvert (sur la charge) et la diode sera forcément en avalanche.
+		Un bilan de puissance du circuit permet de mettre en évidence que la résistance $R$ \textit{et} la diode ont une puissance non nulle~: $P_{V_2} = P_R + P_{V_z} \Leftrightarrow \frac{V_2 \cdot (V_2 - V_z)}{R} = \frac{(V_2 - V_z)^2}{R} + \frac{V_z\cdot (V_2 - V_z)}{R}$.
 		\item Losque $R_{ch} = 0$, c'est-à-dire losque la charge est remplacée par un court-circuit.
-		La diode sera alors bloquante et la puissance dissipée dans la résistance sera de $\frac{V_2^2}{R}$, au lieu de $\frac{(V_2 - V_z)^2}{R}$ lorsque la diode est passante.
+		La diode sera alors bloquante ($V_z = 0$) et la puissance dissipée dans la résistance sera de $\frac{V_2^2}{R}$, au lieu de $\frac{(V_2 - V_z)^2}{R}$ lorsque la diode est en avalanche.
+		Cette fois-ci, un bilan de puissance nous montre que la puissance de la source est entièrement dissipée dans la résistance $R$~: $P_{V_2} = P_{R}$.
+		C'est dans cette situation que la puissance dissipée par la résistance est maximale.
 	\end{itemize}
-	\item $P_{D, max} = V_z \cdot \frac{V_2 - V_2}{R} \leq 1W \Leftrightarrow R \geq V_z \cdot \frac{V_2 - V_z}{1 W} = 35.49 \Omega$.
+	
+	\item En reprenant les résultats des deux questions précédentes, on peut mettre en évidence la puissance maximale dans la diode et dans la résistance.
 
-	$P_{R, max} = \frac{V^2}{R} \leq 1W \Leftrightarrow R \geq \frac{V^2}{1W} = 169 \Omega$.
-	\item $I_z \simeq = 0$ et $V_{out} = V_z = 9.1 V$.
+	$P_{D, max} = V_z \cdot \frac{V_2 - V_z}{R} \leq 1W \Leftrightarrow R \geq V_z \cdot \frac{V_2 - V_z}{1 W} = 35.49 \Omega$.
+
+	$P_{R, max} = \frac{V_2^2}{R} \leq 1W \Leftrightarrow R \geq \frac{V_2^2}{1W} = 169 \Omega$.
+	
+	\item Le circuit se comporte comme un régulateur lorsque la diode Zener limite la tension dans la charge, soit $V_{out} = V_z = 9.1 V$.
+
+	De plus, le courant dans la charge sera maximal lorsque la diode Zener est à la limite de sa zone d'avalance~; lorsqu'elle est parcourue par un courant $I_z$ presque nul.
 
 	Si $I_z \simeq = 0 \Rightarrow I_{out} = I = \frac{V_2 - V_z}{R} \Leftrightarrow I_{out} = \frac{V_2 - V_z}{R} = 23mA$.
+	
 	\item $V_{out} = V_z = I_{out} \cdot R_{ch} \Leftrightarrow R_{ch} = \frac{V_z}{I_{out}} = 394.33 \Omega$.
 	\end{enumerate}
 }%R
@@ -727,7 +742,18 @@ $
 
 \Question
 {
-	Tracez la caractéristique de sortie du circuit en relevant les points de fonctionnement pour différentes valeurs de résistance de charge. Comparez avec vos prédéterminations.
+	Tracez la caractéristique de sortie du circuit $I_{out} = f(V
+	_{out})$ en relevant les points de fonctionnement pour différentes valeurs de résistance de charge.
+
+
+	Déterminez ensuite l'expression générale de la droite du charge du montage complet $I_z = f(V_z, R, R_{ch}, V_2)$.
+
+	\textit{Aide~:} Posez clairement les équations de maille, nœud et constitutives du montage, puis exprimez $I_z$ en fonction des autres grandeurs.
+
+	% Tracez enfin différentes droites de charge sur la caractéristique $I_z = f(V_z)$ donnée ci-dessous.
+	% \begin{center}
+	% \includegraphics[]{zener-carac-seule.pdf}
+	% \end{center}
 }
 {
 \begin{center}
@@ -736,30 +762,21 @@ $
 
 Déterminons l'équation des différentes droites de charge tracées en rouge ci-dessus.
 
-\begin{itemize}
-\item Ordonnée à l'origine.
+\[	\begin{cases}
+	V_2 - V_R - V_z = 0 \Leftrightarrow V_R = V_2 - V_z\\
+	V_z = V_{out} \\
+	V_R = i \cdot R \Leftrightarrow i = \frac{V_R}{R}\\
+	V_{out} = i_{out} \cdot R_{ch} \Leftrightarrow i_{out} = \frac{V_{out}}{R_{ch}}\\
+	i = i_z + i_{out} \Leftrightarrow i_z = i - i{out} = \frac{V_2 - V_z}{R} - \frac{V_z}{R_{ch}}\\
+	\end{cases}
+\]
 
-\begin{align*}
-V_2 - V_R - V_z & = 0 \\
-\Leftrightarrow V_2 - V_R - 0 & = 0 \\
-\Leftrightarrow V_2 & = V_R
-\end{align*}
-Étant donné que $R_{ch} = 0$, on a $I = I_z = \frac{V_R}{R} = \frac{V_2}{R}$.
+En mettant $V_z$ en évidence dans cette dernière relation, on retrouve bien l'équation d'une droite de pente négative avec une ordonnée à l'origine positive.
 
-\item Abscisse à l'origine.
-
-\begin{align*}
-V_{out} & = V_2 - V_R\\
-& = V_2 - R \cdot I \\
-& = V_2 - R \cdot (I_{out} + I_z) \\
-& = V_2 - R \cdot I_{out} \mbox{, étant donné que nous avons une charge infinie.} \\
-& = V_2 - R \cdot \frac{V_{out}}{R_{ch}} \\
-& = \frac{V_2}{1+ \frac{R}{R_{ch}}} = V_z
-\end{align*}
-\end{itemize}
-
-Maintenant que nous avons deux points sur la droite de charge, nous pouvons en déterminer l'équation~:
 \[I_z = - \frac{R + R_{ch}}{R \cdot R_{ch}} \cdot V_z + \frac{V_2}{R}\]
+
+On peut à nouveau constater que lorsque la charge $R_{ch}$ diminue, le point de fonctionnement se trouve dans la zone bloquante de la diode zener.
+Elle n'assure dès lors plus son rôle de régulation, aucun courant $I_z$ ne la traverse et le montage se réduit à un simple diviseur résistif.
 
 
 
