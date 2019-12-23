@@ -28,7 +28,7 @@
 \usepackage{fancyhdr}
 % \langexam{frenchb}
 
-\newcommand{\version}{v1.2.1}
+\newcommand{\version}{v1.3.0}
 
 \newboolean{koriG}
 \ifx\koriG\undefined
@@ -121,6 +121,8 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 
 \Question{%Storey 5th, 16.24 et 16.25
 
+\begin{enumerate}
+\item
 	À partir de l'extrait de datasheet du LM741 suivant, donnez la valeur typique du produit gain-bande passante\footnote{\textit{Gain-bandwidth product} en anglais.}.
 	Si on conçoit un étage amplificateur de gain 15 à partir du LM741, quelle sera sa bande passante~?
 
@@ -129,10 +131,20 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 	\begin{center}
 		\includegraphics[width=\linewidth]{lm741-gain-bandwidth-crop.pdf}
 	\end{center}
+\item
+	Si on veut construire un montage dont le gain total est de 150 avec une bande-passante de 100 kHz, combien faut-il d'étages composés de LM741 ?
+\end{enumerate}
 }
 {
+\begin{enumerate}
+\item
 	Le LM741 a un produit gain-bande passante typique de 1.5~MHz.
 	Ainsi, pour un gain de 15, la bande passante est de 100~kHz.
+\item
+	Le gain maximal par étage est de 15.
+	Puisqu'on multiplie les gains des étages mis en série, il nous faut $\lceil log_{15}150\rceil = 2 \mbox{étages}$.
+	Il ne faut \textbf{pas} 10 étages.
+\end{enumerate}
 }
 
 \Question{\label{q.tension-decalage}%Ex labo 2, 2.7
@@ -253,14 +265,17 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 
 		La tension de sortie a donc bien été décalée et centrée autour de 2.5~V, il n'y aura donc plus d'écrêtage.
 
-		\item La composante continue ayant une pulsation nulle, on peut l'ignorer pour déterminer le type de filtre.
+		\item La composante continue ayant une pulsation nulle, elle aura une réponse fréquentielle constante de la même valeur que le diviseur résistif : $H_2(j\omega_{5V}) = \frac{1}{2}$.
 
-		En revanche, $H_1(\omega_{in}) = - \frac{R_2}{R_1 + \frac{1}{j\omega_{in}C}} = - \frac{j\omega_{in}C \cdot R_2}{j\omega_{in}R_1C + 1}$. Il s'agit d'un filtre passe-haut.
+		En revanche, $H_1$ dépend bien de $\omega_{in}$ et $H_1(j\omega_{in}) = \frac{\underline{V}_{out}}{\underline{V}_{in}}$.
+		En mettant en série la résistance $R_1$ et le condensateur $C$, et en appliquant la formule du montage inverseur, on trouve $H_1(j\omega_{in}) = - \frac{R_2}{R_1 + \frac{1}{j\omega_{in}C}} = - \frac{j\omega_{in}C \cdot R_2}{j\omega_{in}R_1C + 1}$.
+		Il s'agit d'un filtre passe-haut.
 
 		\item Puisqu'on veut un gain de -100, on sait que $R_2 = 100 R_1$.
 
 		Ensuite, on veut que le montage soit fonctionnel entre 20~Hz et 20~kHz. Or, le montage étant un passe haut, il faut s'arranger pour que 20~Hz soit déjà considéré comme une haute fréquence.
-		Autrement dit, l'impédance du condensateur doit être beaucoup plus faible que $R_1$~: $1 << \omega R_1C \Leftrightarrow \frac{1}{\omega C} << R_1$, avec $\omega = 2 \pi \cdot 20$.
+		Autrement dit, à cette fréquence, on souhaite retrouver un montage inverseur classique avec $H_1(j\omega_{in}) = - \frac{R_2}{R_1}$.
+		Pour y parvenir, il faut que $\frac{1}{\omega C} << R_1$, soit l'impédance du condensateur doit être beaucoup plus faible que $R_1$, avec $\omega = 2 \pi \cdot 20$.
 
 		En prenant arbitrairement $R_1 = 1k\Omega$, on a $R_2 = 100k\Omega$, et donc $C >> 8 \mu F$.
 		En pratique, un à deux ordres de grandeur suffisent~: prenons $C = 80 \mu F$.
@@ -316,7 +331,7 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 		\item La source de signal connectée à l'entrée de la carte fournit un signal sans composante continue et dont l'amplitude crête ne dépasse pas 100~mV, et son impédance de sortie est égale à 100~\ohm.%Je passe à 10mV pour qu'on doive utiliser un gain de 100. Comme la bande passante est de 20kHz, il faudrait deux LM741 (GBP 1.5MHz) ou un seul CA3140 (GBP 4.5MHz).
 		\item La sortie de l'étage à réaliser est connectée à un convertisseur analogique/numérique (CAN) dont l'impédance d'entrée est égale à 100~k\ohm. La plage de conversion du CAN va de $-1V$  à $+1V$.
 		\item Votre montage doit amplifier correctement les signaux entre 20~Hz et 20~kHz.
-		\item Vous avez à votre disposition des amplis-op LM741 ou CA3140A.
+		\item Vous avez à votre disposition des amplis-op LM741 ou CA3140A (dont les bandes-passantes respectives sont 1.5 MHz et 4.5 MHz).
 		Le LM741 coûte 0.54~\EUR/pièce et le CA3140A coûte 1.96~\EUR/pièce.
 	\end{itemize}
 }
@@ -418,11 +433,12 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 
 		Cependant, si la résistance de charge vaut 4~\ohm, l'adaptation d'impédance à la sortie est certes respectée (en supposant une résistance nulle à la sortie de l'ampli-op), mais l'ampli-op doit pouvoir fournir un courant dont l'amplitude de crête est de $\frac{4V}{4\Omega} = 1 A$.
 		Or le ampli-op sélectionné ne peut fournir que 40~mA.
-		Il faut donc ajouter un troisième étage de gain 1 (montage suiveur de tension) qui servira à fournir de la puissance à la charge.
+		Il faut donc ajouter un troisième étage suiveur qui servira à fournir de la puissance à la charge.
 		On peut alors utiliser l'OPA549 qui peut fournir jusqu'à 8~A.
 		C'est cette caractéristique qui justifie son prix.
+		Cependant, cet étage ayant un gain maximal de 0.45, afin d'atteindre les 4 V désirés en sortie, il faudra que les deux étages inverseurs précédents puissent assurer un gain combiné de $\frac{400}{0.45} = 889$.
 
-		Le montage final comprend donc deux étages inverseurs (l'un à base d'AD8129, l'autre d'OPA132) et un étage suiveur de sortie (à base d'OPA549).
+		Le montage final comprend donc deux étages inverseurs (à base d'AD8129) et un étage suiveur de sortie (à base d'OPA549).
 	\end{enumerate}
 }
 
