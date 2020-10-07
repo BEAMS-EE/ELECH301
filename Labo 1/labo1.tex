@@ -1,7 +1,7 @@
 \documentclass{../template/tp}
 \usepackage[utf8x]{inputenc}
 
-\usepackage[frenchb]{babel}
+\usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 
 \usepackage{graphicx}
@@ -26,6 +26,52 @@
 \usepackage{fancyhdr} %en-tête
 \usepackage{qrcode}
 \usepackage{pgfplots} %for latex grid
+\usepackage{fontawesome}
+\usepackage{mdframed}
+
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faLightbulbO},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{info}
+
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faCogs},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{predet}
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faFlask},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{manip}
 
 \langexam{frenchb}
 
@@ -38,7 +84,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 1 : Filtrage\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.4\\ page \thepage}
+\rhead{v2.0.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -77,6 +123,10 @@ Les compétences devant être développées par l'étudiant à la fin de cette s
 circuits précédents.
 \end{itemize}
 
+
+Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
+ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+
 \section{Pré-requis}
 L'ensemble du cours d'électricité BA2, partie « théorie des circuits » est supposé connu avant ce laboratoire.\\
 On y utilisera en particulier les notions suivantes :
@@ -107,7 +157,7 @@ En plus du matériel classique de laboratoire (multimètre, oscilloscope, géné
 Avant d'entrer au laboratoire, il est encore conseillé de réaliser les prédéterminations des §6.2, §6.3.2 et §6.4.2 de cet énoncé.
 
 \section{Objectifs}
-A la fin de ce laboratoire, vous devez être capable :
+À la fin de ce laboratoire, vous devez être capable :
 \begin{itemize}
 \item d'expliquer le principe de fonctionnement des différents appareils utilisés,
 \item d'utiliser les principales fonctionnalités de ces appareils,
@@ -125,14 +175,10 @@ mesures (pratique),
 Afin de simplifier la vérification du câblage, d'éviter des erreurs et de limiter l'émission/réception de parasites, on
 respectera les règles suivantes :
 \begin{itemize}
-\item utilisez intelligemment les couleurs : des fils de couleurs différentes vous sont fournis, ils vous permettent de
-repérer plus facilement les différents types de signaux une fois le montage achevé. En particulier :
-\item le noir est réservé à la masse du circuit ;
-\item ne connectez jamais 2 fils de couleurs différentes au même noeud.
-\item disposez les appareils et autres éléments dans l'ordre où ils apparaissent sur le schéma électrique.
-\item évitez les distances inutilement longues.
-\item évitez les croisements (par exemple ne placez pas le voltmètre mesurant la tension de sortie près de l'entrée du
-montage et le générateur d'entrée près de la sortie).
+\item Utilisez intelligemment les couleurs : des fils de couleurs différentes vous sont fournis, ils vous permettent de
+repérer plus facilement les différents types de signaux une fois le montage achevé.
+\item Disposez les appareils et autres éléments dans l'ordre où ils apparaissent sur le schéma électrique.
+\item Évitez les distances inutilement longues.
 \end{itemize}
 Un signal électrique implique la circulation d'un courant, donc un conducteur aller et un conducteur retour. Il y a lieu
 de disposer physiquement ces deux conducteurs aussi près l'un de l'autre que possible, pour éviter de créer une boucle
@@ -156,6 +202,8 @@ Au besoin, vous pouvez commencer la manipulation en vérifiant par l'expérience
 documents.
 \subsection{Le circuit RC passe-haut}
 \subsubsection{Introduction}
+
+\begin{info}
 Le circuit RC passe-haut peut être vu comme un quadripôle :
 \begin{center}
 \begin{circuitikz} \draw
@@ -169,36 +217,39 @@ Le circuit RC passe-haut peut être vu comme un quadripôle :
 \end{center}
 Pour établir sa fonction de transfert, le plus simple est de remarquer que le circuit RC est un diviseur impédant (c'est à dire la généralisation du diviseur résistif à n'importe quel type d'impédance). On peut donc écrire :
 $$\underline{V}_{out}(p)=\frac{Z_R(p)}{Z_R(p)+Z_C(p)}\underline{V}_{in}(p)=\frac{Z_R(p)}{Z_{tot}(p)}\underline{V}_{in}(p)$$
+\end{info}
 
 \subsubsection{Prédéterminations : tracé asymptotique de la réponse fréquentielle}
+\begin{predet}
 \textbf{Approche mathématique}\\
 Remarque : nous avons écrit un document détaillant cette méthode : « Fonctions de transfert et plan de Bode »
-\begin{itemize}
+\begin{enumerate}
 \item Établissez l'expression de la fonction de transfert du circuit $H(p)=\frac{\underline{V}_{out}(p)}{\underline{V}_{in}(p)}$
 \item Calculez les pôles et zéros de la fonction de transfert.
 \item Déduisez, de la fonction de transfert, la réponse fréquentielle du circuit $H(j\omega)=\frac{\underline{V}_{out}(j\omega)}{\underline{V}_{in}(j\omega)}$
 \item Tracez l'approximation asymptotique de la réponse fréquentielle dans un plan de Bode (donné en annexe).
-\end{itemize}
+\end{enumerate}
 
-\textbf{Approche intuitive}
+\textbf{Approche intuitive}\\
 Nous pouvons aussi déduire le comportement asymptotique de la réponse fréquentielle par un raisonnement sur les impédances, en se rappelant que :
 $H(j\omega)=\frac{Z_R(j\omega)}{Z_{tot}(j\omega)}$
 
 \Question
 {
-Répondez aux questions suivantes pour chacun des cas $\omega \Rightarrow 0$ et  $\omega \Rightarrow \infty$:
-\begin{itemize}
+Répondez aux questions suivantes \textbf{pour chacun des cas} $\omega \rightarrow 0$ et  $\omega \rightarrow \infty$ :
+\begin{enumerate}
 \item $Z_{tot}$ est la somme de deux impédances, laquelle des deux peut-on négliger ?
-\item Déduisez-en une expression approchée de la réponse fréquentielle à la pulsation considérée.
-\item Quelle relation pouvez-vous écrire entre les modules de $Z_R$ et $Z_C$ pour $\omega = \omega_C=\frac{1}{RC}$
-\item Déduisez-en la valeur de la réponse fréquentielle pour $\omega = \omega_C$
-\item $\omega_C$ est appelé pulsation de coupure, on en déduit $f_C$, la fréquence de coupure $f_C=\frac{\omega_C}{2\pi}$
-\item Vérifiez que les résultats que vous obtenez avec les deux approches sont cohérents.
-\end{itemize}
+\item Déduisez-en une expression approchée de la réponse fréquentielle $H(j\omega)$ à la pulsation considérée.
+\item Quelle relation pouvez-vous écrire entre les modules de $Z_R$ et $Z_C$ pour $\omega = \omega_C=\frac{1}{RC}$ ?
+\item Déduisez-en la valeur de la réponse fréquentielle pour $\omega = \omega_C$.
+\end{enumerate}
 }
 {}
+\end{predet}
 
 \subsubsection{Manipulation}
+
+\begin{manip}
 Câblez le montage suivant :
 \begin{center}
 \begin{circuitikz} \draw
@@ -218,15 +269,17 @@ Câblez le montage suivant :
 \Question
 {
 Pouvez-vous négliger l'impédance de sortie du générateur?
-\begin{itemize}
-\item A la fréquence de coupure, mesurez la tension aux bornes de R, de C et à la sortie du générateur. Les résultats vous semblent-ils cohérents ?
-\item Vérifiez vos prédéterminations en relevant la réponse fréquentielle du circuit (module ET phase), entre $10Hz$ et $100kHz$.
-\end{itemize}
+%\item A la fréquence de coupure, mesurez la tension aux bornes de R, de C et à la sortie du générateur. Les résultats vous semblent-ils cohérents ? % Nécessite un voltmètre différentiel. Ils doivent voir que la somme des deux tensions est plus grande que Vin. La solution est de sommer les *phaseurs* de ces tensions.
+
+Vérifiez vos prédéterminations en relevant la réponse fréquentielle du circuit (module ET phase), entre $10Hz$ et $100kHz$.
 }
 {}
+\end{manip}
 
 \subsection{Circuit RLC passe-bas}
 \subsubsection{Introduction}
+
+\begin{info}
 On peut utiliser l’approche intuitive sur tous les quadripôles qui ont une structure de diviseur impédant (l’approche mathématique est valable pour tous les circuits). Appliquons-la au circuit RLC passe-bas :
 \begin{center}
 \begin{circuitikz} \draw
@@ -241,16 +294,19 @@ On peut utiliser l’approche intuitive sur tous les quadripôles qui ont une st
 \end{center}
 
 $$H(j\omega)=\frac{\underline{V}_{out}(j\omega)}{\underline{V}_{in}(j\omega)}=\frac{Z_C(j\omega)}{Z_{tot}(j\omega)}\ avec\ Z_{tot}=Z_R+Z_L+Z_C$$
+\end{info}
 
 \subsubsection{Prédéterminations}
+
+\begin{predet}
 \Question
 {
-Répondez aux questions suivantes pour chacun des cas $\omega \Rightarrow 0$ et  $\omega \Rightarrow \infty$:
-\begin{itemize}
+Répondez aux questions suivantes \textbf{pour chacun des cas} $\omega \Rightarrow 0$ et  $\omega \Rightarrow \infty$ :
+\begin{enumerate}
 \item Une des impédances du circuit devient beaucoup plus grande que les deux autres, laquelle ?
 \item Déduisez-en une expression simplifiée de la fonction de transfert à la pulsation considérée.
 \item Tracez l'approximation asymptotique de la réponse fréquentielle dans un plan de Bode (donné en annexe).
-\end{itemize}
+\end{enumerate}
 }
 {}
 
@@ -260,22 +316,25 @@ L'impédance de la capacité est purement imaginaire et négative. L'impédance 
 imaginaire et positive.
 L'impédance équivalente à la mise en série d'une capacité et d'une inductance peut donc s'annuler à une fréquence :
 c'est le phénomène de résonance.
-\begin{itemize}
+\begin{enumerate}
 \item Prédéterminez la pulsation de résonance.
 \item Que vaut $Z_{tot}$ à cette pulsation ?
 \item Que vaut la fonction de transfert à la résonance ?
-\item Application numérique : Soit $L = 8,2mH$ et $C = 33nF$, calculez le module de la fonction de transfert à la fréquence de résonance pour
+\item Si $L = 8,2mH$ et $C = 33nF$, calculez le module de la fonction de transfert à la fréquence de résonance pour
 $R = 50\Omega$, $R = 440\Omega$ et $R = 10k\Omega$.
-\end{itemize}
+\end{enumerate}
 }
 {}
+\end{predet}
 
 \subsubsection{Relevé de la fonction de transfert}
+
+\begin{manip}
 \Question
 {
 \begin{itemize}
-\item Ajustez la tension de sortie du générateur pour obtenir une sinusoïde de $1V_{eff}$ (à vide).
-\item Relevez le module de la fonction de transfert du circuit ci dessous sur la plage de fréquence allant de $10Hz$ à
+\item Ajustez la tension de sortie du générateur pour obtenir une sinusoïde de $1V$ d'amplitude (à vide).
+\item Relevez le module de la fonction de transfert du circuit ci-dessous sur la plage de fréquences allant de $10Hz$ à
 $100kHz$ pour $R = 0\Omega$, $R = 390\Omega$ et $R = 10k\Omega$ (utilisez le multimètre) :
 \end{itemize}
 \begin{center}
@@ -300,8 +359,10 @@ concluez-vous de ces mesures ?
 \end{itemize}
 }
 {}
+\end{manip}
 
 \subsection{Exercices}
+\begin{predet}
 \Question
 {
 Sur les quadrillages données en annexe, réalisez le tracé asymptotique des courbes de Bode des fonctions de transfert suivantes :
@@ -309,7 +370,9 @@ $$H(p)=\frac{p+10^3}{p+10^6}$$
 $$H(p)=\frac{10(p+10^3)^2}{p(p+10^6)}$$
 }
 {}
+\end{predet}
 
+\begin{predet}
 \Question
 {
 On donne les courbes de Bode suivantes.
@@ -324,6 +387,7 @@ Donnez la tension de sortie (sous forme temporelle) du système si la tension d�
 \end{itemize}
 }
 {}
+\end{predet}
 
 \newpage
 \begin{center}
