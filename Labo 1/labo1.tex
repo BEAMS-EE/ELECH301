@@ -73,6 +73,19 @@
     frametitlealignment=\flushleft
 ]{manip}
 
+\usepackage{tcolorbox}
+\newenvironment{astuce}%
+{%
+	\begin{tcolorbox}[enhanced,
+					colback=black!5!white,
+					colframe=black,
+					boxrule=0.5pt,
+					attach boxed title to top left={yshift=-3mm,yshifttext=-1mm},
+					boxed title size=copy,
+					title={Astuce}]
+}%
+{\end{tcolorbox}}
+
 \langexam{frenchb}
 
 \correction{false}
@@ -266,6 +279,10 @@ Câblez le montage suivant :
 \end{circuitikz}
 \end{center}
 
+\begin{astuce}
+	Attention, $R_G$ est déjà comprise à l'intérieur du générateur, vous ne devez pas l'ajouter au montage.
+\end{astuce}
+
 \Question
 {
 Pouvez-vous négliger l'impédance de sortie du générateur?
@@ -320,8 +337,7 @@ c'est le phénomène de résonance.
 \item Prédéterminez la pulsation de résonance.
 \item Que vaut $Z_{tot}$ à cette pulsation ?
 \item Que vaut la fonction de transfert à la résonance ?
-\item Si $L = 8,2mH$ et $C = 33nF$, calculez le module de la fonction de transfert à la fréquence de résonance pour
-$R = 50\Omega$, $R = 440\Omega$ et $R = 10k\Omega$.
+\item Si $L = 8,2mH$ et $C = 1nF$, calculez le module de la fonction de transfert à la fréquence de résonance pour $R = 1 k\Omega$ et $R = 10 k\Omega$.
 \end{enumerate}
 }
 {}
@@ -335,16 +351,17 @@ $R = 50\Omega$, $R = 440\Omega$ et $R = 10k\Omega$.
 \begin{itemize}
 \item Ajustez la tension de sortie du générateur pour obtenir une sinusoïde de $1V$ d'amplitude (à vide).
 \item Relevez le module de la fonction de transfert du circuit ci-dessous sur la plage de fréquences allant de $10Hz$ à
-$100kHz$ pour $R = 0\Omega$, $R = 390\Omega$ et $R = 10k\Omega$ (utilisez le multimètre) :
+$100kHz$ pour $R = 0\Omega$, $R = 1 k\Omega$ et $R = 10 k\Omega$.
+Veillez à prendre suffisamment de points, en particulier autour de la fréquence de résonance !
 \end{itemize}
 \begin{center}
 \begin{circuitikz} \draw
 (0,0)   node[ground]{}
 		to[sinusoidal voltage source, v=$V{in}$] 	(0,3)
 		to[R, l=$R_G$]									(2,3)
-		to[R, l=$R$]									(4,3)
+		to[C, l=$1nF$]									(4,3)
 		to[L, l=$8.2mH$]									(6,3)
-		(6,0) to[C, l=$33nF$, v=$V_{out}$] (6,3)
+		(6,0) to[R, l=$R$, v=$V_{out}$] (6,3)
 		(6,0)--(0,0)
 
 (0,4.5) node[] {Générateur}
@@ -353,8 +370,12 @@ $100kHz$ pour $R = 0\Omega$, $R = 390\Omega$ et $R = 10k\Omega$ (utilisez le mul
 \end{circuitikz}
 \end{center}
 \begin{itemize}
-\item A la fréquence de résonance, mesurez la tension aux bornes de C, de L et de la mise en série de L et C. Que
-concluez-vous de ces mesures ?
+\item À la fréquence de résonance, mesurez la tension aux bornes de C, de L et de la mise en série de L et C. 
+\begin{astuce}
+Vous ne pourrez pas réaliser ces mesures avec un appareil référencé à la masse (comme votre oscilloscope) sans changer le montage.
+Afin de mesurer la tension aux bornes de C et L, échangez R avec le composant idoine.
+\end{astuce}
+Remarquez notamment que la somme de leurs amplitudes n'est pas égale à $V_{in}$.
 \item Portez vos mesures dans un plan de Bode et comparez avec vos prédéterminations.
 \end{itemize}
 }
