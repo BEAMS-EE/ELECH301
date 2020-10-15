@@ -17,6 +17,8 @@
 \RequirePackage{color}
 \RequirePackage[top=1 in, bottom=1 in, left=1 in, right=1 in]{geometry}
 \RequirePackage{tcolorbox}
+\RequirePackage{mdframed}
+\RequirePackage{fontawesome}
 \RequirePackage{pgffor}
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
@@ -25,7 +27,7 @@
 
 \widowpenalty=1000 %dirty hack, as usual, avoid widows and orphans
 \clubpenalty=10000
-\setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
+% \setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
 \setlength{\parindent}{0pt}
 
 %mark label
@@ -119,3 +121,61 @@
     \end{center}%
     ~\\
 }
+
+
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faLightbulbO},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{info}
+
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faCogs},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{predet}
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=-10pt,
+	rightmargin=-10pt,
+	innertopmargin=-10pt,
+	innerbottommargin=0pt,
+    frametitle={\hspace{-30pt}\faFlask},
+    % innertopmargin=10pt,
+    frametitlealignment=\flushleft
+]{manip}
+
+\newenvironment{astuce}%
+{%
+	\begin{tcolorbox}[enhanced,
+					colback=black!5!white,
+					colframe=black,
+					boxrule=0.5pt,
+					attach boxed title to top left={yshift=-3mm,yshifttext=-1mm},
+					boxed title size=copy,
+					title={Astuce}]
+}%
+{\end{tcolorbox}}
+
