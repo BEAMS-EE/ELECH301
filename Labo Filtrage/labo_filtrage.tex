@@ -1,4 +1,4 @@
-\documentclass{../template/tp}
+\documentclass{../template/labo}
 \usepackage[utf8x]{inputenc}
 
 \usepackage[french]{babel}
@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{siunitx}
 \usepackage{wasysym} %smiley
 \usepackage{hyperref}% hyperliens
 \usepackage{tikz}
@@ -20,71 +21,22 @@
 \usepackage{pdfpages}
 \usepackage{todo}
 \usepackage{paralist}
-\usepackage{multicol}
 
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
 \usepackage{fancyhdr} %en-tête
 \usepackage{qrcode}
 \usepackage{pgfplots} %for latex grid
 \usepackage{fontawesome}
-\usepackage{mdframed}
 
-\newmdenv[
-	topline=false,
-	bottomline=false,
-	rightline=false,
-	skipabove=\topsep,
-	skipbelow=\topsep,
-	leftmargin=-10pt,
-	rightmargin=-10pt,
-	innertopmargin=-10pt,
-	innerbottommargin=0pt,
-    frametitle={\hspace{-30pt}\faLightbulbO},
-    % innertopmargin=10pt,
-    frametitlealignment=\flushleft
-]{info}
-
-\newmdenv[
-	topline=false,
-	bottomline=false,
-	rightline=false,
-	skipabove=\topsep,
-	skipbelow=\topsep,
-	leftmargin=-10pt,
-	rightmargin=-10pt,
-	innertopmargin=-10pt,
-	innerbottommargin=0pt,
-    frametitle={\hspace{-30pt}\faCogs},
-    % innertopmargin=10pt,
-    frametitlealignment=\flushleft
-]{predet}
-\newmdenv[
-	topline=false,
-	bottomline=false,
-	rightline=false,
-	skipabove=\topsep,
-	skipbelow=\topsep,
-	leftmargin=-10pt,
-	rightmargin=-10pt,
-	innertopmargin=-10pt,
-	innerbottommargin=0pt,
-    frametitle={\hspace{-30pt}\faFlask},
-    % innertopmargin=10pt,
-    frametitlealignment=\flushleft
-]{manip}
-
-\usepackage{tcolorbox}
-\newenvironment{astuce}%
-{%
-	\begin{tcolorbox}[enhanced,
-					colback=black!5!white,
-					colframe=black,
-					boxrule=0.5pt,
-					attach boxed title to top left={yshift=-3mm,yshifttext=-1mm},
-					boxed title size=copy,
-					title={Astuce}]
-}%
-{\end{tcolorbox}}
+%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{2}}
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.1} % Opens up the table a tad
+\usepackage{multicol}
+\usepackage{multirow}
 
 \langexam{frenchb}
 
@@ -113,20 +65,19 @@ pdfauthor={Raoul Sommeillier, ©2017 ULB - BEAMS  },
 pdfsubject={Filtrage}
 }
 
-%\date{\vspace{-1cm}\mydate\today}
-%\title{\vspace{-2cm} Labo \no 6\\ Électronique appliquée [ELEC-H-301]\\Réalisation d'un ampli à transistor\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
-
-%\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
-
-\setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
-\setlength{\parindent}{0pt}
-
 
 \begin{document}
 
 \tptitle{}{Séance 1~: Filtrage}
 
-\section{But de la manipulation}
+\section{Introduction}
+
+
+Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
+ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+
+
+\subsection{But de la manipulation et objectifs d'apprentissage}
 
 Les compétences devant être développées par l'étudiant à la fin de cette séance sont en particulier:
 \begin{itemize}
@@ -137,10 +88,18 @@ circuits précédents.
 \end{itemize}
 
 
-Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
-ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+À la fin de ce laboratoire, vous devez être capable :
+\begin{itemize}
+\item d'expliquer le principe de fonctionnement des différents appareils utilisés,
+\item d'utiliser les principales fonctionnalités de ces appareils,
+\item d'expliquer les notions de masse, terre et borne « common »,
+\item de relever (mesure) la fonction de transfert d'un circuit réel,
+\item de tracer une fonction de transfert dans un plan de Bode à partir de son expression mathématique (théorie) ou de
+mesures (pratique),
+\item d'utiliser les phaseurs et les impédances complexes.
+\end{itemize}
 
-\section{Pré-requis}
+\subsection{Pré-requis}
 L'ensemble du cours d'électricité BA2, partie « théorie des circuits » est supposé connu avant ce laboratoire.\\
 On y utilisera en particulier les notions suivantes :
 \begin{itemize}
@@ -157,32 +116,24 @@ On vous demande également de lire:
 %§8.
 \end{itemize}
 
-\section{Matériel}
-En plus du matériel classique de laboratoire (multimètre, oscilloscope, générateur de fonction, câbles, etc.), cette séance nécessite les composants suivants:
-\begin{itemize}
-\item Résistances : une de $390\Omega$ et une de $10k\Omega$
-\item Condensateurs : un de $10nF$ et un de $33nF$
-\item Inductance : une de $8,2mH$
-\end{itemize}
+\subsection{Matériel}
 
-\newpage
-\section{Préliminaire théorique} %{\normalsize{(1 point)}}}
-Avant d'entrer au laboratoire, il est encore conseillé de réaliser les prédéterminations des §6.2, §6.3.2 et §6.4.2 de cet énoncé.
-
-\section{Objectifs}
-À la fin de ce laboratoire, vous devez être capable :
-\begin{itemize}
-\item d'expliquer le principe de fonctionnement des différents appareils utilisés,
-\item d'utiliser les principales fonctionnalités de ces appareils,
-\item d'expliquer les notions de masse, terre et borne « common »,
-\item de relever (mesure) la fonction de transfert d'un circuit réel,
-\item de tracer une fonction de transfert dans un plan de Bode à partir de son expression mathématique (théorie) ou de
-mesures (pratique),
-\item d'utiliser les phaseurs et les impédances complexes.
-\end{itemize}
+\begin{center}
+\begin{tabular}{p{0.2\textwidth}rlp{0.1\textwidth}}
+	Composant & \multicolumn{2}{c}{Valeur} & Quantité \\\toprule
+	\multirow{2}{*}{Résistance} & 1 & $\si{\kohm}$ & x1 \\
+								& 10 & $\si{\kohm}$ & x1 \\\midrule
+	\multirow{2}{*}{Condensateur} 	& 1 & $\si{\nano\farad}$ & x1 \\
+									& 10 & $\si{\nano\farad}$ & x1 \\\midrule
+	Inductance & 8.2 & \si{\milli\henry} & x1 \\\bottomrule
+\end{tabular}
+\end{center}
 
 
+\subsection{Prédéterminations} %{\normalsize{(1 point)}}}
+Avant d'entrer au laboratoire, il est encore conseillé de réaliser les prédéterminations des §\ref{sec:predetA} et §\ref{sec:predetRLC} de cet énoncé.
 
+\clearpage
 \section{Manipulation}
 \subsection{Remarques préliminaires à propos du câblage}
 Afin de simplifier la vérification du câblage, d'éviter des erreurs et de limiter l'émission/réception de parasites, on
@@ -199,20 +150,25 @@ risquant de capter ou de générer un signal parasite sous forme d'un champ magn
 
 \subsection{Lecture préliminaire}
 
-En annexe de cet énoncé, nous avons écrit un document décrivant le générateur de fonction, le multimètre,
-l'oscilloscope et le protoboard que vous utiliserez lors de vos laboratoires d'électronique.
-On vous demande de les lire avant d'arriver au labo.\\
-En particulier,
-\begin{itemize}
-\item pour chacun des appareils, vous devrez être capable de donner le schéma équivalent de son entrée ou de sa
-sortie;
-\item pour les deux appareils de mesure, vous devrez pouvoir :
-\item expliquer la différence entre la mesure DC et la mesure AC,
-\item avoir une idée de leur bande passante,
-\item savoir si ils peuvent faire des mesures différentielles.
-\end{itemize}
-Au besoin, vous pouvez commencer la manipulation en vérifiant par l'expérience ce qui est décrit dans ces
-documents.
+Lien vers la doc du picoscope et rappel de laboratoire.
+Attention, veiller à ce qu'on leur donne de la doc où trouver la résistance de sortie du générateur.
+
+% En annexe de cet énoncé, nous avons écrit un document décrivant le générateur de fonction, le multimètre,
+% l'oscilloscope et le protoboard que vous utiliserez lors de vos laboratoires d'électronique.
+% On vous demande de les lire avant d'arriver au labo.\\
+% En particulier,
+% \begin{itemize}
+% \item pour chacun des appareils, vous devrez être capable de donner le schéma équivalent de son entrée ou de sa
+% sortie;
+% \item pour les deux appareils de mesure, vous devrez pouvoir :
+% \item expliquer la différence entre la mesure DC et la mesure AC,
+% \item avoir une idée de leur bande passante,
+% \item savoir si ils peuvent faire des mesures différentielles.
+% \end{itemize}
+% Au besoin, vous pouvez commencer la manipulation en vérifiant par l'expérience ce qui est décrit dans ces
+% documents.
+
+
 \subsection{Le circuit RC passe-haut}
 \subsubsection{Introduction}
 
@@ -232,7 +188,7 @@ Pour établir sa fonction de transfert, le plus simple est de remarquer que le c
 $$\underline{V}_{out}(p)=\frac{Z_R(p)}{Z_R(p)+Z_C(p)}\underline{V}_{in}(p)=\frac{Z_R(p)}{Z_{tot}(p)}\underline{V}_{in}(p)$$
 \end{info}
 
-\subsubsection{Prédéterminations : tracé asymptotique de la réponse fréquentielle}
+\subsubsection{Prédéterminations : tracé asymptotique de la réponse fréquentielle}\label{sec:predetA}
 \begin{predet}
 \textbf{Approche mathématique}\\
 Remarque : nous avons écrit un document détaillant cette méthode : « Fonctions de transfert et plan de Bode »
@@ -313,7 +269,7 @@ On peut utiliser l’approche intuitive sur tous les quadripôles qui ont une st
 $$H(j\omega)=\frac{\underline{V}_{out}(j\omega)}{\underline{V}_{in}(j\omega)}=\frac{Z_C(j\omega)}{Z_{tot}(j\omega)}\ avec\ Z_{tot}=Z_R+Z_L+Z_C$$
 \end{info}
 
-\subsubsection{Prédéterminations}
+\subsubsection{Prédéterminations}\label{sec:predetRLC}
 
 \begin{predet}
 \Question
