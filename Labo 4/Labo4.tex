@@ -1,4 +1,4 @@
-\documentclass{../template/tp}
+\documentclass{../template/labo}
 
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
@@ -17,6 +17,8 @@
 \usetikzlibrary{babel,positioning,calc}
 \usepackage[siunitx]{circuitikz}
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
+\usepackage{siunitx}
+\usepackage{amssymb}
 \usepackage{gnuplottex}
 \usepackage{ifthen}
 \usepackage{xcolor}
@@ -28,6 +30,14 @@
 \usepackage[]{pdfpages}
 
 \usepackage[]{attachfile}
+
+%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.1} % Opens up the table a tad
+\usepackage{multicol}
+\usepackage{multirow}
 
 \langexam{frenchb}
 
@@ -44,35 +54,57 @@
 \author{The Fantastic Four} %<3
 
 \pagestyle{fancy}
-\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 4 : Transistor MOS\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.1.0\\ page \thepage}
+\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Transistor MOS\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
+\rhead{v2.0.0\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
 /Author (ULB -- BEAMS)
-/Title (LABO 4 ELEC-H-301, Transistor MOS)
+/Title (LABO 3 ELEC-H-301, Transistor MOS)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
-pdftitle={LABO 4 [ELEC-H-301] Électronique appliquée: Transistor MOS},
+pdftitle={LABO 3 [ELEC-H-301] Électronique appliquée: Transistor MOS},
 pdfauthor={ULB - BEAMS},
 pdfsubject={Filtrage}
 }
 
 
-\setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
 \setlength{\parindent}{0pt}
 
 \begin{document}
 
-\tptitle{}{Séance 4~: Réalisation d'un ampli à transistor}
+\tptitle{}{Séance 3~: Réalisation d'un ampli à transistor}
+
+
+
+% ########   ##      ##  ##########  ########     #####    
+%    ##      ###     ##      ##      ##     ##  ##     ##  
+%    ##      ## ##   ##      ##      ##     ##  ##     ##  
+%    ##      ##  ##  ##      ##      ########   ##     ##  
+%    ##      ##   ## ##      ##      ##   ##    ##     ##  
+%    ##      ##     ###      ##      ##    ##   ##     ##  
+% ########   ##      ##      ##      ##     ##    #####    
 
 \section{Introduction}
-\subsection{But}
 
-Le but de ce laboratoire est de réaliser un pré-amplificateur audio pour une radio AM en utilisant un transistor MOS. Ce pré-amplificateur est un amplificateur de classe A, particulièrement apprécié des audiophiles mais ayant un mauvais rendement.
+Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
+ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+
+\subsection{But de la manipulation et objectifs d'apprentissage}
+
+Le but de ce laboratoire est de réaliser un pré-amplificateur audio pour une radio AM en utilisant un transistor MOS.
+Ce pré-amplificateur est un amplificateur de classe A, particulièrement apprécié des audiophiles mais ayant un mauvais rendement.\\
+
+
+À la fin de ce laboratoire, vous devez être capable :
+\begin{itemize}
+\item de réaliser le pré-amplificateur audio avec un étage source commune
+\item d'expliquer le fonctionnement de l'étage source commune et sa polarisation.
+\item d'utiliser le mode XY d'un oscilloscope.
+\end{itemize}
 
 \subsection{Prérequis}
 \begin{itemize}
@@ -83,53 +115,46 @@ Le but de ce laboratoire est de réaliser un pré-amplificateur audio pour une r
 
 \end{itemize}
 
+\subsection{Matériel}
+
+\begin{center}
+	\begin{tabular}{p{0.2\textwidth}rlp{0.1\textwidth}}
+		Composant & \multicolumn{2}{c}{Valeur} & Quantité \\\toprule
+		\multirow{5}{*}{Résistance} & 56 & $\si{\ohm}$ & x1 \\
+									& 100 & $\si{\ohm}$ & x1 \\
+									& 150 & $\si{\ohm}$ & x1 \\
+									& 10 & $\si{\kohm}$ & x2 \\
+									& 30 & $\si{\kohm}$ & x1 \\\midrule
+		\multirow{1}{*}{Condensateur} 	& 10 & $\si{\nano\farad}$ & x2 \\\midrule
+		Transistor TN0604N3-G & & & x1 \\\bottomrule
+	\end{tabular}
+	\end{center}
+
 \subsection{Prédéterminations}
 
-Les déterminations des questions \ref{Q:det_rd}, \ref{Q:vout_th} et \ref{Q:capa_inout} doivent être faites avant l'arrivée au laboratoire. Le TP 6 portant sur les transistors MOS fait également office de prédéterminations.
+Les déterminations des questions \ref{Q:det_rd}, \ref{Q:vout_th} et \ref{Q:capa_inout} doivent être faites avant l'arrivée au laboratoire.
+Le TP 5 portant sur les transistors MOS fait également office de prédéterminations.
 
 
-\subsection{Objectifs}
+% ########   ##     ##  
+%    ##      ##     ##  
+%    ##      ##     ##  
+%    ##      ##     ##  
+%    ##       ##   ##   
+%    ##        ## ##    
+% ########      ###   
+\section{Caractérisation du transistor}
 
-À la fin de ce laboratoire, vous devez être capable :
-\begin{itemize}
-\item de réaliser le pré-amplificateur audio avec un étage source commune
-\item d'expliquer le fonctionnement de l'étage source commune et sa polarisation.
-\item d'utiliser le mode XY d'un oscilloscope.
-\end{itemize}
-
-
-
-\section{Amplifier avec un transistor MOS}
-
-Le transistor MOS se comporte comme une source de courant \textit{non} idéale. %, contrairement à la source précédente. % comme celle de la partie précédente.
-%La source utilisée précédemment est idéale,
-
-Le symbole utilisé pour représenter le transistor NMOS est : %visible figure \vref{fig:mos_elec}.
-
-%\begin{figure}[H]
-	\begin{center}
-		\begin{circuitikz}[scale=0.65] \draw
-		(2.25,0.75) node[nigfete] (mos) {}
-		(mos.D) |- (3.25,2) to [short, -o] (3.25,2) node[anchor=west] {D}
-		(mos.S) |- (3.25,-0.5) to [short, -o] (3.25,-0.5)  node[anchor=west] {S}
-		(0,-0.5) to [short, -o](0,-0.5)  node[anchor=east] {S} -| (mos.S)
-		(0,2) node[anchor=east]{G}  [short, o-] to  (0,2) -| (mos.G)
-		;\end{circuitikz}
-	\end{center}
-	\vspace*{-0.75cm}
-%\caption{Symbole du transistor NMOS}
-%\label{fig:mos_elec}
-%\end{figure}
-
-
-\subsection{Caractérisation du transistor}
+\begin{info}
+Le transistor utilisé dans ce laboratoire est un TN0604N3-G. Référez-vous à sa fiche technique lorsque des résultats analytiques sont demandés.
 
 Avant de dimensionner l'étage en source commune, il est nécessaire de caractériser le transistor afin de déterminer sa transconductance $g_m$. % pour un point de fonctionnement donné.
 On cherche en particulier à déterminer sous quelles conditions il se comporte comme une source de courant commandée en tension.
+\end{info}
 
-\subsubsection{Caractéristique $I_D=f(V_{GS})$}
+\subsection{Caractéristique $I_D=f(V_{GS})$}
 
-Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. La résistance $R_D$ sert à limiter le courant traversant le transistor pour ne pas le détruire.
+Pour relever la caractéristique $I_D=f(V_{GS})$, vous utiliserez le montage suivant. La résistance $R_D$ sert à limiter le courant traversant le transistor pour ne pas le détruire.
 \ctikzset{tripoles/mos style/arrows}
 %\begin{figure}[H]
 	\begin{center}
@@ -140,9 +165,10 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 		(0,0) to (1,0)
 		(1,2) to [open, v^<=$V_{GS}$](1,0)
 		(1,0) to [short, o-] (2,0)
-		(3,2) node[nigfete ] (mos) {}
+		(3,2) node[nfet] (mos) {}
 		(3,0) to [short] (mos.S)
 		(1,2) to [short] (mos.G)
+		(mos.B) -- (mos.S)
 		(2,0) to (3,0)
 		(mos.D) to [short, i<=$I_D$](3,3)
 		(3,3) to [R,l=$R_D$ ] (3,5)
@@ -153,7 +179,7 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 		%(2,0) -- (5,0) to [battery, l_=$12V$] (5,5) -- (3,5)
 		(2,0) -- (5,0)
 		(5,5) -- (3,5)
-		(5,5) to [battery, l=$12V$] (5,0)
+		(5,5) to [battery, l=$5V$] (5,0)
 		(3,0) node[ground] {}
 		;\end{circuitikz}
 	\end{center}
@@ -162,13 +188,17 @@ Pour relever la caractéristique $I_D=f(V_{GS})$, utiliser le montage suivant. L
 %\label{fig:scidvgs}
 %\end{figure}
 
-
+\begin{predet}
 \Question{\label{Q:det_rd}
-Déterminer $R_D$ tel que le transistor ne dissipe pas plus de $400mW$. Aide : la puissance dissipée dans le transistor est maximum lorsque $V_{DS}=6V$ pour ce montage.
+Déterminez $R_D$ tel que le transistor ne dissipe pas plus de $65 \si{\milli\watt}$. 
+
+\begin{astuce}
+	Trouvez d'abord l'expression de la puissance dissipée par le transistor en fonction de son courant de drain $I_D$. Trouvez ensuite la valeur de $I_D$ maximisant la puissance.
+\end{astuce}
 }
 {
 
-$P_T$ est la puissance dissipée par le \textbf{transistor}.
+$P_T$ est la puissance dissipée par le \textbf{transistor} et $E$ la tension d'alimentation connectée à $R_D$.
 
 $$P_T=V_s\cdot I_D = \left(E-R_D\cdot I_D \right)\cdot I_D$$
 d'où : $$ P_T=E\cdot I_D - R_D \cdot {I_D}^2$$
@@ -187,43 +217,81 @@ AN : $$R_D=90 \Omega @E=12 V$$
 
 \label{Q:predet}
 }
+\end{predet}
 
+\begin{manip}
+
+Assemblez ce montage en utilisant un transistor TN0604N3-G et une résistance $R_D$ de 100 $\si{\ohm}$.
+\begin{astuce}
+	Référez-vous à la documentation technique pour connaître la configuration des pattes du transistor. Faites attention à bien identifier la partie \textit{bombée} du composant et ne mélangez pas les pattes !
+\end{astuce}
 
 \Question{
-Relever manuellement des points de la caractéristique  $I_D=f(V_{GS})$ pour $V_{GS}$ compris entre $2.5V$ et $3.5V$.
-Il est aussi possible d'utiliser un signal d'entrée sinusoïdal d'amplitude 2V et d'offset 2V et le mode XY de l'oscilloscope.
-Reportez vos mesures sur le graphe fourni en annexe.
+Relevez manuellement des points de la caractéristique  $I_D=f(V_{GS})$ pour $V_{GS}$ compris entre $0V$ et $2V$.
+
+\begin{astuce}
+	Pour aller plus loin, vous pouvez directement afficher la caractéristique en utilisant le mode XY de l'oscilloscope. Vous pourrez ainsi observer $V_{DS}$ en fonction de $V_{GS}$. Puisque $I_D = \frac{V_{DS} - E}{R_D}$, on peut retrouver la caractéristique par opération graphique.
+\end{astuce}
 }
 {
-\begin{center}
-\includegraphics{mesures/id_vgs.eps}
-\end{center}
+% \begin{center}
+% \includegraphics{mesures/id_vgs.eps}
+% \end{center}
 }
+\end{manip}
 
+\begin{predet}
 \Question{
-Cette caractéristique est-elle linéaire ? Dans quelle mesure cette source de courant commandée en tension est-elle utilisable pour amplifier ?
+Cette caractéristique est-elle linéaire ou quadratique ?
+Peut-on utiliser ce montage pour amplifier des signaux ($V_{in}$)
+\begin{itemize}
+	\item[$\square$] de grande amplitude ;
+	\item[$\square$] de petite amplitude ;
+	\item[$\square$] de n'importe quelle amplitude.
+\end{itemize}
 }
 {
-Non. Uniquement pour de petits signaux en entrée.
+La caractéristique n'est pas linéaire. Étant donné qu'il faut une relation linéaire pour obtenir une amplification sans déformation, ce montage ne peut servir d'amplificateur que pour de petits signaux en entrée. À cette faible amplitude, on pourra approximer la relation comme étant linéaire.
 }
+\end{predet}
 
-
+\begin{predet}
 \Question{
-Choisir judicieusement un point de fonctionnement sur le relevé précédent. En utilisant le faisceau
- de courbes\footnote{\label{fn:datasheet}en utilisant les caractéristiques du transistor annexe
-\ref{anx:mos_doc}} $I_D=f(V_D)@V_{GS}{=cte}$ et la droite de charge du transistor pour ce point de
-fonctionnement, indiquer dans quelle zone fonctionne le transistor.
+	Quelle est la tension de seuil $V_{th}$ que vous observez ?
+	Vérifiez que cette valeur est cohérente avec l'intervalle de valeurs donné dans la fiche technique.
+}
+{
+	La fiche technique indique une tension de seuil (Gate threshold voltage) comprise entre 0.6 et 1.65 $\si{\volt}$.
+}
+\end{predet}
 
-En déduire l'amplitude maximale possible en sortie pour le point de fonctionnement choisi.
+\begin{predet}
+\Question{
+Choisissez judicieusement un point de fonctionnement sur le relevé précédent.\\
+Munissez-vous ensuite des caractéristiques de sortie du transistor se trouvant en annexe de cet énoncé et tracez-y la droite de charge du transistor pour une tension d'alimentation de $5 \si{\volt}$ et $R_D = 100 \si{\ohm}$.
+Indiquez dans quelle zone fonctionne le transistor sur cette droite de charge.
+
+Déduisez-en l'amplitude maximale possible en sortie pour le point de fonctionnement choisi.
 \label{Q:Q9}
-}{}
+}{
+	Un point de fonctionnement judicieux se trouvera dans la zone « passante » du transistor, c'est-à-dire sur la caractéristique de transfert dans l'abscisse est une tension supérieure à la tension de seuil.
+}
+\end{predet}
 
 
+
+%  #######   ########    #######            #######     #####    ##       ##  
+% ##     ##  ##     ##  ##     ##          ##     ##  ##     ##  ###     ###  
+% ##         ##     ##  ##                 ##         ##     ##  ## ## ## ##  
+%  #######   ########   ##           ####  ##         ##     ##  ##  ###  ##  
+%        ##  ##   ##    ##                 ##         ##     ##  ##       ##  
+% ##     ##  ##    ##   ##     ##          ##     ##  ##     ##  ##       ##  
+%  #######   ##     ##   #######            #######     #####    ##       ##  
 \section{Amplifier avec un montage en source commune}
 
+\begin{info}
 La partie précédente permet de conclure que l'amplification est possible avec un transistor MOS. Nous allons donc construire un montage amplificateur autour du transistor.
 
-La résistance sert à \og convertir \fg le courant qui circule dans le transistor en tension.
 
 \begin{figure}[H]
 %\vspace{-0.3cm}%dirty hack
@@ -235,16 +303,17 @@ La résistance sert à \og convertir \fg le courant qui circule dans le transist
 		(0,0) to (1,0)
 		(1,2) to [open, v^<=$v_{in}$](1,0)
 		(1,0) to [short, o-] (2,0)
-		(3,2) node[nigfete ] (mos) {}
+		(3,2) node[nfet] (mos) {}
 		(mos.S) to [short] (3,0)
+		(mos.B) -- (mos.S)
 		(1,2) to [short] (mos.G)
 		(2,0) to (3,0)
 		(mos.D) to [short](3,3) %, i<=$I_D$
-		(3,3) to [R, l=$\SI{330}{\ohm}$] (3,5)
+		(3,3) to [R, l=$\SI{100}{\ohm}$] (3,5)
 		(3,3) to [short, -o](4,3)
 		(4,3) node[anchor=west] {$v_{out}$}
 		(3,5) node[rground, yscale=-1] (alim) {}
-		(3,5.7) node {+12V}
+		(3,5.7) node {+5V}
 		(3,0) node[ground] {}
 		;\end{circuitikz}
 	\end{center}
@@ -252,13 +321,18 @@ La résistance sert à \og convertir \fg le courant qui circule dans le transist
 \caption{Montage à améliorer}
 \label{fig:scidt}
 \end{figure}
+\end{info}
 
-\Question{~
-\begin{itemize}
-    \item \label{Q:vout_th} Déterminer \textbf{théoriquement} \textsuperscript{\ref{fn:datasheet}} la forme du signal de sortie $v_{out}$ pour $$v_{in}=V_{max}\cdot \sin (2\pi \cdot f \cdot t)$$ avec $V_{max}=3V$, $V_{TH}\simeq 2.5V$ et $f=1000Hz$.
-    \item Vérifier expérimentalement.
-    \item Pourquoi ce circuit ne convient-il pas pour réaliser un amplificateur linéaire\footnote{Ce circuit convient par contre très bien à la commande en tout--ou--rien de circuit électriques de puissance ou à la réalisation de circuits logiques NMOS.} ? (2 éléments)
-\end{itemize}
+\begin{predet}
+\Question{\label{Q:vout_th} Déterminez \textbf{théoriquement} la forme du signal de sortie $v_{out}$ pour $$v_{in}=V_{max}\cdot \sin (2\pi \cdot f \cdot t)$$ avec $V_{max}=2V$, $V_{TH}\simeq 0.6V$ et $f=1000Hz$.
+}{}
+\end{predet}
+
+\begin{manip}
+\Question{Vérifiez expérimentalement la forme de $V_{out}$.
+
+Donndez \textbf{deux raisons} pour lesquelles ce circuit ne convient pas pour réaliser un amplificateur linéaire ?
+Comment pourriez-vous régler ces problèmes ?
 \label{Q:2elts1}
 }
 {
@@ -266,28 +340,27 @@ La résistance sert à \og convertir \fg le courant qui circule dans le transist
 	\item le signal de sortie est écrêté et non linéaire
 	\item sa moyenne est non nulle
 \end{enumerate}
-Le public manque généralement d'audiophiles et il faut leur expliquer que l'écrêtage change le contenu fréquentiel et que le HP ne supporte pas les tensions continues.
- % avec $U_{max}=2V$ et $\omega= 6283 rd/s$$Umax= V$ et $\omega=$.
-\label{Q:2elts2}
-Avec $R_D=330\Omega$ et $V_{max}=3V$ :
-\begin{center}
-	\includegraphics[angle=270, width=10 cm]{mesures/tek0002.eps}
-\end{center}
-}
 
-\Question{~
-\begin{itemize}
-    \item Que faut-il faire pour corriger chacun des 2 problèmes ?
-    \item Proposer une solution et vérifier expérimentalement (utiliser les possibilités du générateur).
-\end{itemize}
-}
-{
+Comment les régler : 
 \begin{enumerate}
     \item Ajouter une composante continue pour se placer dans la zone de saturation $\Longrightarrow$ ajout d'une tension de polarisation
     \item Ajouter un filtre passe haut en sortie pour filtrer la composante continue
 \end{enumerate}
+\label{Q:2elts2}
 }
+\end{manip}
 
+\begin{predet}
+\Question{~
+    Manipulez votre signal $V_{in}$ pour essayer d'améliorer la forme de $V_{out}$.
+\begin{astuce}
+	Le générateur possède une fonctionnalité « \textit{offset} » permettant de décaler le signal positivement ou négativement.
+\end{astuce}
+}
+{}
+\end{predet}
+
+\begin{predet}
 \Question{~
 \begin{itemize}
     \item \label{Q:capa_inout} Comment injecter un signal à moyenne nulle dans ce circuit en considérant les corrections apportées au circuit à la question précédente ?
@@ -295,65 +368,75 @@ Avec $R_D=330\Omega$ et $V_{max}=3V$ :
 \end{itemize}
 }
 {
-On ajoute une capacité de découplage en entrée et en sortie et un pont résistif pour la polarisation
+On ajoute une capacité de découplage en entrée et en sortie et un pont résistif pour la polarisation.
 }
+\end{predet}
 
-%NB : Généralement, la valeur de la composante continue est fixée par un pont résistif. %Dans le présent laboratoire, le pont résistif sera remplacé par un potentiomètre.
 
+\begin{info}
+	Vous devriez obtenir le montage suivant :
+	\begin{center}
+		\begin{circuitikz}[scale=1]\draw
+			(0,1) to [short,o-] (9,1)
+			(4,6) to [short] (9,6)
+			(0,3) node[anchor=east] {In} to [short,o-] (1,3)
+			(0,3) node[anchor=south]{} to [open, v_<=$V_{in}$]  (0,1) 
+			(1,3) to [C=$C_{in}$ ](1.5,3) 
+			(1.5,3) to [short,-*] (2,3) node[anchor=south west]{}
+		
+			(2,6) node[anchor=south ] (alim) {$+V_{DC}$}
+			(1.6,6) -- (2.4,6) %bar under the label
+			(2,3) to [R, l_=$R_{B1}$](2,6)
+			(2,3) to [R=$R_{B2}$](2,1)
+			(4,3) node[nfet] (mos) {}
+			(mos.G) to [short] (2,3)
+			(mos.D) to (4,4) to [R, l_=$R_D$] (4, 6)		
+			(mos.D) to [short,-*](4,3.5)  to [short] (4.25,3.5)
+			(mos.S) to [short] (4,1)% to [short, -o](2,0)  node[anchor=west] {S}
+			(mos.S) -- (mos.B) %source to bulk connection		
+		
+			(4.25,3.5) node[anchor=south]{} to [C, l^=$C{out}$] (6,3.5) to  [short](6,3.5)node[anchor=south]{} to [short,-o](6.5,3.5)node [anchor=south] {Out}	
+			(6,3.5) to [generic, l_=$R_{ch}$] (6,1)
+			(6.5,3.5) to [open,v^<=$V_{out}$] (6.5,1)
+			(9,6) to [battery, l_=$E$](9,1)
+			(4,1) node[circ]{}
+			(4,1) node[ground]{}
+			;\end{circuitikz}
+	\end{center}
+\end{info}
 
-\Question{~
-\begin{itemize}
-    \item Tracer le schéma final de votre circuit corrigeant les deux éléments identifiés question \ref{Q:2elts1}. % et \ref{Q:2elts2}.
-    \item Réaliser le montage correspondant.
-\end{itemize}
-}{
-\begin{center}
-		\begin{circuitikz}[scale=0.8]\draw
-		(0,1) to [short,o-] (9,1)
-		(4,6) to [short] (9,6)
-		(0,3) node[anchor=east] {In} to [short,o-] (1,3)
-		(0,1) to [open, v^=$V_{in}$]  (0,3)
-		(1,3) to [C=$C_{in}$ ](1.5,3)
-		(1.5,3) to [short,-*] (2,3)
-%
-		(2,6) node[european voltage source] (alim) {}
-		(alim.text) node {$+V_{dc}$}
-%
-		(2,3) to [R, l_=$R_{b1}$](2,6)
-		(2,3) to [R=$R_{b2}$](2,1)
-%
-		(4,3) node[nigfete] (mos) {}
-		(mos.G) to [short] (2,3)
-		(mos.D) to (4,4) to [R, l_=$R_D$] (4, 6)
-		(mos.D) to [short,-*](4,3.5)  to [short] (4.25,3.5)
-		(mos.S) to [short] (4,1)
-		(4.25,3.5) to [C, l^=$C{out}$] (6,3.5) to  [short](6,3.5) to [short,-o](6.5,3.5)node [anchor=south] {Out}
-		(6,3.5) to [generic, l_=$R_{ch}$] (6,1)
-		(6.5,1) to [open,v_=$V_{out}$] (6.5,3.5)
-		(9,6) to [battery, l=$E$](9,1)
-		;\end{circuitikz}
-\end{center}
-}
+\begin{manip}
+\Question{Réalisez ce montage avec $V_{DC} = 5 V$, $E = 5 V$, $C_{in} = C_{out} = 10 \si{\nano\farad}$ et $R_{B1} = R_{B2} = 10 \si{\kohm}$.
+Dans un premier temps, considérez un montage à vide, c'est-à-dire sans résistance de charge $R_{ch}$.}{}
+\end{manip}
 
-Les réponses aux questions \ref{Q:gain} à \ref{Q:pchg} doivent être étayées par des constations expérimentales.
+% \begin{info}
+% Les réponses aux questions \ref{Q:gain} à \ref{Q:pchg} doivent être étayées par des vérifications expérimentales.
+% \end{info}
 
-\Question{~
-\begin{itemize}
-    \item Donner la relation entrée--sortie du montage et son gain. Préciser les limites de validité de la relation.
-    \item Vérifier expérimentalement.
-    \item Il %peut être judicieux
-    vous est proposé d'utiliser le mode XY de l'oscilloscope.
-    \item Indiquer  sur votre relevé les limites d'écrêtage et de linéarité, comparer avec le résultat de la question~\ref{Q:Q9}.
-\end{itemize}
-
-\label{Q:gain}
-%
+\begin{predet}
+\Question{Exprimez $V_{out}$ en fonction de $V_{in}$ et des différents paramètres de votre montage.
+Quel est le gain de votre montage ?
+\begin{astuce}
+	Utilisez une représentation du montage à petit signal.
+\end{astuce}
 }
 {
 $$V_{ds}=-g_m\cdot R_D \cdot V_{in}$$
 
 Bien que cette relation soit valable quel que soit le régime de fonctionnement du transistor, seule la partie où le $g_m\neq 0$ est intéressante pour l'application.
+}
+\end{predet}
 
+\begin{manip}
+\Question{ Vérifiez expérimentalement votre résultat.
+	\begin{astuce}
+	Le mode XY de l'oscilloscope vous permet d'afficher directement $V_{out}$ (i.e. $V_{ds}$ en fonction de $V_{in}$ (i.e. $V_{gs}$).
+	\end{astuce}
+	Indiquez sur votre relevé les limites d'écrêtage et de linéarité, comparez avec le résultat de la question~\ref{Q:Q9}.
+\label{Q:gain}
+}
+{
 Utilisation du mode XY :
 mettre un signal triangulaire ($1kHz$, qqes V) à l'entrée du montage, afficher $V_{out}=f(V_{in})$ sur l'oscillo.
 
@@ -367,28 +450,30 @@ Avec $R_D=100\Omega$ :
 
 \end{center}
 }
+\end{manip}
 
+% \Question{~
+% \label{Q:PF}
+% \begin{itemize}
+%     \item Quelle est l'influence de la composante continue sur les caractéristiques du montage ?
+%     \item Quelle est la valeur de la composante continue qui maximise l'excursion en sortie ? Qui maximise le gain ? Avec quel inconvénient ?
+% \end{itemize}
+% }
+% {
+% Utiliser le potentiomètre pour modifier a polarisation. On constate le changement de gain sur le tracé XY précédent.
+
+% La polarisation est idéale si le point $(0,0)$ fait partie du relevé. En pratique, ce point est atteint si $V_D=E/2=6 V$. Ce point maximise l'excursion (tension) en sortie du montage. Il existe un autre point "optimal" : celui offrant le gain maximum. Celui ci se trouve vers la fin de la zone ohmique. (réponse à retravailler)
+
+% cette valeur doit être déterminée expérimentalement pour une valeur fixée de $v_{in}$. Elle dépend de $V_{in}$, $g_m$, $R_d$ et $V_{dc}$
+
+% Les 2 cas de la question précédente peuvent être considérés.
+% }
+
+\section{Impact des paramètres du montage}
+\begin{predet}
 \Question{~
-\label{Q:PF}
 \begin{itemize}
-    \item Quelle est l'influence de la composante continue sur les caractéristiques du montage ?
-    %\item Comparer à la source idéale.
-    \item Quelle est la valeur de la composante continue qui maximise l'excursion en sortie ? Qui maximise le gain ? Avec quel inconvénient ?
-\end{itemize}
-}
-{
-Utiliser le potentiomètre pour modifier a polarisation. On constate le changement de gain sur le tracé XY précédent.
-
-La polarisation est idéale si le point $(0,0)$ fait partie du relevé. En pratique, ce point est atteint si $V_D=E/2=6 V$. Ce point maximise l'excursion (tension) en sortie du montage. Il existe un autre point "optimal" : celui offrant le gain maximum. Celui ci se trouve vers la fin de la zone ohmique. (réponse à retravailler)
-
-cette valeur doit être déterminée expérimentalement pour une valeur fixée de $v_{in}$. Elle dépend de $V_{in}$, $g_m$, $R_d$ et $V_{dc}$
-
-Les 2 cas de la question précédente peuvent être considérés.
-}
-
-\Question{~
-\begin{itemize}
-    \item Quel est le gain en tension du montage pour cette valeur ?
+    % \item Quel est le gain en tension du montage pour cette valeur ?
     \item Que se passe-t-il si la résistance de drain $R_D$ change ?
     \item Que devient $g_m$ ?
     \item  La relation déterminée à la question \ref{Q:gain} est-elle remise en cause ?
@@ -397,27 +482,21 @@ Les 2 cas de la question précédente peuvent être considérés.
 {
 mesure $\Longrightarrow$ gain en tension $\Longrightarrow $ valeur du $g_m$.
 
-Si $R_D$ change, \textit{à priori} $I_D$ change aussi et $g_m$ également. La relation de la question \ref{Q:gain} n'est pas remise en cause si on considère $g_m$ non constant dans celle-ci.
-
-Exemples :
-\begin{center}
-$R_D=100\Omega$ :
-\includegraphics[angle=270, width=10cm]{mesures/tek0006.eps}
-
-$R_D=330\Omega$ :
-\includegraphics[angle=270, width=10cm]{mesures/tek0007.eps}
-
-\end{center}
+Si $R_D$ change, \textit{a priori} $I_D$ change aussi et $g_m$ également. La relation de la question \ref{Q:gain} n'est pas remise en cause si on considère $g_m$ non constant dans celle-ci.
 }
+\end{predet}
 
+\begin{manip}
+\Question{
+	Changez $R_D$ par une résistance de $56 \si{\ohm}$ puis de $150 \si{\ohm}$.
+	Observez l'impact sur la forme de $V_{out}$.
+}
+{}
+\end{manip}
+
+\begin{predet}
 \Question{~
-\begin{itemize}
-\item  Que se passe-t-il si une charge est branchée en sortie ?
-\item En utilisant un schéma à petit signal et des équivalences Thévenin--Norton, montrer que $\Delta V_{out}=f\left( R_{ch},\dots\right)$.
-\item Vérifier expérimentalement avec $R_{ch}=330\Omega$ et $R_{ch}=100k\Omega$. Cet amplificateur peut-il être utilisé comme étage de puissance ? %est-il adapté à l'amplification audio ?
-\end{itemize}
-
-\label{Q:pchg}
+Que se passe-t-il si une charge est branchée en sortie ?
 }
 {
 Le gain diminue. Il suffit d'étudier le schéma petit signal pour s'en convaincre :
@@ -441,13 +520,23 @@ Le gain diminue. Il suffit d'étudier le schéma petit signal pour s'en convainc
 \end{center}
 
 Comme le gain dépend de la charge, cet étage n'est pas adapté à l'amplification de puissance.
-
-Faire deux tests : mettre $330\Omega$ et $100k\Omega$ en sortie.
 }
+\end{predet}
+
+\begin{manip}
+\Question{
+Vérifiez expérimentalement vos résultats en branchant les différentes résistances à votre disposition en sortie du montage ($R_{ch}$).
+\label{Q:pchg}
+}
+{}
+\end{manip}
 
 \section{Synthèse -- dimensionnement d'un étage}
+Ce dimensionnement vous est proposé en guise d'exercice supplémentaire. Il n'est pas nécessaire de l'implémenter sur le protoboard.\\
+
 Cahier des charges :
 \begin{itemize}
+\item Transistor : BS170 (utilisé en séance d'exercices)
 \item Bande passante : 20Hz--20kHz
 \item Gain : 26dB
 \item Amplitude de l'entrée : 0.1V, sinusoïdale, moyenne nulle
@@ -458,7 +547,6 @@ Cahier des charges :
 \item Alimentation : $12V$ continue
 \item Impédance de la charge : $Z_{ch}\geq 3.3k\Omega$
 \end{itemize}
-~\\
 
 \Question{
 \textit{Démarche proposée :}
@@ -468,7 +556,7 @@ Cahier des charges :
 \item Identifier les différents paramètres en fonction du cahier des charges (faire un schéma à petit signal).
 \item Dimensionner les valeurs des différents composants du circuit sur base des courbes théoriques en annexe.
 \item Déterminer la valeur de la tension de polarisation.
-\item \textbf{Vérifier expérimentalement} en tenant compte des caractéristiques réelles de votre transistor. La polarisation devra être ajustée pour obtenir le bon gain.
+% \item \textbf{Vérifier expérimentalement} en tenant compte des caractéristiques réelles de votre transistor. La polarisation devra être ajustée pour obtenir le bon gain.
 %\item
 \end{enumerate}
 }
@@ -508,7 +596,27 @@ donc en choisissant la bonne tension de polarisation pour avoir $I_D=18mA$ ou en
 Le circuit consomme (en négligeant le pont de polarisation) : $P=V_{dc}\cdot I_D=0.216W$
 }
 
+\clearpage
 \appendix
+\section{Caractéristiques du TN0604N3-G}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.8\textwidth]{iD_vGS.png}
+	\caption{Caractéristique de transfert}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.8\textwidth]{gm_vGS.png}
+	\caption{Transconductance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.8\textwidth]{iD_vDS.png}
+	\caption{Caractéristiques de sortie}
+\end{figure}
+
 %\newgeometry{top=1 in, bottom=1 in, left=1 in, right=1 in} % Yeah, that's bad to play with margins
 % \section{Le transistor NMOS}
 %
@@ -580,19 +688,19 @@ Le circuit consomme (en négligeant le pont de polarisation) : $P=V_{dc}\cdot I_
 % \end{figure}
 % \vspace{-1.2cm}
 
-\section{Caractéristiques du transistor NMOS BS170}
-\label{anx:mos_doc}
-\begin{center}
-\includegraphics[width=16cm]{courbes_mos_2k16-crop.pdf}
-% les courbes ici sont ont été corrigée et sont cohérentes.
-\end{center}
+% \section{Caractéristiques du transistor NMOS BS170}
+% \label{anx:mos_doc}
+% \begin{center}
+% \includegraphics[width=16cm]{courbes_mos_2k16-crop.pdf}
+% % les courbes ici sont ont été corrigée et sont cohérentes.
+% \end{center}
 
-\phantomsection
-\addtocontents{toc}{
-\href{http://pdf.datasheetcatalog.com/datasheets/70/123316_DS.pdf}
-{\textbf{Documentation du transistor NMOS (lien cliquable)}}
-{\attachfile[icon=Graph, color=0 0.75 1,description =Documentation du transistor NMOS BS 170 ]{./Documentation_BS170.pdf}}}
+% \phantomsection
+% \addtocontents{toc}{
+% \href{http://pdf.datasheetcatalog.com/datasheets/70/123316_DS.pdf}
+% {\textbf{Documentation du transistor NMOS (lien cliquable)}}
+% {\attachfile[icon=Graph, color=0 0.75 1,description =Documentation du transistor NMOS BS 170 ]{./Documentation_BS170.pdf}}}
 
-\label{anx:mos_datasheet}
+% \label{anx:mos_datasheet}
 %include pdf here
 \end{document}
