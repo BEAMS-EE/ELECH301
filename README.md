@@ -2,6 +2,13 @@
 
 Séances d'exercices et laboratoires à destination des BA3 tronc commun.
 
+## Ordre des laboratoires
+1. Filtrage
+2. Diodes
+3. Transistor
+4. Logique
+5. AOP
+
 ## Sémantique des versions
 
 
