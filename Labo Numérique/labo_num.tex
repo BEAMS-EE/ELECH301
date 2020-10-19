@@ -1,4 +1,5 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass{../template/labo}
+
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{ucs}
@@ -10,88 +11,57 @@
 \usepackage[all]{hypcap} %lien pointe en haut des figures
 \usepackage[french]{varioref} %voir x p y
 \usepackage{fancyhdr}% en têtes
-%\input cyracc.def
 \usepackage[]{graphicx} %include pictures
-\usepackage{pgfplots}
-\usetikzlibrary{babel,positioning,calc}
-\usepackage[americanresistors ]{circuitikz}
+% \usepackage{pgfplots}
+\usepackage[americanresistors,siunitx]{circuitikz}
 \usepackage[]{gnuplottex}
 \usepackage{ifthen}
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
-
-\usepackage[top=1.3 in, bottom=1.3 in, left=1.3 in, right=1.3 in]{geometry} % Yeah, that's bad to play with margins
-\usepackage[]{pdfpages}
 \usepackage[]{subfig}
 \usepackage[]{attachfile}
-%\usepackage{ stmaryrd } % for \ligthning
+\usepackage{tikz}
+\usetikzlibrary{babel,positioning,calc}
+\usepackage{siunitx}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[normalem]{ulem}
 
-\newdateformat{mydate}{}%hack pour remplacer \THEYEAR
+%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.1} % Opens up the table a tad
+\usepackage{multicol}
+\usepackage{multirow}
 
-%cyr
-\newcommand\textcyr[1]{{\fontencoding{OT2}\fontfamily{wncyr}\selectfont #1}}
-
-
-\newboolean{corrige}
-\ifx\correction\undefined
-\setboolean{corrige}{false}% pas de corrigé
+\newboolean{koriG}
+\ifx\koriG\undefined
+\correction{false}
 \else
-\setboolean{corrige}{true}%corrigé
+\correction{true}
 \fi
-
-%\setboolean{corrige}{false}% pas de corrigé
-
-\newboolean{annexes}
-\setboolean{annexes}{true}%annexes
-%\setboolean{annexes}{false}% pas de annexes
-
-\definecolor{darkblue}{rgb}{0,0,0.5}
-
-\usepackage{aeguill} %guillemets
-
-%% fancy header & foot
-
-\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 5 : circuits logiques}
-\rhead{v1.1.0 \\ page \thepage}
-\chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
-\cfoot{}
-%%
-\pagestyle{fancy}
-
-\pdfinfo{
-/Author (ULB -- BEAMS)
-/Title (Labo n° 5 ELEC-H-301, circuits logiques)
-/ModDate (D:\pdfdate)
-}
-
-\hypersetup{
-pdftitle={Labo n° 5 [ELEC-H-301] Électronique appliquée : circuits logiques},
-pdfauthor={Yannick Allard, ©2016 ULB - BEAMS  },
-pdfsubject={Diodes et alimentations}
-}
-
-\theoremstyle{definition}% questions pas en italique
-\newtheorem{Q}{Question}[] % numéroter les questions [section] ou non []
-
-\newcommand{\reponse}[1]{% pour intégrer une réponse : \reponse{texte} : sera inclus si \boolean{corrige}
-	\ifthenelse {\boolean{corrige}} {\paragraph{Réponse :} \color{darkblue}   #1\color{black}} {}
- }
-
-\fancyhfoffset[ERLO]{0cm} %header with full page width
-
-\newcommand{\addcontentslinenono}[4]{\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}{}}}
-
-\date{}
-\title{Séance 5~: Circuits logiques\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
-
-%\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
-
-\setlength{\parskip}{0.2cm plus2mm minus1mm} %espacement entre §
-\setlength{\parindent}{0pt}
-\setlength{\headheight}{52pt}
-\fancypagestyle{plain}
 
 \newcommand{\itgv}[1]{\ifthenelse{\boolean{corrige}}{{\color{blue}#1}}{}} %si corrigé vrai...
 \newcommand{\ifgv}[1]{\ifthenelse{\boolean{corrige}}{}{#1}} %si corrigé vrai...
+
+% \correction{false}
+%\correction{true}
+
+\definecolor{darkblue}{rgb}{0,0,0.5}
+
+%% fancy header & foot
+\pagestyle{fancy}
+\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 4 : Circuits logiques}
+\rhead{v2.0.0 \\ page \thepage}
+\chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
+\cfoot{}
+%%
+
+\author{The Fantastic Four}
+
+
+\setlength{\parindent}{0pt}
 
 
 %from SO: kinky cross for wires
@@ -114,23 +84,30 @@ pdfsubject={Diodes et alimentations}
 
 
 \begin{document}
-\pagestyle{fancy}
-\maketitle
-\vspace*{-1cm}
+\tptitle{}{Séance 4~: Circuits logiques}
+
 \section{Introduction}
 
-\subsection{But}
+Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
+ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+
+\subsection{But de la manipulation et objectifs d'apprentissage}
 Cette manipulation a pour but d'illustrer :
 \begin{itemize}
 \item au niveau «application» : le fonctionnement de circuits logiques câblés
 \item au niveau «composant» : le fonctionnement de circuits logiques discrets.
+\end{itemize}~\\
+
+À la fin de ce laboratoire, vous devez être capable de :
+\begin{itemize}
+\item donner la table de vérité d'un circuit logique ;
+\item réaliser et tester un circuit logique ;
+\item comprendre la notion de temps de propagation ;
+\item comprendre le fonctionnement d'une bascule R-S ;
+\item réaliser et tester une bascule R-S et une bascule D à l'aide de portes logiques.
 \end{itemize}
 
 \subsection{Prérequis}
-\marginpar{\color{white}"We will rise again" Peia}
-%\begin{itemize}
-%\item algèbre de Boole
-%\item
 Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
 \begin{itemize}
 \item algèbre de Boole
@@ -140,45 +117,37 @@ Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
 \item logique séquentielle : bascules R-S et D.
 \end{itemize}
 
-\textbf{Veillez aussi à relire l'annexe du laboratoire \no 1 sur les instruments de laboratoire.}
+\subsection{Matériel}
 
-%\end{itemize}
+\begin{center}
+	\begin{tabular}{p{0.2\textwidth}rlp{0.1\textwidth}}
+		Composant & \multicolumn{2}{c}{Valeur} & Quantité \\\toprule
+		\multirow{1}{*}{74HC00} &  & & x1 \\\midrule
+		\multirow{1}{*}{74HC32} &  & & x1 \\\midrule
+		\multirow{1}{*}{74HC04} &  & & x1 \\\midrule
+		\multirow{1}{*}{Interrupteur} 	& & & x3 \\\midrule
+		\multirow{1}{*}{Résistance} 	& 330 & $\si{\ohm}$ & x2 \\\midrule
+		LED TLHR5400 & & & x2 \\\bottomrule
+	\end{tabular}
+	\end{center}
 
 \subsection{Prédéterminations}
-Les questions~\ref{Q:tv1},~\ref{Q:tv2},~\ref{Q:chrono},~\ref{Q:rs_deb} à ~\ref{Q:rs_fin}, ~\ref{Q:dl1} et~\ref{Q:dlatch} doivent être faites \textbf{avant} l'arrivée au laboratoire.
-
-%Le TP 4 portant sur les diodes fait également office de prédéterminations.
-%Les prédéterminations des questions \ref{Q:1} à \ref{Q:predet}
-
-
-\subsection{Objectifs}
-À la fin de ce laboratoire, vous devez être capable de :
-\begin{itemize}
-\item donner la table de vérité d'un circuit logique
-\item réaliser et tester un circuit logique
-\item comprendre la notion de temps de propagation et le mesurer à l'oscilloscope
-\item comprendre le fonctionnement d'une bascule R-S
-\item réaliser et tester une bascule R-S et une bascule D à l'aide de portes logiques.
-\end{itemize}
-%\clearpage
-\newpage
-\pagestyle{fancy}
-%\begin{Q}
-%	À quelle condition cette source est-elle linéaire ?
-%	\label{Q:1}
-%	\reponse{$g$ doit être constant.}
-%\end{Q}
+Les questions \ref{Q:tv1}, \ref{Q:tv2}, \ref{Q:AND-NAND}, \ref{Q:chrono}, \ref{Q:rs_deb} à \ref{Q:rs_fin} et \ref{Q:dlatch} doivent être faites \textbf{avant} l'arrivée au laboratoire.
 
 \section{Concepts}
 
+\begin{info}
 Les circuits logiques sont invisibles mais fortement présent autour de nous : ordinateurs, téléphones, tablettes numériques\dots Même si la complexité des circuits a fortement augmenté depuis quelques décennies, les fonctions de base sont restées essentiellement identiques. Ce labo a pour but de vous montrer comment réaliser les fonctions de base de la logique numérique avec des circuits conçus à cet effet.
+\end{info}
 
 \section{Logique combinatoire}
 
+\begin{info}
 Les circuits décrits dans cette section sont \textbf{combinatoires}, c'est à dire que leur sortie ne dépend que de l'état des entrées.
 
 %\subsection{Opérations de base}
-Les opérations logiques usuelles\footnote{La représentation américaine des portes logiques est utilisée ici, une représentation européenne existe également} sont :
+Les opérations logiques usuelles sont :
+\end{info}
 
 % rappel des portes logiques
 %footnote : représentation US
@@ -211,8 +180,9 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 %\shorthandon{:!}
 	\end{center}
 
-\begin{Q}
-	Donner la table de vérité du circuit suivant :
+\begin{predet}
+\Question{
+	Donnez la table de vérité du circuit suivant :
 
 	\begin{center}
 %\shorthandoff{:!}
@@ -254,7 +224,8 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 	\end{center}
 	\label{Q:tv1}
 	%circuit
-	\reponse{
+}
+{
 	\begin{tabular}{ccc|c}
 		A & B & C & X \\
 		\hline
@@ -268,12 +239,13 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		1 & 1 & 1 & 0 \\
 		\end{tabular}
 
-	}%R
-\end{Q}
+}
+\end{predet}
 
 %\subsection{Exercices}
-\begin{Q}
-	En utilisant une table de vérité, démontrer que ce circuit est un «voteur» :
+\begin{predet}
+\Question{
+	En utilisant une table de vérité, démontrez que ce circuit est un «~voteur~»~:
 	%circuit
 	\begin{center}
 %\shorthandoff{:!}
@@ -317,7 +289,8 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 %\shorthandon{:!}
 	\end{center}
 	\label{Q:tv2}
-	\reponse{
+}
+{
 	\begin{tabular}{ccc|c}
 		A & B & C & X \\
 		\hline
@@ -330,32 +303,46 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		1 & 1 & 0 & 1 \\
 		1 & 1 & 1 & 1 \\
 		\end{tabular}
-		}%R
-\end{Q}
+}%R
+\end{predet}
 
-\begin{Q}
-	Réaliser ce circuit sur le protoboard au moyen de circuits intégrés 74HC00 (\textbf{N}AND) et 74HC32 (OR), les brochages se trouvent en annexe.
+\begin{predet}
+\Question{
+	Comment représenter une porte logique \texttt{AND} à l'aide de deux portes \texttt{NAND} ?
+	\label{Q:AND-NAND}
+}
+{}
+\end{predet}
+
+\begin{manip}
+\Question{
+	Réalisez ce circuit sur le protoboard au moyen de circuits intégrés 74HC00 (\texttt{NAND}) et 74HC32 (\texttt{OR}) (sans utiliser les portes \texttt{NOT}), les brochages se trouvent en annexe.
 	\begin{itemize}
-	\item Brancher les entrées sur les leds pour visualiser leur état,
-	\item brancher les sorties intermédiaires sur les leds pour vérifier progressivement votre câblage,
-	\item brancher la sortie sur une led pour vérifier son état.
+	\item Branchez les entrées sur les leds pour visualiser leur état.
+	\item Branchez les sorties intermédiaires sur les leds pour vérifier progressivement votre câblage.
+	\item Branchez la sortie sur une led pour vérifier son état.
 	\item \textbf{N'oubliez pas d'alimenter vos circuits logiques en 5V !}
 	\end{itemize}
 
-	\textit{Note~: Réalisez d'abord un circuit permettant de simuler le comportement d'une porte AND à l'aide de deux portes NAND.}
+	\begin{astuce}
+		Placez bien vos portes logiques \textit{à cheval} sur la travée du protobard.
+		N'oubliez pas de connecter une résistance en série de votre LED pour la protéger !
+	\end{astuce}
 	\label{Q:2}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{manip}
 
-\begin{Q}
-	Tester son bon fonctionnement à l'aide des LEDs et des interrupteurs. Vérifier si sa table de vérité correspond à celle déterminée précédemment.
+\begin{manip}
+\Question{
+	Testez son bon fonctionnement à l'aide des LEDs et des interrupteurs. Vérifier si sa table de vérité correspond à celle déterminée précédemment.
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{manip}
 
-\begin{Q}
-	Compléter le chronogramme ci-dessous en considérant que la porte "NOT" a un temps de propagation de 10ns et que la porte "AND" a un temps de propagation de 20 ns.
-		\begin{center}
+\begin{predet}
+\Question{
+	Complétez le chronogramme ci-dessous en considérant que la porte \texttt{NOT} a un temps de propagation de 10ns et que la porte \texttt{AND} a un temps de propagation de 20 ns.
+	\begin{center}
 %\shorthandoff{:!}
 		\begin{circuitikz} \draw
 		(0,0.72) node [american and port] (and1) {}
@@ -367,79 +354,80 @@ Les opérations logiques usuelles\footnote{La représentation américaine des po
 		(and1.in 2) |- ++(-2.66,0) node [ocirc] (B) {} node [anchor=east] {B}
 		(and1.out) -- ++(1,0) node [ocirc] (Y) {} node [anchor=west] {Y}
 
-	;\end{circuitikz}
+		;\end{circuitikz}
 %\shorthandon{:!}
 %\shorthandoff{:!}
 
-\begin{tikzpicture}[minimum size= 1.25cm,scale=0.9]
-%\usetikzlibrary{arrows,decorations.markings}
-%\def \n {5}
-%\def \radius {3cm}
-%\def \margin {8} % margin in angles, depends on the radius
-\usetikzlibrary{calc}
-%\usetikzlibrary{arrows.meta}
-%\foreach \s in {1,...,\n}
-{
+		\begin{tikzpicture}[minimum size= 1.25cm,scale=0.9]
+		%\usetikzlibrary{arrows,decorations.markings}
+		%\def \n {5}
+		%\def \radius {3cm}
+		%\def \margin {8} % margin in angles, depends on the radius
+		\usetikzlibrary{calc}
+		%\usetikzlibrary{arrows.meta}
+		%\foreach \s in {1,...,\n}
+		{
+			%\tikzset{>={Latex[width=3mm,length=3mm]}}
+			%/pgf/;
+			\draw   [->]  (0,0) -- (0,1);
+			\node [anchor=east] at (0,1) {A};
+			\draw [->]( 0,0) -- (10.5,0);
+			\node [anchor=west] at (10.5,0) {t};
 
-%\tikzset{>={Latex[width=3mm,length=3mm]}}
-%/pgf/;
-	\draw   [->]  (0,0) -- (0,1);
-  \node [anchor=east] at (0,1) {A};
-  \draw [->]( 0,0) -- (10.5,0);
-  \node [anchor=west] at (10.5,0) {t};
+			\foreach \x in {1,2,...,10} {\draw (\x,-0.1) -- (\x,0.1);}
+			\foreach \x in {1,2,...,10} {\draw (\x,-0.1-2) -- (\x,0.1-2);}
+			\foreach \x in {1,2,...,10} {\draw (\x,-0.1-4) -- (\x,0.1-4);}
+			\node [anchor=north, inner sep=0pt, outer sep=0pt] at (1,0.25) {10ns};
+			\node [anchor=north, inner sep=0pt, outer sep=0pt] at (2,0.25) {20ns};
 
-  \foreach \x in {1,2,...,10} \draw (\x,-0.1) -- (\x,0.1);
-  \foreach \x in {1,2,...,10} \draw (\x,-0.1-2) -- (\x,0.1-2);
-  \foreach \x in {1,2,...,10} \draw (\x,-0.1-4) -- (\x,0.1-4);
-  \node [anchor=north, inner sep=0pt, outer sep=0pt] at (1,0.25) {10ns};
-  \node [anchor=north, inner sep=0pt, outer sep=0pt] at (2,0.25) {20ns};
+			\draw [->] (0,-2) -- (0,1-2);
+			\node [anchor=east] at (0,1-2) {B};
+			\draw [->] (0,-2) -- (10.5,-2);
+			\node [anchor=west] at (10.5,-2) {t};
 
-  	\draw [->] (0,-2) -- (0,1-2);
-  \node [anchor=east] at (0,1-2) {B};
-  \draw [->] (0,-2) -- (10.5,-2);
-  \node [anchor=west] at (10.5,-2) {t};
+				\draw [->] (0,-4) -- (0,1-4);
+			\node [anchor=east] at (0,1-4) {Y};
+			\draw [->] (0,-4) -- (10.5,-4);
+			\node [anchor=west] at (10.5,-4) {t};
 
-  	\draw [->] (0,-4) -- (0,1-4);
-  \node [anchor=east] at (0,1-4) {Y};
-  \draw [->] (0,-4) -- (10.5,-4);
-  \node [anchor=west] at (10.5,-4) {t};
+			\draw [line width=2pt] (0,0) -|(3,1) -| (10,1); %A
+			\draw [line width=2pt] (0,0-2) -|(1,1-2) -| (5,0-2) -- (10,0-2); %B
 
-  \draw [line width=2pt] (0,0) -|(3,1) -| (10,1); %A
-   \draw [line width=2pt] (0,0-2) -|(1,1-2) -| (5,0-2) -- (10,0-2); %B
-
-   \itgv{
-   \draw [line width=2pt, color=darkblue] (0,-4) -| (3,1-4) -|(6,0-4)--(10,0-4); %Y
-   }
-
-}
-\end{tikzpicture}
-	\label{Q:chrono}
+			\itgv{
+				\draw [line width=2pt, color=darkblue] (0,-4) -| (3,1-4) -|(6,0-4)--(10,0-4); %Y
+			}
+		}
+		\end{tikzpicture}
+		\label{Q:chrono}
 	\end{center}
 	%diagramme
 	\label{Q:3}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
-	Mettre en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
-	\begin{itemize}
-	\item Brancher $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
-	\item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
-	\item brancher $Y$ sur \verb!CH2!,
-	\item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
-	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
-	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+% \Question{
+% 	Mettez en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
+% 	\begin{itemize}
+% 	\item Brancher $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
+% 	\item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
+% 	\item brancher $Y$ sur \verb!CH2!,
+% 	\item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
+% 	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
+% 	\label{Q:1}
+% }{}
 
 \newpage
 \section{Logique séquentielle, mémorisation}
 
+\begin{info}
 Les bistables sont des circuits très employés en électronique numérique en raison de leur multiples applications. Leur première fonction est de mémoriser une information logique.
 
 Les bistables sont des circuits \textbf{séquentiels}, c'est à dire que leur sortie dépend des entrées \textbf{et} de l'état précédent du système. Contrairement aux circuits combinatoires de la section précédente, l'état actuel du système dépend de son passé.
+\end{info}
 
 \subsection{Bistable élémentaire}
+
+\begin{info}
 Ci-dessous est représenté sous 2 formes différentes le bistable le plus simple.
 
 
@@ -482,8 +470,10 @@ Ce bistable possède 2 états stables (d'où son nom) :
 
 Ce circuit est donc une mémoire. Malheureusement, il est difficile de modifier son état autrement
 qu'en court-circuitant une des sortie à un état déterminé: il n'y a en effet pas d'entrée à ce circuit.
+\end{info}
 
 \subsection{Amélioration}
+\begin{info}
 Imaginons que l'on dispose d'inverseurs dont on peut mettre la sortie dans un état déterminé. Par
 exemple l'inverseur suivant :
 
@@ -552,8 +542,13 @@ mémorisation.
 
 Le cas où les 2 entrées B1 et B2 sont à l'état haut n'est pas intéressant : il force les 2 sorties $Q$ et $\overline{Q}$ à
 l'état bas. C'est un cas indésirable.
+\end{info}
+
+
+
 \subsection{Bistable RS}
-En fait, on connaît, sans le savoir, des éléments logiques qui répondent à l'inverseur spécial vu ci-dessus.
+\begin{info}
+Vous connaissez déjà des éléments logiques qui répondent à l'inverseur spécial vu ci-dessus.
 
 
 Prenons par exemple la porte NOR (Non OU).
@@ -625,8 +620,11 @@ correspondante.
 \item l'état indésirable a lieu lorsqu'on demande au bistable en même temps une mise à l'état haut et une mise
 à l'état bas.
 \end{itemize}
+\end{info}
 
 \subsection{Table de vérité du bistable R-S}
+
+\begin{info}
 Si on n'est pas convaincu par les développements précédents, on peut écrire la table de vérité du
 bistable R-S :
 
@@ -696,6 +694,7 @@ R & S & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\
 De cette table, on retire heureusement les mêmes conclusions que précédemment.
 La méthode par table de vérité est assez lourde dans son entièreté. Il vaut donc mieux essayer
 d'établir directement la table simplifiée comme vu précédemment.
+\end{info}
 
 \subsection{Réalisation du bistable R-S}
 %Réaliser le schéma suivant à l'aide de portes logiques :
@@ -732,27 +731,31 @@ Soit le circuit suivant :
 	\end{circuitikz}
 \end{center}
 
-\begin{Q}
+\begin{predet}
+\Question{
 	Quel est l'état des entrées qui assure la fonction de mémorisation ?
 	\label{Q:rs_deb}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
+\begin{predet}
+\Question{
 	Que faut il appliquer au circuit pour réaliser un Set ou Reset ?
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
+\begin{predet}
+\Question{
 	Quelle est l'anomalie des sorties lorsque les deux entrées sont à l'état bas ?
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
 
-\begin{Q}
-	Donner à chaque valeur des entrées ($\overline{R}$, $\overline{S}$) une appellation parmi les suivantes :
+\begin{predet}
+\Question{
+	Donnez à chaque valeur des entrées ($\overline{R}$, $\overline{S}$) une appellation parmi les suivantes :
 	\begin{itemize}
 	\item mémorisation
 	\item mise à 0
@@ -760,51 +763,44 @@ Soit le circuit suivant :
 	\item indésirable
 	\end{itemize}
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
-	Justifier appellation R-S. (R : Reset S : Set); Quel est le niveau logique actif de ces 2 entrées ?
+\begin{predet}
+\Question{
+	Justifiez appellation R-S. (R : Reset S : Set); Quel est le niveau logique actif de ces 2 entrées ?
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
+\begin{predet}
+\Question{
 	Pourquoi parle-t-on d'entrées en logique inverse ?
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
-\begin{Q}
+}{}
+\end{predet}
+
+\begin{predet}
+\Question{
 	Que pourrait-il se passer si on passe de l'état [mise à 1] à l'état [mémorisation] en passant transitoirement
 par l'état [indésirable] ?
 	\label{Q:rs_fin}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-\begin{Q}
-	Réaliser le circuit ci-dessus sur le protoboard et vérifier vos conclusions des questions~\ref{Q:rs_deb} à~\ref{Q:rs_fin}.
+\begin{manip}
+\Question{
+	Réalisez le circuit ci-dessus sur le protoboard et vérifier vos conclusions des questions~\ref{Q:rs_deb} à~\ref{Q:rs_fin}.
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
-
-%\begin{Q} % on peut pasremplacer directement le 74HC00 par un HC00, mais on peut pas un HC36, introuvable...
-%	Remplacer les portes NAND par des portes NOR (remplacer le circuit). Comment le comportement est-il affecté ?
-%	\label{Q:1}
-%	\reponse{}%R
-%\end{Q}
-%
-%\begin{Q}
-%	Pour la suite du labo, revenir au circuit basé sur des portes NAND.
-%	\label{Q:1}
-%	\reponse{}%R
-%\end{Q}
+}{}
+\end{manip}
 
 %FIXME TODO style pour les états
 
 \subsection{Bistable R-S avec entrée d'activation (Enable)}
 
-Modifier le schéma précédent comme suit : %, \textbf{en vérifiant bien que les bonnes portes logiques sont utilisées} :
-
+\begin{manip}
+Modifiez le schéma précédent comme suit :
 %schéma
 
 \begin{center}
@@ -848,14 +844,20 @@ Modifier le schéma précédent comme suit : %, \textbf{en vérifiant bien que l
 	\end{circuitikz}
 \end{center}
 
-
-\begin{Q}
-	Mettre en évidence l'avantage de l'entrée enable du point de vue des modifications des entrées R et S.
+\Question{
+	Mettez en évidence l'avantage de l'entrée enable du point de vue des modifications des entrées R et S.
 	\label{Q:dl1}
-	\reponse{}%R
-\end{Q}
+}{}
+
+\Question{
+	Constatez que vous pouvez encore atteindre l'état « interdit » $Q = \overline{Q}$.
+}{}
+\end{manip}
+
+
 \subsection{D latch}
 
+\begin{info}
 Le D latch peut être réalisé avec le schéma suivant :
 %schéma
 
@@ -906,35 +908,32 @@ Le D latch peut être réalisé avec le schéma suivant :
 
 
 L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bistable R-S de sortie.
+\end{info}
 
-\begin{Q}
-	 Déterminer son fonctionnement (table de vérité simplifiée).
+\begin{predet}
+\Question{
+	 Déterminez son fonctionnement (table de vérité simplifiée).
 
 	\label{Q:dlatch}
-	\reponse{}%R
-\end{Q}
-\begin{Q}
-	Réaliser le D LATCH à l'aide de portes logiques. Le circuit 74HC04 contient 6 inverseurs.
+}{}
+\end{predet}
+
+\begin{manip}
+\Question{
+	Réalisez le D LATCH à l'aide de portes logiques. Le circuit 74HC04 contient 6 inverseurs (portes \texttt{NOT}).
+	Vérifiez que votre circuit reproduit bien le fonctionnement attendu.
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{manip}
 
-
-
-\begin{Q}
-	Vérifier que votre circuit reproduit bien le fonctionnement attendu.
-	\label{Q:1}
-	\reponse{}%R
-\end{Q}
-
-\begin{Q}
+\begin{predet}
+\Question{
 	Peut-on, à votre avis, modifier D n'importe quand ?
 	\label{Q:1}
-	\reponse{}%R
-\end{Q}
+}{}
+\end{predet}
 
-{\color{white} C'était pénible de faire tous les schémas, j'espère que vous les trouvez beaux. Si c'est pas le cas, allez voir au pôle Sud si j'y suis.}
-
+\clearpage
 \appendix
 \section{Brochages}
 %\subsection{74HC00 : 4$\times$2-NAND}
@@ -1263,9 +1262,9 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 
 Pour information, les documentations complètes :
 \begin{itemize}
-\item 74HC00 (Quad NAND) \href{https://www.fairchildsemi.com/datasheets/74/74VHC00.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC00.pdf}
-\item 74HC04 (Hex NOT) \href{https://www.fairchildsemi.com/datasheets/74/74VHC04.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC04.pdf}
-\item 74HC32 (Quad OR) \href{https://www.fairchildsemi.com/datasheets/74/74VHC32.pdf}{https://www.fairchildsemi.com/datasheets/74/74VHC32.pdf}
+\item 74HC00 (Quad NAND) \url{https://assets.nexperia.com/documents/data-sheet/74HC_HCT00.pdf}
+\item 74HC04 (Hex NOT) \url{https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf}
+\item 74HC32 (Quad OR) \url{https://assets.nexperia.com/documents/data-sheet/74HC_HCT32.pdf}
 \end{itemize}
 %liens doc
 
