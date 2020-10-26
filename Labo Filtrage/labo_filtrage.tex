@@ -49,19 +49,19 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 1 : Filtrage\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.0.0\\ page \thepage}
+\rhead{v2.1.0\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Raoul Sommeillier, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (LABO 1 ELEC-H-301, Filtrage)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={LABO 1 [ELEC-H-301] Électronique appliquée: Filtrage},
-pdfauthor={Raoul Sommeillier, ©2017 ULB - BEAMS  },
+pdfauthor={ULB - BEAMS  },
 pdfsubject={Filtrage}
 }
 
@@ -314,7 +314,7 @@ c'est le phénomène de résonance.
 {
 \begin{itemize}
 \item Ajustez la tension de sortie du générateur pour obtenir une sinusoïde de $1V$ d'amplitude (à vide).
-\item Relevez le module de la fonction de transfert du circuit ci-dessous sur la plage de fréquences allant de $10Hz$ à
+\item Relevez le module de la fonction de transfert du circuit ci-dessous, aux bornes du condensateur, sur la plage de fréquences allant de $10Hz$ à
 $100kHz$ pour $R = 0\Omega$, $R = 1 k\Omega$ et $R = 10 k\Omega$.
 Veillez à prendre suffisamment de points, en particulier autour de la fréquence de résonance !
 \end{itemize}
@@ -323,9 +323,9 @@ Veillez à prendre suffisamment de points, en particulier autour de la fréquenc
 (0,0)   node[ground]{}
 		to[sinusoidal voltage source, v=$V{in}$] 	(0,3)
 		to[R, l=$R_G$]									(2,3)
-		to[C, l=$1nF$]									(4,3)
+		to[R, l=$R$]									(4,3)
 		to[L, l=$8.2mH$]									(6,3)
-		(6,0) to[R, l=$R$, v=$V_{out}$] (6,3)
+		(6,0) to[C, l=$1nF$, v=$V_{out}$] (6,3)
 		(6,0)--(0,0)
 
 (0,4.5) node[] {Générateur}
@@ -344,6 +344,16 @@ Remarquez notamment que la somme de leurs amplitudes n'est pas égale à $V_{in}
 \end{itemize}
 }
 {}
+
+\Question{
+	Lorsque $R = 0$ et $R = 1\si{\kohm}$, on peut observer que la tension $V_{in}$ mesurée est plus faible que la tension que vous imposez au générateur.
+	À quoi est-ce dû ?
+
+	\begin{astuce}
+		Réfléchissez à l'endroit où vous mesurez la tension $V_{in}$ dans le montage. Pouvez-vous encore négliger $R_G$ ?
+	\end{astuce}
+}{VL et VC s'annulent et Vin se retrouve sur RG qui est à l'intérieur du générateur.
+La « mesure » de Vin n'est donc pas tout à fait exacte et on ne peut plus négliger RG.}
 \end{manip}
 
 \subsection{Exercices}
