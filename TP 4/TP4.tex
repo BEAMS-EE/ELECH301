@@ -23,6 +23,7 @@
 \usepackage{ marvosym }
 \usepackage{fancyhdr}
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
+\usepackage{siunitx}
 
 % \langexam{frenchb}
 
@@ -39,7 +40,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 4 : Diodes\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.1.1\\ page \thepage}
+\rhead{v1.2.0\\ page \thepage}
 \cfoot{}
 %%
 
@@ -132,6 +133,30 @@ Déterminer le courant dans ce circuit dans les deux cas suivants :
 Que se passe-t-il si on change le sens de la diode ?
 }
 {%answer
+La méthode de résolution consiste à poser des hypothèses sur l'état de la ou les diode(s) dans le montage, de le résoudre en suivant ces hypothèses et de mettre en évidence toute incohérence pouvant invalider ces dernières.
+
+Commençons par exemple par supposer que la diode est \textbf{bloquante}.
+Dans le cas d'une diode parfaitement idéale, cette hypothèse implique que la diode n'est traversée par aucun courant ($I = 0$) et que $V_D < 0$.
+Résolvons à présent le circuit :
+\begin{align*}
+    &V_1 - V_D - V_{R1} = 0 \\
+    \Leftrightarrow &V_1 = V_D \quad\quad  (V_{R1} = 0 \mbox{ puisque }I = 0 \mbox{ par hyp.}) \\
+    \Leftrightarrow &V_D > 0
+\end{align*}
+Ce dernier résultat étant incohérent avec l'hypothèse $V_D < 0$, cette dernière est incorrecte.
+
+Supposons à présent que la diode est \textbf{passante}.
+Nous avons alors $V_D = 0$ et $I > 0$.
+\begin{align*}
+    &V_1 - V_D - V_{R1} = 0 \\
+    \Leftrightarrow &V_1 = V_{R1} \quad\quad  (V_D = 0 \mbox{ par hyp.}) \\
+    \Leftrightarrow &I = \frac{V_1}{R_1} > 0
+\end{align*}
+Enfin un résultat cohérent qui rend notre hypothèse valide.
+
+Lors de cette résolution, il s'agit de trouver l'unique ensemble d'hypothèses valides et de le prouver. Il n'est pas nécessaire d'invalider toutes les combinaisons incorrectes.
+
+En résumé :
 \begin{itemize}
     \item 1\ier~cas : $I = \frac{V_1}{R1} = \frac{7}{120} = 58.3mA$
     \item 2\ieme~cas : $I = \frac{V_1-V_{th}}{R1} = 52.5mA$ avec $V_{th}$ = 0.7V
@@ -144,6 +169,8 @@ Si on change le sens de la diode, celle-ci sera bloquante, par conséquent : $I=
 \Question{
 \label{conti}
 En considérant la diode comme idéale, calculer le courant circulant dans la résistance et la tension $V_o$ dans les circuits suivants.
+
+\textit{Note : Les étiquettes $Vo$ indiquent une prise de mesure, il n'y a donc pas de courant y circulant.}
 \begin{center}
     \includegraphics[scale=1.4]{ex2}
 \end{center}
@@ -207,11 +234,38 @@ En considérant la diode comme idéale et $V_i$ comme une source de tension sinu
 
 }
 {%answer
-De haut en bas et de gauche à droite :
+Étant donné que la source de tension $V_i$ est sinusoïdale, il faut à présent distinguer les cas où elle est positive ou négative.
+Nous allons voir ici qu'il est parfois plus simple de réaliser une analyse \textit{physique} du montage et que certains résultats analytiques peuvent être incohérents si on considère des diodes parfaitement idéales.
+\begin{itemize}
+    \item[D1 et D2]
+    Deux diodes tête-bêche ne pourront jamais être passante en même temps : un courant circulant positivement pour l'une circulerait en sens négatif pour l'autre.
+    Il faut donc supposer qu'au moins l'une des deux sera bloquante, et toutes ces combinaisons sont prouvables analytiquement.
+    
+    Étant qu'au moins une diode sera bloquante, aucun courant ne circulera dans $R_1$ et $V_o$ sera toujours nul. C'est bien ce seul résultat qui nous intéresse dans cet exercice.
+
+    \item[D3 et D4]
+    Lorsque $V_i > 0$, c'est la diode D4 qui est dans le «~bon~» sens et D3 dans le sens «~bloquant~».
+    Analytiquement, on trouverait alors que $V_{D4} = 0$, mais puisque les deux diodes sont en parallèle, on a aussi $V_{D4} = V_{D3}$. Or, il $V_{D3} < 0$ si D3 est bloquante.
+
+    Nous sommes ici face à un cas limite dû à l'idéalité des diodes : dans le cas de diodes avec une tension de seuil non-nulle, par exemple $V_{th} = 0.6 V$, on aurait $V_{D4} = 0.6 V$ lorsque D4 est passante et $V_{D3} = -0.6V$, ce qui correspond bien à une diode D3 bloquante.
+
+    Lorsque $V_i < 0$, on a le comportement inverse et au final, on retrouve $V_o = V_i$.
+
+    \item[D8 et D9]
+    Lorsque $V_i > 0$, les deux diodes sont polarisées négativement et sont donc bloquante.
+    Par contre, lorsque $V_i < 0$, les deux diodes sont passante ; on ne retrouve que les alternances négatives de $V_i$ sur $V_o$.
+
+    Si les diodes sont idéales, ça ne change rien d'avoir une ou deux diodes placées en série dans le même sens. Par contre, si elles ont une tension de seuil non-nulle, il faudra prendre en compte ces chutes de potentiel successives dans le calcul de l'amplitude de $V_o$.
+
+    \item[D5, D6 et D7]
+    D5 ne laisse passer que les alternances positives de $V_i$ (voir diodes D8 et D9 et exercice 2), quant aux diodes D6 et D7, elles forment le même circuit «~passe-tout~» que les diodes D3 et D4.
+\end{itemize} 
+
+En résumé, haut en bas puis de gauche à droite :
     \begin{itemize}
         \item $V_o = 0V$ (rien en sortie)
-        \item Uniquement les alternances négatives (jusqu'à -5V)
         \item Pas de changement sur le sinus (entre +5 et -5V)
+        \item Uniquement les alternances négatives (jusqu'à -5V)
         \item Uniquement les alternances positives (jusqu'à +5V)
     \end{itemize}
 }
@@ -236,14 +290,13 @@ Deuxième partie de gauche à droite :
 \end{itemize}
 
 Pour le \ref{sinus} :
-De haut en bas et de gauche à droite :
+De haut en bas puis de gauche à droite :
     \begin{itemize}
         \item $V_0 = 0V$ (rien en sortie)
+        \item Un sinus «~atténué\footnote{Par «~atténué~», nous entendons ici un sinus dont chaque alternance est décalée vers l'axe des abscisses, comme dans l'exercice~\ref{q:8}}~» (entre +4.3V et -4.3V)
         \item Uniquement les alternances négatives (jusqu'à -3.6V)
-        \item Un sinus atténué (entre +4.3V et -4.3V)
-        \item Uniquement les alternances positives mais atténuées (jusqu'à +3.6V)
+        \item Uniquement les alternances positives mais «~atténuées~» (jusqu'à +3.6V)
     \end{itemize}
-
 }
 
 \Question{
@@ -278,6 +331,8 @@ Ainsi, pour $V_1 = 10 V$, on obtient $R_1 \leq 44 \Omega$.
 % On veut $V_1 - I*R1 > 5.6$ donc si $V = 10V$ et $I=100mA$, on a $R1 < 44\Omega$.
 
 La puissance dissipée par le régulateur est maximale quand la charge est infinie (tout le courant passe par la diode et le courant de sortie est nul) et la tension en entrée est de $12V$, on a alors : $I_{charge}=0$, $I_{R1,D1} = \frac{V_1 - Vz}{R1} = 145mA$ et donc $P_{Diode} = V_z \cdot I_D = 815mW$.
+
+Note : Plus la résistance $R_1$ est faible, plus le courant sera élevé et donc la puissance dissipée élevée. On réalise ce dimensionnement pour le cas le plus idéal : un résistance $R_1$ maximale tout en respectant le cahier des charges, donc $R_1 = 44 \si{\kohm}$.
 }
 
 %\newpage
@@ -294,11 +349,11 @@ Sur base du schéma ci-dessus et en vous aidant des datasheets :
 de $R2$, pour $V_{ac}$ représentée.
     \item Indiquer les valeurs de tension remarquables et indiquez quand la LED s'allume.
     \item Quel est le courant maximum dans $R1$, dans la LED, dans $D1$ ?
-    \item Quelle est la puissance dissipée par $D1$ ?
+    \item Quelle est la puissance \textbf{maximale} dissipée par $D1$ ?
 \end{itemize}
 
 \ifthenelse{\boolean{corrige}}{}{\begin{center} \includegraphics[width=300px]{image2.png} \end{center}}
-
+\label{q:8}
 }
 {%answer
 \begin{center} \includegraphics[width=300px]{image2corr.png} \end{center}
@@ -308,7 +363,7 @@ Les courants max sont :
     \item $I_{D2} = \frac{0.25}{10} = 25mA$
     \item $I_{D1} = I_{R1} + I_{D2} = 215mA$
 \end{itemize}
-La puissance dissipée par D1 est : $P_{D1} = U_{D1}*I_{D1} = 215mA*1.1V = 0.24W$
+La puissance maximale dissipée par D1 est : $P_{D1} = U_{D1}*I_{D1} = 215mA*1.1V = 0.24W$
 }
 \includepdf[pages={1},scale=0.9,pagecommand={\pagestyle{plain}}]{nte3019.pdf}
 \includepdf[pages={1-2},scale=0.9,pagecommand={\pagestyle{plain}}]{1n4001.pdf}
