@@ -31,6 +31,9 @@
 \correction{true}
 \fi
 
+
+% \correction{true}
+
 \author{The Fantastic Four}
 
 
@@ -39,7 +42,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 5 : transistors MOS}
-\rhead{v1.1.1\\ page \thepage}
+\rhead{v1.2.0\\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -108,40 +111,40 @@ L’objectif de cette question est de vous familiariser avec les notations des d
 Soit le schéma électrique du transistor MOS et son équivalent à petit signal~:
 
 \ifthenelse{\boolean{corrige}}{ %if, then
-\begin{center}
-%\shorthandoff{:!}
-\color{blue}
-		\begin{circuitikz} \draw
-		(2.25, 1) node[nfet] (mos) {}
-%		(0,0) -- (2,2)
-%		(0,0) node[nfet]{} -- (2,2)
-		%(mos.B) node[anchor=west] {B}
-		%(mos.G) node[anchor=east] {}		
-		(mos.D) -- (2.25, 2) to  [short, -o, i<=$I_D$](3.25, 2)  node[anchor=west] {D} %D		
-		(mos.S) -- (2.25, 0) to [short, -o](3.25, 0)  node[anchor=west] {S} %S		
-		(mos.B) -- (mos.S)
-		(2.25,0) to [short, -o](0,0)  node[anchor=east] {S} %S		
-		(0,2)  node[anchor=east]{G}[short, o-] to  (1,2) %G
-		(1,2) -- (1,1) -- (mos.G)
-		(0,0) [open,v^>=$V_{GS}$] to (0,2)
-		(3.25,0) [open,v>=$V_{DS}$] to (3.25,2)
-		%(gin) -- (mos.G)
-		;\end{circuitikz}\hspace*{1cm}
-		\begin{circuitikz}\draw
-		(0,0) node[anchor=east] {g} %g
-		to [short, o-] (1,0) 
-		to [open, v<=$v_{gs}$] (1,-2)
-		to [short, -o] (4,-2)
-		to [short, -o] (0,-2) node[anchor=east] {s} %s
-		%to [short] (3,-2)
-		(3,0) to [cI, i_=\rotatebox{90}{$g_m\cdot v_{gs}$}] (3,-2)
-		(3,-2) to [short, -o] (4,-2) node[anchor=west] {s} %s
-		(3,0) to [short, -o] (4,0)
-		to node[anchor=west] {d} (4,0) %d
-		(4.0,-2) [open,v>=$v_{ds}$] to (4.0,0)
-	;\end{circuitikz}
-%\shorthandon{:!}		
-	\end{center}
+% \begin{center}
+% %\shorthandoff{:!}
+% \color{blue}
+% 		\begin{circuitikz} \draw
+% 		(2.25, 1) node[nfet] (mos) {}
+% %		(0,0) -- (2,2)
+% %		(0,0) node[nfet]{} -- (2,2)
+% 		%(mos.B) node[anchor=west] {B}
+% 		%(mos.G) node[anchor=east] {}		
+% 		(mos.D) -- (2.25, 2) to  [short, -o, i<=$I_D$](3.25, 2)  node[anchor=west] {D} %D		
+% 		(mos.S) -- (2.25, 0) to [short, -o](3.25, 0)  node[anchor=west] {S} %S		
+% 		(mos.B) -- (mos.S)
+% 		(2.25,0) to [short, -o](0,0)  node[anchor=east] {S} %S		
+% 		(0,2)  node[anchor=east]{G}[short, o-] to  (1,2) %G
+% 		(1,2) -- (1,1) -- (mos.G)
+% 		(0,0) [open,v^>=$V_{GS}$] to (0,2)
+% 		(3.25,0) [open,v>=$V_{DS}$] to (3.25,2)
+% 		%(gin) -- (mos.G)
+% 		;\end{circuitikz}\hspace*{1cm}
+% 		\begin{circuitikz}\draw
+% 		(0,0) node[anchor=east] {g} %g
+% 		to [short, o-] (1,0) 
+% 		to [open, v<=$v_{gs}$] (1,-2)
+% 		to [short, -o] (4,-2)
+% 		to [short, -o] (0,-2) node[anchor=east] {s} %s
+% 		%to [short] (3,-2)
+% 		(3,0) to [cI, i_=\rotatebox{90}{$g_m\cdot v_{gs}$}] (3,-2)
+% 		(3,-2) to [short, -o] (4,-2) node[anchor=west] {s} %s
+% 		(3,0) to [short, -o] (4,0)
+% 		to node[anchor=west] {d} (4,0) %d
+% 		(4.0,-2) [open,v>=$v_{ds}$] to (4.0,0)
+% 	;\end{circuitikz}
+% %\shorthandon{:!}		
+% 	\end{center}
 } %/then
 { %else
 \begin{center}
@@ -404,7 +407,7 @@ Soit le circuit suivant :
 	
 	}
 	{%
-	Voir schéma ci dessus et courbes en annexe.
+	Voir schéma ci-dessus et courbes en annexe.
 	
 	Pour $V_{GS}=3.1V, I_D=67mA$, $g_m=197mS$.
 	}
@@ -424,7 +427,7 @@ Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
  \begin{itemize}
  \item Déterminer le schéma à petit signal du montage présenté à la question 4.
  \item Calculer le gain du montage dans la bande passante. Les condensateurs peuvent être assimilés à des court-circuits dans la bande passante du montage.
- \item Calculer les impédances d'entrée et de sortie du montage.
+ \item Calculer les impédances d'entrée et de sortie du montage. Attention, la charge ne fait pas partie de l'impédance de sortie du montage.
  \item Donner l'expression des impédances d'entrée et de sortie pour toute fréquence (\textit{i.e.} l'approximation du premier point n'est plus valable).
  \item Calculer la fréquence de coupure à l'entrée et à la sortie du montage.
  \item Bonus : Établir la fonction de transfert complète du montage. Quel est le comportement de ce montage ?
@@ -433,9 +436,10 @@ Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
 
 }
 {%answer
-
+\begin{enumerate}
+	\item Considérons d'abord le montage le plus simple où les condensateurs sont remplacés par des court-circuits à la fréquence de $V_{in}$.
 \begin{itemize}
-\item Schéma à petit signal :
+\item \textbf{Schéma à petit signal}
 \begin{center}
 			%\includegraphics[width=8cm]{}
 			\begin{circuitikz}[scale=0.8]\draw
@@ -448,11 +452,11 @@ Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
 			(2,3) to [R, l_=$R_{b1}$](2,0)
 			(3,3) to [R=$R_{b2}$](3,0)
 			(3,3) to [short,-o](4,3) node [anchor=west] {} 
-			(4,3) to [open, v^<=$v_{g}$](4,0)
+			(4,3) to [open, v^<=$v_{gs}$](4,0)
 			%(4,3) node[nigfetec] (mos) {}
 			%(mos.B) node[anchor=west] {B}
 			%(mos.G) to [short] (2,3)	
-			(6,3) to [cI=\rotatebox{90}{$g_m \cdot v_{g}$}] (6,0)
+			(6,3) to [cI=\rotatebox{90}{$g_m \cdot v_{gs}$}] (6,0)
 			(8.5,0) to [R,l_=$R_D$] (8.5,3)			
 			%(mos.D) to [short](4,3.5)  to [short] (4.25,3.5)
 			%(mos.S) to [short] (4,0)% to [short, -o](2,0)  node[anchor=west] {S}
@@ -471,28 +475,157 @@ Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
 	%			(3,0) to [cI=$ g_m \cdot V_{GS}$] (3,-2)
 	%			(3,-2) to [short, -o] (4,-2) node[anchor=west] {S}
 	%			(3,0) to [short, -o] (4,0)
-	%			to node[anchor=west] {D} (4,0)
+	%			to node[anchor=west] {D} (4,0)%\ithenelse{\boolen{corrige}}{
+			(4,0) node[circ]{}
+			(4,0) node[ground]{}
 			;\end{circuitikz}
 		\end{center}
 		
-	\item Si on considère les condensateurs comme des courts-circuits, le gain du montage vaut $A=-g_m\cdot \left(R_D//R_ch\right)$.
-	\item L'impédance d'entrée du circuit vaut $Z_{in}=R_{b1}//R_{b2}$. L'impédance de sortie vaut $Z_{out}=R_D$ (la charge étant indépendante, il suffit de faire l'équivalent de Thévenin de la source de courant et $R_D$).
-	\item Si on ne considère plus les condensateurs comme des court-circuits, on obtient : $$Z_{in}=\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}$$
-	De même, on obtient : $$Z_{out}=R_D+\frac{1}{jC_{out}\omega}$$
-	\item Ce qui permet de déduire que : $$f_{c_{in}}=\frac{1}{2\pi\cdot\left(R_{b1}//R_{b2}\right)\cdot C_{in}}$$
-	et comme la charge influe sur la fréquence de coupure :$$f_{c_{out}}=\frac{1}{2\pi\cdot\left(R_{D}+R_{ch}\right)\cdot C_{out}}$$
-	\item On a donc :
-		$$v_{gs}=\frac{R_{b1}//R_{b2}}{\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}}v_{in}$$
-		$$i_d=-g_m\cdot v_{gs} $$
-		$$v_{out}=\frac{R_{ch}}{R_D+\frac{1}{jC_{out}\omega}+R_{ch}}\cdot i_d \cdot R_D$$
-		Ce qui permet de conclure :
-		$$v_{out}=-\frac{R_{ch}}{R_D+\frac{1}{jC_{out}\omega}+R_{ch}}\cdot R_D \cdot g_m\cdot\frac{R_{b1}//R_{b2}}{\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}}v_{in}$$
+	\item \textbf{Gain du montage :}
+	Dans la partie gauche du montage, on a $v_{gs} = V_{in}$.
+	À droite, $V_{out} = - i_d \cdot (R_D // R_{ch})$, où $i_d = g_m \cdot v_{gs}$.
+	Le gain du montage vaut donc \[A=-g_m\cdot \left(R_D//R_{ch}\right)\]
+
+	\item \textbf{Impédances d'entrée et de sortie :} Pour calculer une impédance d'entrée, on place une source de tension virtuelle $V_x$ à l'extrémité du montage tout en \textit{annulant} toutes les autres sources. Cette source $V_x$ débitant un courant $i_x$, on peut déterminer l'impédance du montage en calculant $Z = \frac{V_x}{i_x}$.
+	
+	\begin{center}
+		\begin{circuitikz}[scale=0.8]\draw
+		(1,0) to [short,o-o] (4,0)
+		(1,3) node[anchor=east] {} to [short,o-] (1,3)
+		(1,3) to [open, v_<=$V_x$]  (1,0)
+		(1,3) to [short, i=$i_x$] (2,3)
+		(2,3) to [short] (3,3)
+		(2,3) to [R, l_=$R_{b1}$](2,0)
+		(3,3) to [R=$R_{b2}$](3,0)
+		(3,3) to [short,-o](4,3) node [anchor=west] {} 
+		(4,3) to [open](4,0)
 		
-		Il s'agit d'un filtre passe-haut du second ordre.
-		On constate que le gain dépend de la charge et que le montage est inverseur.
-\end{itemize}
+		(2.5,0) node[circ]{}
+		(2.5,0) node[ground]{}
+		;\end{circuitikz}
+	\end{center}
+
+	L'impédance d'entrée du circuit vaut $Z_{in}=R_{b1}//R_{b2}$. 
 	
 
+	Pour l'impédance de sortie, on ne prend pas en compte la résistance de charge.
+	On souhaite déterminer l'impédance de sortie du \textit{montage} afin notamment de déterminer si on a une bonne adaptation d'impédance avec la charge connectée en aval.
+	De plus, il faut annuler la source de courant $i_d$ qui devient un circuit ouvert.
+\begin{center}
+	\begin{circuitikz}[scale=0.8]\draw
+	
+	(6,3) to [short] (6,2)
+	(6,0) to [short] (6,1)
+	(8.5,0) to [R,l_=$R_D$] (8.5,3)	
+	% (10,3) to [generic, l=$R_{ch}$] (10,0)
+	(6,3) to [short,-o] (11,3) node [anchor=west] {}
+	(11,3) to [short, i=$i_x$] (9,3)
+	(11,3) to [open, v^<=$V_x$](11,0)
+	(7,0) node[circ]{}
+	(7,0) node[ground]{}
+	(6,0) to [short,-o] (11,0)
+	;\end{circuitikz}
+\end{center}
+	
+	
+	L'impédance de sortie vaut $Z_{out}=R_D$.
+	\end{itemize}
+
+	\item Si on ne considère plus les condensateurs comme des court-circuits, on obtient :
+	\begin{itemize}
+	\item \textbf{Le montage à petit signal devient :}
+	\begin{center}
+		\begin{circuitikz}[scale=0.8]\draw
+		(0,0) to [short,o-o] (11,0)
+		(0,3) node[anchor=east] {In} to [short,o-] (0,3)
+		(0,3) to [open, v_<=$V_{in}$]  (0,0)
+		(0.5,3) to [C=$C_{in}$](1.5,3)
+		(0,3) to [short] (0.5,3)
+		(1.5,3) to [short] (3,3)
+		(2,3) to [R, l_=$R_{b1}$](2,0)
+		(3,3) to [R=$R_{b2}$](3,0)
+		(3,3) to [short,-o](4,3) node [anchor=west] {} 
+		(4,3) to [open, v^<=$v_{gs}$](4,0)
+		(6,3) to [cI=\rotatebox{90}{$g_m \cdot v_{gs}$}] (6,0)
+		(7.5,0) to [R,l_=$R_D$] (7.5,3)
+		(8,3) to [C=$C_{out}$](9,3)
+		(6,3) to [short] (8,3)
+		(10,3) to [generic, l=$R_{ch}$] (10,0)
+		(9,3) to [short,-o] (11,3) node [anchor=west] {Out}
+		(11,3) to [open, v^<=$V_{out}$](11,0)
+		(4,0) node[circ]{}
+		(4,0) node[ground]{}
+		;\end{circuitikz}
+	\end{center}
+	\item \textbf{Gain du montage : } Remplaçons la résistance équivalante à $R_{B1} // R_{B2}$ par $R_B$ par clarté. Cette fois-ci, la partie gauche du montage nous donne un diviseur impédant : \[v_{gs} = V_{in} \cdot \frac{R_B}{R_B + Z_{Cin}}\]
+	où $Z_{Cin} = \frac{1}{j\omega C_{in}}$
+
+	Dans la partie droite du montage, nous avons :
+	\begin{center}
+		\begin{circuitikz}[scale=0.8]\draw
+		(6,3) to [cI_=$i_d$] (6,0)
+		(7.5,0) to [R,l_=$R_D$] (7.5,3)
+		(7.5,0) to [short,i=$i_1$] (7.5,0.5)
+		(8,3) to [C=$C_{out}$](9,3)
+		(10,3) to [short,i=$i_3$] (9,3)
+		(10,3) to [generic, l=$R_{ch}$] (10,0)
+		(10,0) to [short,i=$i_2$] (10,0.5)
+		(9,3) to [short,-o] (11,3) node [anchor=west] {Out}
+		(6,3) to [short] (8,3)
+		(11,3) to [open, v^<=$V_{out}$](11,0)
+		(7,0) node[circ]{}
+		(7,0) node[ground]{}
+		(6,0) to [short] (11,0)
+		;\end{circuitikz}
+	\end{center}
+
+	Dès lors, $i_2 = i_3$ et $i_d = i_1 + i2$. En posant $V_{out} = - i_2 \cdot R_{ch}$, on peut résoudre un système nous donnant le gain du montage : 
+	\[A = -g_m \cdot \frac{R_B}{Z_{Cin} + R_B} \cdot R_{ch} \cdot \frac{R_D}{R_D + R_{ch} + Z_{Cout}}\]
+	où $R_{Cout} = \frac{1}{j\omega C_{out}}$
+		
+	Il s'agit d'un filtre passe-haut du second ordre.
+	On constate que le gain dépend de la charge et que le montage est inverseur.
+
+	
+	\item \textbf{Impédances d'entrée et de sortie.}
+	
+	Si on ne considère plus les condensateurs comme des court-circuits, on obtient pour l'impédance d'entrée : $$Z_{in}=\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}$$
+
+	De même, on obtient : $$Z_{out}=R_D+\frac{1}{jC_{out}\omega}$$
+	puisque les $C_{out}$ et $R_D$ sont bien parcourus par le même courant virtuel $i_x$ dans le calcul de cette impédance de sortie.
+
+	\item \textbf{Fréquences de coupure des filtres en entrée et en sortie : }
+	En entrée, nous avons un simple filtre RC où la sortie est prise sur la mise en parallèle des deux résistance.
+	Nous pouvons donc en déduire que : $$f_{c_{in}}=\frac{1}{2\pi\cdot\left(R_{b1}//R_{b2}\right)\cdot C_{in}}$$
+
+	En sortie, la charge influe sur la fréquence de coupure. Nous avons donc un montage comme suit :
+	\begin{center}
+		\begin{circuitikz}[scale=0.8]\draw
+		(6,0) to [open, v^=$V_{in}$] (6,3)
+		(7,3) to [generic, l=$Z_{out}$](10,3)
+		(10,3) to [generic, l=$R_{ch}$] (10,0)
+		(6,3) to [short] (7,3)
+		(10,3) to [short,-o] (11,3)
+		(11,3) to [open, v^<=$V_{out}$](11,0)
+		(7,0) node[circ]{}
+		(7,0) node[ground]{}
+		(6,0) to [short] (11,0)
+		;\end{circuitikz}
+	\end{center}
+
+	où $Z_{out}$ est l'impédance de sortie déterminée précédemment et résultait de la mise en série de $R_D$ et $C_{out}$.
+	Nous retrouvons ainsi un filtre RC composé de l'impédance de sortie et de la charge dont nous pouvons déterminer la fréquence de coupure :
+
+	$$f_{c_{out}}=\frac{1}{2\pi\cdot\left(R_{D}+R_{ch}\right)\cdot C_{out}}$$
+	% \item On a donc :
+	% 	$$v_{gs}=\frac{R_{b1}//R_{b2}}{\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}}v_{in}$$
+	% 	$$i_d=-g_m\cdot v_{gs} $$
+	% 	$$v_{out}=\frac{R_{ch}}{R_D+\frac{1}{jC_{out}\omega}+R_{ch}}\cdot i_d \cdot R_D$$
+	% 	Ce qui permet de conclure :
+	% 	$$v_{out}=-\frac{R_{ch}}{R_D+\frac{1}{jC_{out}\omega}+R_{ch}}\cdot R_D \cdot g_m\cdot\frac{R_{b1}//R_{b2}}{\frac{1}{jC_{in}\omega}+R_{b1}//R_{b2}}v_{in}$$
+\end{itemize}
+	
+\end{enumerate}
 
 }
 
