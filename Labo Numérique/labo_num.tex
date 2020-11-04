@@ -26,6 +26,7 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage[normalem]{ulem}
+\usepackage{todonotes}
 
 %%%%%%%%%%%%
 % Tables
@@ -339,6 +340,11 @@ Les opérations logiques usuelles sont :
 }{}
 \end{manip}
 
+
+
+
+\subsection{Temps de propagation des signaux}
+
 \begin{predet}
 \Question{
 	Complétez le chronogramme ci-dessous en considérant que la porte \texttt{NOT} a un temps de propagation de 10ns et que la porte \texttt{AND} a un temps de propagation de 20 ns.
@@ -405,16 +411,81 @@ Les opérations logiques usuelles sont :
 }{}
 \end{predet}
 
-% \Question{
-% 	Mettez en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
-% 	\begin{itemize}
-% 	\item Brancher $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
-% 	\item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
-% 	\item brancher $Y$ sur \verb!CH2!,
-% 	\item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
-% 	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
-% 	\label{Q:1}
-% }{}
+\begin{manip}
+Vous allez à présent mesurer le temps de propagation de l'une de vos portes \texttt{OR} à l'aide de l'oscilloscope.
+À cette fin, vous allez brancher une sonde à la sortie de l'interrupteur et une seconde à la sortie de la porte logique.
+Lorsqu'elle changera de l'état bas à l'état haut, vous pourrez observer l'écart entre les deux signaux qui est dû au délai de propagation du composant.
+
+Voici le montage que vous devez réaliser :
+\todo[inline]{Montage interrupteur - porte OR - sortie avec sondes A et B}
+
+Configurez le logiciel du Picoscope de la façon suivante~:
+\begin{description}
+	\item[Trigger $\rightarrow$ single] On ne veut faire qu'une seule acquisition.
+	\item[Trigger Channel $\rightarrow$ A] C'est au changement d'état du canal A que l'acquisition doit démarrer.
+	\item[Rising Edge] On veut observer une transition de l'état bas (0 V) vers l'état haut (5 V).
+	\item[Threshold $\rightarrow$ 3 V] Lorsque le canal A atteint 3 V sur un flanc montant, l'acquisition doit être déclenchée.
+	\item[Pre-Trigger $\rightarrow$ 50~\%] Le déclenchement de l'acquisition sera au milieu de la fenêtre~: 50~\% avant et 50~\% après.
+	\item[Échelle temporelle $\rightarrow$ 200 ns/div] 
+\end{description}
+
+Vous devriez voir le bandeau suivant en bas de votre fenêtre~:
+\begin{figure}[H]
+	\includegraphics{trigger-pico-config.png}
+\end{figure}
+
+\Question{\label{q:mesure-delai}
+	Préparez votre prise de mesure~:
+	\begin{itemize}
+		\item Placez l'interrupteur en position « 0 V ».
+		\item Appuyez sur « Go » dans le logiciel~: \includegraphics{pico-go.png}
+		\item Passez l'interrupteur à « 5 V ».
+	\end{itemize}
+
+	Mesurez le délai de propagation lorsque les signaux passent à 2.5~V.
+
+	\begin{astuce}
+		Veillez à utiliser les mêmes types de sonde pour les deux canaux afin de limiter les écarts de mesure.
+	\end{astuce}
+}{}
+
+\Question{
+	Quelle est la valeur \textit{typique} renseignée dans les caractéristiques dynamiques de la fiche technique du 74HC32 ?
+	\begin{astuce}
+		Aidez-vous des chronogrammes schématiques se trouvant dans la fiche technique, ils expliquent les acronymes utilisés.
+	\end{astuce}
+}{6 ns à 25°C et avec un CL de 15pf.
+On peut trouve l'input capacitance de la sonde de l'oscillo dans la datasheet du picoscope 2204A, elle est de 1Mohm//15pF +- 2pF.}
+
+\Question{
+	Quelle est le plus petit intervalle de temps que vous pouvez mesure avec le picoscope 2204A ?
+	\begin{astuce}
+		Vous trouverez la réponse dans sa fiche technique. On y indique notamment qu'il peut capturer 100 millions d'échantillons par seconde (100MS/s).
+	\end{astuce}
+}{10 ns}
+
+\Question{
+	À la lumière de ces résultats, critiquez la pertinence de votre mesure à la question~\ref{q:mesure-delai}.
+}{}
+
+\end{manip}
+\begin{manip}
+\Question{
+	Mettez en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
+	\begin{itemize}
+	% \item Branchez $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
+	% \item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
+	% \item brancher $Y$ sur \verb!CH2!,
+	% \item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
+	\item Branchez une sonde de l'oscilloscope à la sortie de l'interrupteur \texttt{A},
+	\item branchez la deuxième sonde à la sortie de la porte \texttt{AND} connectée à \texttt{A},
+	\item réglez le niveau de déclenchement du picoscope sur une pente montate du channel A (connecté à l'interrupteur A).
+	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
+	\label{Q:1}
+}{}
+\end{manip}
+\todo[inline]{Ajouter une image du montage à réaliser, où brancher les sondes.}
+\todo[inline]{Réaliser une courte vidéo de mise à jour pour cette opération.}
 
 \newpage
 \section{Logique séquentielle, mémorisation}
@@ -851,6 +922,9 @@ Modifiez le schéma précédent comme suit :
 
 \Question{
 	Constatez que vous pouvez encore atteindre l'état « interdit » $Q = \overline{Q}$.
+	\begin{astuce}
+		On parle d'état «~interdit~» parce que les sorties $Q$ et $\overline{Q}$ doivent être complémentaires (opposées) par convention.
+	\end{astuce}
 }{}
 \end{manip}
 
@@ -928,7 +1002,7 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 
 \begin{predet}
 \Question{
-	Peut-on, à votre avis, modifier D n'importe quand ?
+	Peut-on, à votre avis, modifier D n'importe quand sans peur de provoquer une sortie «~interdite~» ?
 	\label{Q:1}
 }{}
 \end{predet}
