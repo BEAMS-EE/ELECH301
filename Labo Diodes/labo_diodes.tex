@@ -78,7 +78,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 2 : Montages à diodes \ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v3.0.0\\ page \thepage}
+\rhead{v3.0.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -312,6 +312,7 @@ Voici le schéma d'un redresseur simple alternance :
 			to [Do] (3,3)
 			to [european resistor,l_=$Z_{Charge}$] (3,0) to (0,0)
 			(3.5,3) to [open, v^<=$V_{charge}$] (3.5,0)
+			(3,3.2) to [open, v=$V_D$] (0,3.2)
 		;\end{circuitikz}
 	\end{center}
 \caption{redresseur simple alternance}
@@ -322,7 +323,7 @@ Voici le schéma d'un redresseur simple alternance :
 \begin{predet}
 \Question
 {
-	Tracez la tension aux deux bornes de la diode. Précisez l'état de la diode. Utilisez une tension de seuil de 1V pour simplifier (\textit{cf} \href{https://www.vishay.com/docs/88638/gp15a.pdf}{documentation GP15B}).%\marginpar{donner un graphe ???}
+	Tracez les tensions $V_{ac}$, $V_{charge}$ et $V_D$. Précisez l'état de la diode. Utilisez une tension de seuil de 1V pour simplifier (\textit{cf} \href{https://www.vishay.com/docs/88638/gp15a.pdf}{documentation GP15B}).%\marginpar{donner un graphe ???}
 }
 {Courbes $V_{ac}$ et $V_{ch}$ du graphe précédent.}%R
 	\label{Q:7}
@@ -337,7 +338,7 @@ Voici le schéma d'un redresseur simple alternance :
 
 \Question
 {
-	La tension de sortie est-elle stable, continue ? Que proposez-vous comme solution pour augmenter cette stabilité ?
+	La tension de sortie $V_{charge}$ est-elle stable, continue ? Que proposez-vous comme solution pour augmenter cette stabilité ?
 }
 {Non, ajouter une capacité de filtrage.}%R
 	\label{Q:9}
