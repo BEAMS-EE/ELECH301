@@ -11,7 +11,6 @@
 \usepackage[all]{hypcap} %lien pointe en haut des figures
 \usepackage[french]{varioref} %voir x p y
 \usepackage{fancyhdr}% en têtes
-%\input cyracc.def
 \usepackage[]{graphicx} %include pictures
 \usepackage{tikz}
 \usetikzlibrary{babel,positioning,calc}
@@ -213,7 +212,7 @@ d'où : $${P_T}_{max}=\frac{E^2}{4\cdot R_D}$$
 
 finalement : $$R_D=\frac{E^2}{4\cdot {P_T}_{max}}$$
 
-AN : $$R_D=90 \Omega @E=12 V$$
+AN : $$R_D=96 \Omega @E=5 V$$
 
 \label{Q:predet}
 }
@@ -274,7 +273,7 @@ Déduisez-en l'amplitude maximale possible en sortie pour le point de fonctionne
 	Un point de fonctionnement judicieux se trouvera dans la zone « passante » du transistor, c'est-à-dire sur la caractéristique de transfert dans l'abscisse est une tension supérieure à la tension de seuil.
 }
 \end{predet}
-
+\clearpage
 
 
 %  #######   ########    #######            #######     #####    ##       ##  
@@ -428,7 +427,7 @@ Bien que cette relation soit valable quel que soit le régime de fonctionnement 
 \begin{manip}
 \Question{ Vérifiez expérimentalement votre résultat.
 	\begin{astuce}
-	Le mode XY de l'oscilloscope vous permet d'afficher directement $V_{out}$ (i.e. $V_{ds}$ en fonction de $V_{in}$ (i.e. $V_{gs}$).
+	Le mode XY de l'oscilloscope vous permet d'afficher directement $V_{out}$ (i.e. $V_{ds}$) en fonction de $V_{in}$ (i.e. $V_{gs}$).
 	\end{astuce}
 	Indiquez sur votre relevé les limites d'écrêtage et de linéarité, comparez avec le résultat de la question~\ref{Q:Q9}.
 \label{Q:gain}
@@ -459,6 +458,7 @@ Le mode XY permet de constater l'effet de la polarisation sur le gain et sur l'�
 
 % Les 2 cas de la question précédente peuvent être considérés.
 % }
+\clearpage
 
 \section{Impact des paramètres du montage}
 \begin{predet}
@@ -484,6 +484,15 @@ Si $R_D$ change, \textit{a priori} $I_D$ change aussi et $g_m$ également. La re
 }
 {}
 \end{manip}
+
+\begin{predet}
+\Question{
+	Quelle sera la puissance dissipée par le transistor si vous utilisez une charge de $56 \si{\ohm}$ ou $150 \si{\ohm}$ ?
+	En vous référant à la fiche technique du transistor, quelle puissance le TN0604N3-G est-il capable de dissiper ?
+	Était-il raisonnable de vous faire réaliser le montage avec $56 \si{\ohm}$ malgré le dimensionnement de la question~\ref{Q:det_rd} ?
+}
+{max 0.74 W à 25°C.}
+\end{predet}
 
 \begin{predet}
 \Question{~
