@@ -130,7 +130,7 @@ Chapitres \no 24 et \no 25  du livre de référence (ed 5).\\ En particulier :
 		\multirow{1}{*}{Résistance} 	& 330 & $\si{\ohm}$ & x2 \\\midrule
 		LED TLHR5400 & & & x2 \\\bottomrule
 	\end{tabular}
-	\end{center}
+\end{center}
 
 \subsection{Prédéterminations}
 Les questions \ref{Q:tv1}, \ref{Q:tv2}, \ref{Q:AND-NAND}, \ref{Q:chrono}, \ref{Q:rs_deb} à \ref{Q:rs_fin} et \ref{Q:dlatch} doivent être faites \textbf{avant} l'arrivée au laboratoire.
@@ -417,20 +417,48 @@ Vous allez à présent mesurer le temps de propagation de l'une de vos portes \t
 Lorsqu'elle changera de l'état bas à l'état haut, vous pourrez observer l'écart entre les deux signaux qui est dû au délai de propagation du composant.
 
 Voici le montage que vous devez réaliser :
-\todo[inline]{Montage interrupteur - porte OR - sortie avec sondes A et B}
+
+\begin{center}
+	\begin{circuitikz} \draw 
+
+	(0,0) node [american or port] (or) {\small{\texttt{OR}}}
+
+	(-3,0.3) node[cute spdt mid arrow,xscale=-1] (sw) {}
+
+	($(sw.out 1)-(1,0)$) node {\texttt{+5 V}} % 5V label
+	(sw.out 1) node[rground, yscale=-1, rotate=-90] (alim) {} % 5V alim
+
+	(or.in 1) node[circle,fill,inner sep=1.5pt] () {}
+	(or.in 1) to [bend left] ($(or.in 1)+(1,1)$) node [right] (chanA) {\texttt{Canal A}}
+
+	(sw.out 2) node [ground, rotate=-90] {} % ground
+	(sw.in) -- (or.in 1)
+
+	($(or.in 2)-(0.5,0)$) node [ground] {} to (or.in 2)
+
+	(or.out) node[circle,fill, inner sep=1.5pt] () {}
+	(or.out) to [bend right] ($(or.out)+(1,-0.5)$) node [right] (chanB) {\texttt{Canal B}}
+	(or.out) to [short] ($(or.out)+(0.5,0)$)
+
+	;\end{circuitikz}
+\end{center}
 
 Configurez le logiciel du Picoscope de la façon suivante~:
-\begin{description}
-	\item[Trigger $\rightarrow$ single] On ne veut faire qu'une seule acquisition.
-	\item[Trigger Channel $\rightarrow$ A] C'est au changement d'état du canal A que l'acquisition doit démarrer.
-	\item[Rising Edge] On veut observer une transition de l'état bas (0 V) vers l'état haut (5 V).
-	\item[Threshold $\rightarrow$ 3 V] Lorsque le canal A atteint 3 V sur un flanc montant, l'acquisition doit être déclenchée.
-	\item[Pre-Trigger $\rightarrow$ 50~\%] Le déclenchement de l'acquisition sera au milieu de la fenêtre~: 50~\% avant et 50~\% après.
-	\item[Échelle temporelle $\rightarrow$ 200 ns/div] 
-\end{description}
+\begin{center}
+	\begin{tabular}{rlp{0.5\textwidth}}
+		Paramètre & Réglage & Commentaire \\\toprule
+		Trigger & Single & On ne veut faire qu’une seule acquisition. \\\midrule
+		Trigger Channel & A & C'est au changement d'état du canal A que l'acquisition doit démarrer. \\\midrule
+		Rising Edge & & On veut observer une transition de l'état bas (0 V) vers l'état haut (5 V). \\\midrule
+		Threshold & 3 V & Lorsque le canal A atteint 3 V sur un flanc montant, l'acquisition doit être déclenchée. \\\midrule
+		Pre-Trigger & 50~\% & Le déclenchement de l'acquisition sera au milieu de la fenêtre~: 50~\% avant et 50~\% après. \\\midrule
+		Échelle temporelle & 200 ns/div &  \\\bottomrule
+	\end{tabular}
+\end{center}
 
 Vous devriez voir le bandeau suivant en bas de votre fenêtre~:
 \begin{figure}[H]
+	\centering
 	\includegraphics{trigger-pico-config.png}
 \end{figure}
 
@@ -450,7 +478,7 @@ Vous devriez voir le bandeau suivant en bas de votre fenêtre~:
 }{}
 
 \Question{
-	Quelle est la valeur \textit{typique} renseignée dans les caractéristiques dynamiques de la fiche technique du 74HC32 ?
+	Quelle est la valeur \textit{typique} renseignée dans les caractéristiques dynamiques de la fiche technique du \texttt{74HC32} ?
 	\begin{astuce}
 		Aidez-vous des chronogrammes schématiques se trouvant dans la fiche technique, ils expliquent les acronymes utilisés.
 	\end{astuce}
@@ -458,7 +486,7 @@ Vous devriez voir le bandeau suivant en bas de votre fenêtre~:
 On peut trouve l'input capacitance de la sonde de l'oscillo dans la datasheet du picoscope 2204A, elle est de 1Mohm//15pF +- 2pF.}
 
 \Question{
-	Quelle est le plus petit intervalle de temps que vous pouvez mesure avec le picoscope 2204A ?
+	Quelle est le plus petit intervalle de temps que vous pouvez mesurer avec le picoscope 2204A ?
 	\begin{astuce}
 		Vous trouverez la réponse dans sa fiche technique. On y indique notamment qu'il peut capturer 100 millions d'échantillons par seconde (100MS/s).
 	\end{astuce}
@@ -468,24 +496,58 @@ On peut trouve l'input capacitance de la sonde de l'oscillo dans la datasheet du
 	À la lumière de ces résultats, critiquez la pertinence de votre mesure à la question~\ref{q:mesure-delai}.
 }{}
 
-\end{manip}
-\begin{manip}
 \Question{
-	Mettez en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
-	\begin{itemize}
-	% \item Branchez $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
-	% \item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
-	% \item brancher $Y$ sur \verb!CH2!,
-	% \item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
-	\item Branchez une sonde de l'oscilloscope à la sortie de l'interrupteur \texttt{A},
-	\item branchez la deuxième sonde à la sortie de la porte \texttt{AND} connectée à \texttt{A},
-	\item réglez le niveau de déclenchement du picoscope sur une pente montate du channel A (connecté à l'interrupteur A).
-	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
-	\label{Q:1}
+	En supposant les délais de propagation identiques entre les différentes portes logiques d'un même package \texttt{74HC32}, connectez quatre portes \texttt{OR} en série et calculez le temps de propagation moyen à l'aide d'une nouvelle mesure.
+
+	\begin{center}
+		\begin{circuitikz} \draw 
+	
+		(0,0) node [american or port] (or) {\small{\texttt{OR}}}
+	
+		(-3,0.3) node[cute spdt mid arrow,xscale=-1] (sw) {}
+	
+		($(sw.out 1)-(1,0)$) node {\texttt{+5 V}} % 5V label
+		(sw.out 1) node[rground, yscale=-1, rotate=-90] (alim) {} % 5V alim
+	
+		(or.in 1) node[circle,fill,inner sep=1.5pt] () {}
+		(or.in 1) to [bend left] ($(or.in 1)+(1,1)$) node [right] (chanA) {\texttt{Canal A}}
+	
+		(sw.out 2) node [ground, rotate=-90] {} % ground
+		(sw.in) -- (or.in 1)
+	
+		($(or.in 2)-(0.5,0)$) node [ground] {} to (or.in 2)
+
+		(or.out) node [american or port, anchor=in 1] (or2) {\small{\texttt{OR}}}
+		(or2.out) node [american or port, anchor=in 1] (or3) {\small{\texttt{OR}}}
+		(or3.out) node [american or port, anchor=in 1] (or4) {\small{\texttt{OR}}}
+	
+		($(or2.in 2)-(0.5,0)$) node [ground] {} to (or2.in 2)
+		($(or3.in 2)-(0.5,0)$) node [ground] {} to (or3.in 2)
+		($(or4.in 2)-(0.5,0)$) node [ground] {} to (or4.in 2)
+	
+		(or4.out) node[circle,fill, inner sep=1.5pt] () {}
+		(or4.out) to [bend left] ($(or4.out)+(1,+1)$) node [right] (chanB) {\texttt{Canal B}}
+		(or4.out) to [short] ($(or4.out)+(0.5,0)$)
+		;\end{circuitikz}
+	\end{center}
 }{}
+
 \end{manip}
-\todo[inline]{Ajouter une image du montage à réaliser, où brancher les sondes.}
-\todo[inline]{Réaliser une courte vidéo de mise à jour pour cette opération.}
+% \begin{manip}
+% \Question{
+% 	Mettez en évidence le temps de propagation sur le circuit \textit{de la question~\ref{Q:tv2}}.
+% 	\begin{itemize}
+% 	% \item Branchez $A$ sur l'entrée de synchronisation de l'oscilloscope et l'utiliser pour le déclenchement de l'oscilloscope,
+% 	% \item brancher la sortie de $A\cdot(B+C)$ sur \verb!CH1!,
+% 	% \item brancher $Y$ sur \verb!CH2!,
+% 	% \item utiliser les curseurs et le retard par rapport au déclenchement pour déterminer les temps de propagation.
+% 	\item Branchez une sonde de l'oscilloscope à la sortie de l'interrupteur \texttt{A},
+% 	\item branchez la deuxième sonde à la sortie de la porte \texttt{AND} connectée à \texttt{A},
+% 	\item réglez le niveau de déclenchement du picoscope sur une pente montate du channel A (connecté à l'interrupteur A).
+% 	\end{itemize}%Utiliser l'entrée de synchronisation de l'oscilloscope comme référence.
+% 	\label{Q:1}
+% }{}
+% \end{manip}
 
 \newpage
 \section{Logique séquentielle, mémorisation}
@@ -707,28 +769,28 @@ R & S & $Q_n$ & $\overline{Q_n}$ & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\
 0 & 0 & 0 & 0 & ? & ? \\
 0 & 0 & 0 & 1 & 0 & 1 \\
 0 & 0 & 1 & 0 & 1 & 0 \\
-0 & 0 & 1 & 1 &  \multicolumn{2}{c}{impossible} \\
+0 & 0 & 1 & 1 &  \multicolumn{2}{c}{interdit} \\
 0 & 1 & 0 & 0 & 1 & 0 \\
 0 & 1 & 0 & 1 & 1 & 0 \\
 0 & 1 & 1 & 0 & 1 & 0 \\
-0 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+0 & 1 & 1 & 1 & \multicolumn{2}{c}{interdit}  \\
 1 & 0 & 0 & 0 & 0 & 1 \\
 1 & 0 & 0 & 1 & 0 & 1 \\
 1 & 0 & 1 & 0 & 0 & 1 \\
-1 & 0 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+1 & 0 & 1 & 1 & \multicolumn{2}{c}{interdit}  \\
 1 & 1 & 0 & 0 & 0 & 0 \\
 1 & 1 & 0 & 1 & 0 & 0 \\
 1 & 1 & 1 & 0 & 0 & 0 \\
-1 & 1 & 1 & 1 & \multicolumn{2}{c}{impossible}  \\
+1 & 1 & 1 & 1 & \multicolumn{2}{c}{interdit}  \\
 \end{tabular}
 \end{center}
 
 En entrée de la table, on met les 2 sorties stables à l'instant t et les entrée que l'on applique à ce
 même instant. En sortie de la table, on détermine l'état des 2 sorties à l'instant $t+t_p$, c'est-à-dire après le
 temps de propagation du bistable.
-Cette table de vérité peut être simplifiée, en effet, les états impossibles ne sont pas à prendre en
+Cette table de vérité peut être simplifiée, en effet, les états interdits ne sont pas à prendre en
 considération puisqu'ils ne seront jamais rencontrés. Il ne faut cependant pas confondre état
-impossible en entrée (lignes impossibles) et état indéterminé en sortie (ligne 1). La table devient:
+interdit en entrée (lignes « interdits ») et état indéterminé en sortie (ligne 1). La table devient:
 
 
 %table
