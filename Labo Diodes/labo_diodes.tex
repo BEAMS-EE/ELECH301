@@ -70,7 +70,7 @@
 %\fi
 
 \correction{false}
-%\correction{true}
+% \correction{true}
 
 \author{The Fantastic Four}
 
@@ -78,7 +78,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 2 : Montages à diodes \ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v3.0.1\\ page \thepage}
+\rhead{v3.0.3\\ page \thepage}
 \cfoot{}
 %%
 
@@ -245,15 +245,25 @@ Soit le montage de la Figure~\vref{fig:circuit_led}.
 
 	
 \Question
-{
+{\label{Q:1}
 	En prenant $R=\lbrace 100, 150, 330, 1000, \infty \rbrace \Omega$ et la tension de seuil indiquée dans la documentation de la LED \href{http://www.vishay.com/docs/83012/tlhg540.pdf}{TLHR5401} ($V_F$), mesurez et placez les cinq points correspondants sur le graphe de la Figure~\vref{fig:carac_LED}. Utilisez le protoboard et $V_{dc}=5V$.
 
 	\begin{astuce}
 		L'oscilloscope ne fonctionnant pas en ampèremètre, mesurez la tension aux bornes de la résistance et utilisez la loi d'Ohm pour en déduire le courant.
 	\end{astuce}
 }
-{Voir graphe.}%R
-	\label{Q:1}
+{
+\begin{center}
+	\begin{tabular}{ccc}
+		Résistance & $V_D$ & $I_D$ \\\toprule
+		$100 \si{\ohm}$ & $2.25 \si{\volt}$ & $26.6 \si{\milli\ampere}$ \\\midrule
+		$150 \si{\ohm}$ & $2.14 \si{\volt}$ & $18.9 \si{\milli\ampere}$ \\\midrule
+		$330 \si{\ohm}$ & $2.00 \si{\volt}$ & $9.3 \si{\milli\ampere}$ \\\midrule
+		$1000 \si{\ohm}$ & $1.84 \si{\volt}$ & $3.3 \si{\milli\ampere}$ \\\midrule
+		$\infty$ & $0 \si{\volt}$ & $0 \si{\milli\ampere}$ \\\bottomrule
+	\end{tabular}
+\end{center}
+}%R
 
 \Question
 {
@@ -333,7 +343,8 @@ Voici le schéma d'un redresseur simple alternance :
 	Tracez sur un même graphe l'allure du courant circulant dans le circuit en fonction du temps.
 }
 {Courbe rouge $I_{ch}$\\
-	\includegraphics[width=\linewidth]{mesures/simple_alternance.pdf}}%R
+	\includegraphics[width=\linewidth]{mesures/simple_alternance.pdf}
+	Note : ces courbes ont été tracées pour une tension $V_{ac}$ plus élevée que votre montage, mais les allures relatives restent d'application.}%R
 	\label{Q:8}
 
 \Question
@@ -348,12 +359,15 @@ Voici le schéma d'un redresseur simple alternance :
 \begin{manip}
 \Question
 {
-	Connectez le montage de la Figure~\ref{fig:red-simple-alt}. Utilisez comme source un signal de 1~kHz et d'amplitude 1V. Vérifiez vos prédéterminations expérimentalement (Attention à la polarité de votre diode).
+	Connectez le montage de la Figure~\ref{fig:red-simple-alt}. Utilisez comme source un signal de 100~Hz et d'amplitude 2V. Utilisez une résistance de $10 \si{\kohm}$ comme charge. Vérifiez vos prédéterminations expérimentalement (Attention à la polarité de votre diode).
 	\begin{astuce}
 		La bague argentée de la diode indique sa borne négative, sa cathode.
 	\end{astuce}
 }
-{}
+{
+	\includegraphics[width=\linewidth]{figures/redresseur_10k.png}
+	Attention, si on utilise une charge trop faible, la résistance de sortie de $600\si{\ohm}$ du générateur n'est plus négligeable.
+}
 \end{manip}
 
 
@@ -394,7 +408,9 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 	%Q
 	Tracez l'allure de $V_{charge}$ en tenant compte de la capacité.
 }
-{Voir graphe précédent, $V_{filtrée}$}%R
+{
+	\includegraphics[width=\linewidth]{figures/redresseur_10k_filtre.png}
+}%R
 	\label{Q:11}
 
 
@@ -402,7 +418,7 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 {
 	Tracez l'allure du courant circulant dans la charge. Indiquez les intervalles de charge et de décharge.
 }
-{Voir graphe précédent, courbe rouge $I_{filtrée}$}%R
+{}%R
 	\label{Q:12}
 \end{predet}
 
@@ -414,7 +430,7 @@ Effectuons un filtrage capacitif\footnote{Il est également possible d'effectuer
 \begin{itemize}
 \item Vérifiez expérimentalement. (\textbf{ATTENTION} à la polarité de votre condensateur).
 \begin{astuce}
-	La patte \textit{négative} d'un condensateur polarisé est plus longue.
+	La patte \textit{positive} d'un condensateur polarisé est plus longue.
 	De plus, le côté du composant le long de la borne \textit{négative} est estampillé de symboles \faMinus.
 \end{astuce}
 \item Placez une résistance de charge en parallèle avec le condensateur ; observez son effet sur $V_{charge}$ pour différentes valeurs.
@@ -472,12 +488,12 @@ Cette formule permet de dimensionner la valeur de la capacité à utiliser pour 
 	Mesurez $\Delta_V$ et comparez à la valeur calculée pour les mêmes paramètres. Les approximations faites à la question~\ref{Q:form-deltaV} sont-elles valables, optimistes ou pessimistes ?
 }
 {
-Pour le redresseur simple alternance, la fréquence est de 50~Hz, ce qui correspond à une prédiode $T$ de 20~ms.
+Pour le redresseur simple alternance, la fréquence est de 100~Hz, ce qui correspond à une prédiode $T$ de 10~ms.
 En pratique, $\Delta t$ sera légèrement plus faible que $T$, étant donné qu'il y a une courte période de charge à soustraire.
 
-Avec une charge de $180 \Omega$, un condensateur de $220 µF$, une amplitude $V_m$ de $9\cdot\sqrt{2}$ et un $\Delta t$ de 20~ms, on obtient un $\Delta V$ de $6.428 V$.
+Avec une charge de $10 \si{\kohm}$, un condensateur de $1 µF$, une amplitude maximale $V_m$ de $1.27 \si{\volt}$ et un $\Delta t$ de 7~ms, on obtient un $\Delta V$ de $0.889 \si{\volt}$, proche des $0.7 \si{\volt}$ mesuré.
 
-Avec une période réduite à 18~ms, on obtient des résultats plus proches de la réalité~: $5.78 V$ pour $180 \Omega$, $3.15 V$ pour $330 \Omega$ et $1.04 V$ pour $1 k\Omega$.
+% Avec une période réduite à 18~ms, on obtient des résultats plus proches de la réalité~: $5.78 V$ pour $180 \Omega$, $3.15 V$ pour $330 \Omega$ et $1.04 V$ pour $1 k\Omega$.
 
 }%R
 	\label{Q:15}
@@ -588,7 +604,10 @@ Vous pouvez condidérer que la capacité a une impédance nulle à la fréquence
 \label{Q:zener_4}
 \Question
 {Si l'entrée est une sinusoïde d'amplitude 0.5V, observez-vous encore un écrêtage du signal? Si en aval on veut placer un microcontrôleur 3.3V, ce circuit fournit-il une protection efficace? }
-{Le signal n'est plus écrêté. L'entrée du circuit est bien inférieure à 3.3V, mais n'exploite pas les tension au-dessus de 2.5V, ce qui peut être problématique. On peut envisager d'utiliser une Zener avec une tension Zener un peu plus élevée. }
+{Le signal n'est plus écrêté. L'entrée du circuit est bien inférieure à 3.3V, mais n'exploite pas les tension au-dessus de 2.5V, ce qui peut être problématique. On peut envisager d'utiliser une Zener avec une tension Zener un peu plus élevée.
+
+Attention, le circuit tel que dimensionné comporte un problème d'adaptation d'impédence entre le premier et le deuxième étage. Lorsque la diode Zener est en avalanche, une partie non négligeable du courant du diviseur résistif circule au sein du deuxième étage, diminuant la tension de décalage continue additionnée à $V_i$.
+Pour résoudre ce problème, il faudrait utiliser des résistances plus faibles pour le diviseur résistif (et un condensateur plus élevé afin de garder une fréquence de coupure acceptable) ou une résistance beaucoup plus élevée dans le deuxième étage.}
 \label{Q:zener_4}
 \Question
 {Quelle est la limite {\bf inférieure} du signal de sortie. Adaptez le circuit pour pouvoir vérifier cette limite expérimentalement. Comment expliquez-vous cette limite inférieure? }
