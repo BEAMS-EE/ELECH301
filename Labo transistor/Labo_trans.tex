@@ -229,7 +229,7 @@ Assemblez ce montage en utilisant un transistor TN0604N3-G et une résistance $R
 Relevez manuellement des points de la caractéristique  $I_D=f(V_{GS})$ pour $V_{GS}$ compris entre $0V$ et $2V$.
 
 \begin{astuce}
-	Pour aller plus loin, vous pouvez directement afficher la caractéristique en utilisant le mode XY de l'oscilloscope. Vous pourrez ainsi observer $V_{DS}$ en fonction de $V_{GS}$. Puisque $I_D = \frac{V_{DS} - E}{R_D}$, on peut retrouver la caractéristique par opération graphique.
+	Pour aller plus loin, vous pouvez directement afficher la caractéristique en utilisant le mode XY de l'oscilloscope. Vous pourrez ainsi observer $V_{DS}$ en fonction de $V_{GS}$. Puisque $I_D = \frac{E-V_{DS}}{R_D}$, on peut retrouver la caractéristique par opération graphique.
 \end{astuce}
 }
 {
@@ -402,7 +402,7 @@ On ajoute une capacité de découplage en entrée et en sortie et un pont résis
 \end{info}
 
 \begin{manip}
-\Question{Réalisez ce montage avec $V_{DC} = 5 V$, $E = 5 V$, $C_{in} = C_{out} = 10 \si{\nano\farad}$ et $R_{B1} = R_{B2} = 10 \si{\kohm}$.
+\Question{Réalisez ce montage avec $V_{DC} = 5 V$, $E = 5 V$, $C_{in} = C_{out} = 10 \si{\nano\farad}$ et $R_{B1} = 30 \si{\kohm},\ R_{B2} = 10 \si{\kohm}$.
 Dans un premier temps, considérez un montage à vide, c'est-à-dire sans résistance de charge $R_{ch}$.}{}
 \end{manip}
 
