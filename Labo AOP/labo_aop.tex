@@ -7,66 +7,88 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{siunitx}
 \usepackage{wasysym} %smiley
 \usepackage{hyperref}% hyperliens
 \usepackage{tikz}
 \usetikzlibrary{babel,positioning,calc}
-\usepackage[]{circuitikz}
+\usepackage[americanresistors]{circuitikz}
 \usepackage{textcomp}
 % \usepackage{minted}
 \usepackage[long]{datetime}
 \usepackage{gensymb} % \ohm, celsius
 \usepackage{framed}
 \usepackage{pdfpages}
-\usepackage{todo}
 \usepackage{paralist}
 \usepackage{multicol}
+\usepackage{todonotes}
 
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
 \usepackage{fancyhdr} %en-tête
 \usepackage{qrcode}
 
+%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.1} % Opens up the table a tad
+\usepackage{multicol}
+\usepackage{multirow}
+
 \langexam{frenchb}
 
+\newboolean{koriG}
+\ifx\koriG\undefined
 \correction{false}
- %\correction{true}
+\else
+\correction{true}
+\fi
+
+% \correction{false}
+%  \correction{true}
 
 \author{The Fantastic Four}
 
 
 %% fancy header & foot
 \pagestyle{fancy}
-\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 2 : Conception et réalisation d'un amplificateur audio\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.0.0\\ page \thepage}
+\lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 5 : Conception et réalisation d'un amplificateur audio\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
+\rhead{v3.0.0\\ page \thepage}
 \cfoot{}
 %%
 
-\pdfinfo{
-/Author (Raoul Sommeillier, ULB -- BEAMS)
-/Title (LABO 2 ELEC-H-301, Conception et réalisation d'un amplificateur audio)
-/ModDate (D:\pdfdate)
-}
+% \pdfinfo{
+% /Author (Raoul Sommeillier, ULB -- BEAMS)
+% /Title (LABO 2 ELEC-H-301, Conception et réalisation d'un amplificateur audio)
+% /ModDate (D:\pdfdate)
+% }
 
-\hypersetup{
-pdftitle={LABO 2 [ELEC-H-301] Électronique appliquée: Conception et réalisation d'un amplificateur audio},
-pdfauthor={ ULB - BEAMS  },
-pdfsubject={Conception et réalisation d'un amplificateur audio}
-}
+% \hypersetup{
+% pdftitle={LABO 2 [ELEC-H-301] Électronique appliquée: Conception et réalisation d'un amplificateur audio},
+% pdfauthor={ ULB - BEAMS  },
+% pdfsubject={Conception et réalisation d'un amplificateur audio}
+% }
 
 %\date{\vspace{-1cm}\mydate\today}
 %\title{\vspace{-2cm} Labo \no 6\\ Électronique appliquée [ELEC-H-301]\\Réalisation d'un ampli à transistor\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
 
 %\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
 
-\setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
-\setlength{\parindent}{0pt}
+% \setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
+% \setlength{\parindent}{0pt}
 
 
 \begin{document}
 
-\tptitle{}{Séance 2~: Conception et réalisation d'un amplificateur audio}
+\tptitle{}{Séance 5~: Conception et réalisation d'un amplificateur audio}
 
-\section{But de la manipulation}
+
+\section{Introduction}
+
+Les passages nécessitant des pré-déterminations ou des réflexions théoriques sont indiqués par un symbole \faCogs~ dans la marge,
+ceux nécessitant de manipuler du matériel par le symbole \faFlask~ et les passages informatif par \faLightbulbO.
+
+\subsection{But de la manipulation et objectifs d'apprentissage}
 
 Les buts de cette manipulation sont :
 \begin{itemize}
@@ -74,35 +96,7 @@ Les buts de cette manipulation sont :
 	\item réaliser un montage électronique « grand public ».
 \end{itemize}
 
-\section{Pré-requis}
-Les notions liées aux amplis-op sont supposées connues :
-\begin{itemize}
-\item adaptation d'impédances ;
-\item gain ;
-\item produit gain-bande passante ;
-\item imperfections.
-\end{itemize}
-En particulier, vous devez être capable de résoudre des problèmes semblables à ceux des séances d'exercices n°2 et 3.
-
-\section{Matériel}
-En plus du matériel classique de laboratoire (multimètre, oscilloscope, générateur de fonction, câbles, etc.), cette séance nécessite les composants suivants:
-\begin{itemize}
-\item Ampli-ops (AOP): 4 AOP TLE2061 et 1 NJM2113 (JRC-K002A).
-\item Résistances : 1 de $1k\Omega$, 2 de $2,7k\Omega$, 4 de $22k\Omega$, 1 de $39k\Omega$, et 2 de $100k\Omega$.
-\item Potentiomètres : 3 de $100k\Omega$.
-\item Condensateurs : 2 de $100nF$, 1 de $330nF$, et 1 de $1\mu F$.
-\item Un haut-parleur, un câble jack et un protoboard.
-\end{itemize}
-
-\textbf{Note :} Il est \textbf{déconseillé} de prendre tous les composants au début du laboratoire. Construisez un étage à la fois et ne prenez que les composants utiles pour ce dernier.
-
-\newpage
-\section{Prédéterminations} %{\normalsize{(1 point)}}}
-Avant d'entrer au laboratoire, il est conseillé de lire le dimensionnement du montage (§\ref{Dimensionnement}) et de comprendre le
-fonctionnement du montage. Revoir les séances d'exercices n°2 et 3 est également une bonne idée.
-
-\section{Objectifs}
-A la fin de ce laboratoire, vous devez  :
+À la fin de ce laboratoire, vous devez  :
 \vspace{3mm}
 \begin{itemize}
 \item être capable d'expliquer le fonctionnement de notre ampli audio ;
@@ -110,18 +104,57 @@ A la fin de ce laboratoire, vous devez  :
 \item vous être rendu compte qu'on peut comprendre le fonctionnement d'un circuit électronique complexe en identifiant des blocs (étages ampli-op, filtres) et en les analysant séparément, pour après comprendre le fonctionnement de l'ensemble.
 \end{itemize}
 
+\subsection{Pré-requis}
+Les notions liées aux amplis-op sont supposées connues :
+\begin{itemize}
+\item adaptation d'impédances ;
+\item gain ;
+\item produit gain-bande passante ;
+\item imperfections.
+\end{itemize}
+En particulier, vous devez être capable de résoudre des problèmes semblables à ceux des séances d'exercices 2 et 3.
+
+\subsection{Matériel}
+\begin{center}
+	\begin{tabular}{p{0.2\textwidth}rlp{0.1\textwidth}}
+		Composant & \multicolumn{2}{c}{Valeur} & Quantité \\\toprule
+		\multirow{5}{*}{Résistance} & 1 & $\si{\kohm}$ & x1 \\
+									& 2.7 & $\si{\kohm}$ & x2 \\
+									& 22 & $\si{\kohm}$ & x4 \\
+									& 39 & $\si{\kohm}$ & x1 \\
+									& 100 & $\si{\kohm}$ & x2 \\\midrule
+		\multirow{1}{*}{Potentiomètre} 	& 100 & $\si{\kohm}$ & x3 \\\midrule
+		\multirow{4}{*}{Condensateur} 	& 10 & $\si{\micro\farad}$ & x2 \\
+									 	& 100 & $\si{\nano\farad}$ & x1 \\
+									 	& 330 & $\si{\nano\farad}$ & x1 \\
+									 	& 1 & $\si{\micro\farad}$ & x1 \\\midrule
+		\multirow{1}{*}{Jack femelle} 	&  &  & x1 \\\midrule
+		\multirow{1}{*}{AOP TLV274IN} 	&  &  & x2 \\\midrule
+		\multirow{1}{*}{AOP NJM3113D} 	&  &  & x1 \\\midrule
+		\multirow{1}{*}{ADM660ANZ} 	&  &  & x1 \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsection{Prédéterminations} %{\normalsize{(1 point)}}}
+Avant d'entrer au laboratoire, il est conseillé de lire le dimensionnement du montage (§\ref{Dimensionnement}), de comprendre le
+fonctionnement du montage et répondre aux questions. Revoir les séances d'exercices n°2 et 3 est également une bonne idée.
 
 
-\section{Manipulation}
+
+\clearpage
+\section{Manipulation - Préliminaire théorique}
+Cette première partie ne contient pas de réalisation pratique, il s'agit d'une étude théorique du montage.
+
 \subsection{Définition du problème}
 Le but de ce laboratoire est de réaliser une chaîne d'amplification audio.
 La source sera fournie par la sortie audio d'un ordinateur ou de votre téléphone via le connecteur jack 3.5 mm.
-\textit{Note : }Étant donné que cette sortie est déjà amplifiée, afin qu'on puisse par exemple y connecter une paire d'écouteurs, nous allons artificiellement dégrader le signal à l'aide d'un diviseur résistif.
+% \textit{Note : }Étant donné que cette sortie est déjà amplifiée, afin qu'on puisse par exemple y connecter une paire d'écouteurs, nous allons artificiellement dégrader le signal à l'aide d'un diviseur résistif.
 
 On dispose des informations suivantes :
 \vspace{3mm}
 \begin{itemize}
-\item Vous devez régler votre source pour qu'elle produise un signal d'environ 25 mV crête à la sortie du diviseur résistif, avec une impédance de sortie d'environ $100k\Omega$.
+\item Vous devez régler votre source pour qu'elle produise un signal d'environ 25 mV.
+\item L'impédance de sortie de votre source est indéterminée.
 \item Le HP se comporte comme une résistance de $16\Omega$ dans la plage des fréquences audio (impédance classique d'un HP). Sa puissance est limitée à 500 mW.
 \item La plage des fréquences audio s'étend de 20 Hz à 20 kHz.
 \item On désire pouvoir régler le volume sonore.
@@ -134,44 +167,44 @@ On dispose des informations suivantes :
 \subsubsection{Définition des critères de dimensionnement de l'ampli}
 
 \begin{itemize}
-\item Impédance d'entrée : $Rin >> 100k\Omega$
-\item impédance de sortie : $Rout << 16\Omega$
-\item gain : pour pouvoir régler le volume sonore, nous aurons besoin d'un gain variable. Cherchons le gain maximum nécessaire :
-\item le gain minimum doit idéalement valoir 0 pour pouvoir annuler totalement le volume, ce qui implique la présence d'au moins un étage inverseur dans notre montage.
-\item bande passante : la bande passante de chaque étage doit être supérieure ou égale à 20kHz.
+\item Impédance d'entrée : $Rin >>\ ?$, il faut donc qu'elle soit la plus grande possible.
+\item Impédance de sortie : $Rout << 16\Omega$.
+\item Gain : pour pouvoir régler le volume sonore, nous aurons besoin d'un gain variable.
+\item Le gain minimum doit idéalement valoir 0 pour pouvoir annuler totalement le volume, ce qui implique la présence d'au moins un étage inverseur dans notre montage.
+\item Bande passante : la bande-passante de chaque étage doit être supérieure ou égale à 20kHz.
 \end{itemize}
 
 \Question
 {
 Calculez la valeur de crête maximum supportée par le HP.
 }
-{}
+{$P = \frac{V^2}{R} \Leftrightarrow V = \sqrt{P \cdot R} = \sqrt{0.5 \cdot 16} = 2\cdot \sqrt{2}$, soit 4 V crête.}
 \Question
 {
 Déduisez-en le gain maximum du montage.
 }
-{}
+{$\frac{4 V}{25 mV} = 160$}
 
 \subsubsection{Calcul du nombre d'étages nécessaire}
-Nous utiliserons donc des TLE2061P (ou des TL081) pour ce montage.
+Nous utiliserons des TLV274IN pour ce montage.
 \Question
 {
-Calculez le gain maximum d'un étage à TLE2061P qui respecte la bande passante voulue.
+Calculez le gain maximum d'un étage à TLV274IN qui respecte la bande passante voulue.
 }
-{}
+{3MHz / 20kHz = 150}
 \Question
 {
 Déduisez-en le nombre d'étages nécessaires pour notre ampli audio.
 }
-{}
+{2}
 
 
 \subsubsection{Choix du type des étages}
 \Question
 {
-Le 1er étage doit être un étage non inverseur. Expliquez pourquoi.
+Le 1er étage doit être un étage non-inverseur. Expliquez pourquoi.
 }
-{}
+{Adaptation d'impédance.}
 
 Le choix du deuxième étage est moins strict, nous choisirons le montage inverseur pour pouvoir annuler totalement le gain.
 
@@ -185,36 +218,45 @@ Avec les composants suivants~:
 \begin{center}
 \begin{tabular}{|c||c||c||c||c||c|}\hline
 $R_1 = 10 k\Omega$ & $R_2 = 100 k\Omega$ & $R_3 = 1 k\Omega$ & $R_4 = 39 k\Omega$ & $R_5 = 22 k\Omega$ & $R_6 = 100 k\Omega$ \\ \hline
+\multicolumn{2}{|c||}{AOP1 et AOP2 = TLV274IN} & \multicolumn{2}{c||}{+Val = 5 V} & \multicolumn{2}{c|}{-Val = -5 V} \\ \hline
 \end{tabular}
 \end{center}
+Et où $R_S$ représente la résistance de sortie de la source de tension du montage. Lorsque vous utilisez le générateur, vous pouvez utiliser une valeur de $600 \si{\ohm}$.
 
-\textit{Note :} En pratique, nous utiliserons une résistance de $22 k\Omega$ dans le deuxième étage, valeur bien plus commune que $25 k\Omega$. Le gain de cet étage sera donc de 4.54 au lieu de 4 comme dimmensionné.
+\textit{Note :} En pratique, nous utiliserons une résistance de $22 k\Omega$ pour $R_5$, valeur bien plus commune que $25 k\Omega$. Le gain de cet étage sera donc de 4.54 au lieu de 4 comme dimmensionné.
 
 Le potentiomètre $R_6$ est utilisé comme résistance variable et nous permet ainsi de faire varier le gain total du montage de 0 à 160 (181 en réalité).
 
 \subsubsection{Effet des imperfections}
 
 \Question
-{
-Calculez l'effet des tensions de décalage d'entrée des deux amplis-op sur la tension de sortie.
+{\label{q:decalage}
+Calculez l'effet des tensions de décalage d'entrée ($e_o$) des deux amplis-op sur la tension de sortie. Utilisez les valeurs \textit{typiques} de la fiche technique.
 \textit{Note :} Pour cette question, on ignore donc la contribution des courants de polarisation et de décalage, ainsi que la contribution de la source de tension.
 }
-{}
+{La totale : $$V_{o1} = \left(1 + \frac{R_2}{R_1}\right) \cdot e_{o1} + (-R_S\cdot I^+) \cdot \left(1 + \frac{R_2}{R_1} \right) + R_2\cdot I^- = 5.5 mV$$
+
+$$V_{o2} = V_{o1} \cdot \left( \frac{-R_6}{R_5} \right) + e_{o2} \cdot \left( 1 + \frac{R_6}{R_5} \right) + R_6 \cdot I^- = -22.2 mV$$
+
+Avec $e_{o1} = e_{o2} = 0.5 mV$, $R_S = 600 \si{\ohm}$, $I^+ = 1.5 pA$ et $I^-= 0.5 pA$.
+}
+
 \Question
 {
 Vérifiez que l'effet des courants d'entrée est négligeable.
 }
-{}
+{Voir réponse de la question~\ref{q:decalage}}
+
 Les HP ne supportent pas qu'on leur applique des tensions continues ; en effet, la partie électrique d'un HP est essentiellement composée d'une bobine dont l'impédance est quasi nulle en continu. Il faudra donc éliminer cette composante continue.
 
 \subsubsection{Étage de sortie}
 On peut remarquer que la résistance de charge est de faible valeur ; cela implique qu'il faut pouvoir lui fournir un courant important :
 $$I_{out,max}=\frac{V_{out,max}}{R_{H.P.}}=\frac{4V}{16\Omega}=250mA$$
-C'est beaucoup plus que ce que peut fournir un TLE2061P. Il faut donc ajouter un 3e étage, appelé étage de sortie, dont le rôle est de fournir le courant nécessaire à la charge. Il existe des amplis-op spécialement conçus pour réaliser ces étages de sortie.\\
+C'est beaucoup plus que ce que peut fournir un TLV274IN. Il faut donc ajouter un 3e étage, appelé étage de sortie, dont le rôle est de fournir le courant nécessaire à la charge. Il existe des amplis-op spécialement conçus pour réaliser ces étages de sortie.\\
 Les fabricants conseillent d'utiliser ces amplis-op dans des montages dont le gain est faible (typiquement A = 1), pour optimiser leurs performances. Leur but n'est pas d'amplifier leur tension d'entrée, mais de fournir le courant
 nécessaire à la charge.
 
-On utilisera l'ampli-op NJM2113 (JRC-K002A) ; il peut fournir une puissance de 400 mW à une charge de $16\Omega$. Il a été spécialement conçu pour les applications demandant une faible puissance sonore : GSM, baladeur, carte son, etc.
+On utilisera l'ampli-op NJM2113 ; il peut fournir une puissance de 400 mW à une charge de $16\Omega$. Il a été spécialement conçu pour les applications demandant une faible puissance sonore : GSM, baladeur, carte son, etc.
 
 Malheureusement, ces appareils ne disposent en général que d'une source de tension de 5V (produite en régulant la tension de la batterie ou des piles) ; il est impossible d'alimenter les ampli-op de manière symétrique (+12V/- 12V, +5V/-5V, etc). Le NJM2113 a donc été spécialement conçu pour être alimenté en +5V/0V.\\
 Cela a une conséquence importante (et gênante) : les limites d'écrêtage de l'ampli ne sont plus symétrique et en particulier, le signal de sortie ne peut plus devenir négatif.\\
@@ -230,22 +272,36 @@ On a ajouté un condensateur en série avec l'entrée, pour supprimer l'éventue
 {
 Calculez l'effet de $E$ sur la tension de sortie, sachant que $E$ est une tension purement continue.
 }
-{}
+{$V_o = E$, le montage se comporte comme un suiveur pour le continu.}
+
 \Question
 {
 Calculez l'effet de $V_i$ sur la tension de sortie, en considérant que $V_i$ est une tension purement continue.
 }
-{}
+{$V_o = 0$, ne passe pas le condensateur.}
+
 \Question
 {
 Calculez l'effet de $V_i$ sur la tension de sortie, en considérant que $V_i$ est une tension sinusoïdale dont la fréquence est telle qu'on peut considérer que $C2$ comme un court-circuit.
 }
-{}
+{$V_o = -V_i$}
+
 \Question
 {
 Ce montage est un filtre passe-haut. Vérifiez que sa fréquence de coupure vaut environ $20Hz$.
 }
-{}
+{
+	$$H(j\omega) = \frac{-j\omega R_5 C_2}{1 + j\omega R_4 C_2}$$
+
+	\begin{align*}
+		|H(j\omega)| = \frac{\omega R_5 C_2}{\sqrt{1 + \omega^2 R_4^2 C_2^2}} &= \frac{1}{\sqrt{2}} \\
+		\Leftrightarrow \omega R_5 C_2 \sqrt{2} &=\sqrt{1 + \omega^2 R_4^2 C_2^2} \\
+		\Leftrightarrow \omega^2 R_5^2 C_2^2 \cdot 2 &= 1 + \omega^2 R_4^2 C_2^2 \\
+		\Leftrightarrow \omega &= \sqrt{\frac{1}{R_5^2 C_2^2 \cdot 2 - R_4^2 C_2^2}}\\
+		\Leftrightarrow \omega &= 137.74\\
+		\Leftrightarrow f &= 21.9 Hz
+	\end{align*}
+}
 
 On doit choisir la valeur de $E$ qui maximise l'amplitude admissible de $V_i$ ; il faut donc choisir $E = 2,5V$ pour avoir une valeur crête de $V_i = 2,5V$.\\
 Avec ce montage, on arrive donc à amplifier notre signal d'entrée sans être gêné par les limites d'écrêtage de l'ampli-op.\\
@@ -321,59 +377,39 @@ Le schéma de notre contrôle basses/aigus est donc :
 
 Pour expliquer son fonctionnement, prenons le bloc Filtre + volume des basses :
 \begin{center}
-\includegraphics[width=8cm]{figures/AOPfiltrebasse}
+\includegraphics[width=8cm]{figures/AOPfiltrebasse.png}
 \end{center}
+
 Il s'agit en fait de deux blocs mis en cascade : un filtre RC passe-bas et un ampli inverseur.
-Pour calculer la fréquence de coupure du filtre, il faut tenir compte de l'impédance d'entrée de l'ampli :
+Pour calculer la fréquence de coupure du filtre, il faut tenir compte de l'impédance d'entrée de l'ampli inverseur ($R_4$) :
 \begin{center}
-\includegraphics[width=14cm]{figures/filter.png}
+\includegraphics[width=5cm]{figures/filter.png}
 
 \begin{tabular}{|c||c||c|}\hline
 $R_3 = 2.7 k\Omega$ & $R_4 = 100 k\Omega$ & $C_1 = 100 nF$ \\ \hline
 \end{tabular}
 \end{center}
 
+La réponse en fréquence de ce filtre est $$H(j\omega) = \frac{C_1 // R_4}{R_3 + C_1 // R_4} = \frac{R_4}{R_4 + R_3 + j\omega C_1 R_3 R_4}$$
+On peut donc trouver sa réponse en fréquence : 
+\begin{align*}
+	|H(j\omega)| &= \frac{1}{\sqrt{2}} \\
+	\Leftrightarrow \frac{R_4}{\sqrt{(R_3 + R_4)^2 + (\omega C_1 R_3 R_4)^2}} &= \frac{1}{\sqrt{2}} \\
+	\Leftrightarrow 2 R_4^2 &= (R_3 + R_4)^2 + (\omega C_1 R_3 R_4)^2 \\
+	\Leftrightarrow \omega &= \frac{\sqrt{2 R_4^2 - (R_3 + R_4)^2}}{C_1 R_3 R_4} \\
+	\Leftrightarrow \omega &= 3600 \\
+	\Leftrightarrow f &= 573 Hz
+\end{align*}
 
-La fréquence de coupure est donc $605Hz$.
+
+La fréquence de coupure est donc $573 Hz$.
 L'ampli inverseur nous permet d'avoir un gain variable entre $0$ et $1$ (avec un déphasage de $180^{o}$).
 Le mélange des deux signaux obtenus se fait en transformant le 2e étage en sommateur. On peut remarquer qu'il n'est pas nécessaire de placer une capacité en série avec l'entrée du signal des aigus dans le sommateur puisqu'il est déjà passé par un filtre passe-haut.
 
 \subsubsection{Schéma final}
 Le schéma final de notre amplificateur audio est donné à la page suivante.
 
-\subsection{Manipulation}
-\Question
-{
-Réalisez, sur protoboard, l'ampli audio que nous avons dimensionné ci-dessus.
-\textit{Note :} Utilisez une sinusoïde issue du générateur comme source de tension dans un premier temps.
-}
-{}
 
-\Question
-{
-Observez que $V_{o1}$ et $V_{o2}$ simultanément sur les deux canaux de l'oscilloscope et remarquez qu'ils ont bien la même composante continue et des composantes alternatives en opposition de phase.\\
-\textbf{ATTENTION}, vous ne pouvez pas observer $V_{o2} - V_{o1}$ sur un seul canal de l'oscilloscope. Pourquoi ?
-}
-{}
-
-\Question
-{
-Mettez les contrôles des basses et des aigus au maximum (position neutre), et relevez la fonction de transfert de votre ampli en utilisant le générateur de fonction comme source.\\
-Le cahier des charges est-il respecté ?
-}
-{}
-
-\Question
-{
-Relevez les fréquences de coupure des filtres aigus et basses (en plaçant le volume de l'autre filtre sur $0$).
-}
-{}
-
-\Question
-{
-Branchez le HP et votre source à votre ampli. Ecoutez l'effet du contrôle basses/aigus.
-}
-{}
 \begin{minipage}{.7\textwidth}
 \begin{center}
 \includegraphics[width=26cm, angle=90]{figures/montage_complet.png}
@@ -386,9 +422,128 @@ Branchez le HP et votre source à votre ampli. Ecoutez l'effet du contrôle bass
 $R_1 = 1 k\Omega$ & $R_2 = 39 k\Omega$ & $R_3 = 2.7 k\Omega$ & $R_4 = 100 k\Omega$ & $R_5 = 100 k\Omega$ & $R_6 = 2.7 k\Omega$ \\ \hline
 $R_7 = 100 k\Omega$ & $R_8 = 100 k\Omega$ & $R_9 = 22 k\Omega$ & $R_{10} = 22 k\Omega$ & $R_{11} = 100 k\Omega$ & $R_{12} = 22 k\Omega$ \\ \hline
 $R_{13} = 22 k\Omega$ & $C_1 = 100 nF$ & $C_2 = 100 nF$ & $C_3 = 330 nF$ & $C_4 = 1 \mu F$ & \\ \hline
+\multicolumn{2}{|c|}{AOP 1 à 4 = TLV274IN} & \multicolumn{2}{|c|}{+Val = 5 V} & \multicolumn{2}{|c|}{-Val = -5 V} \\ \hline
 \end{tabular}
 }
 \end{center}
 \end{minipage}
+
+
+\section{Manipulation - Réalisation pratique}
+Vous allez à présent réaliser le montage. Voici quelques recommandations d'usage :
+\begin{itemize}
+	\item Assemblez \textbf{un étage à la fois} et testez-le individuellement avant de le connecter au reste du montage.
+	\item Vous avez deux packages \texttt{TLV274IN} pour un total de huit AOP, mais vous n'en avez besoin que de quatre. Aérez votre montage pour vous faciliter la tâche.
+	\item Exploitez intelligemment les lignes d'alimentation le long du protoboard afin de propager la masse et les +/- 5 V.
+\end{itemize}
+
+\Question{
+	Commencez par réaliser le circuit permettant de générer une tension de $-5 \si{\volt}$ à l'aide du circuit \texttt{ADM660} et de deux condensateurs de $10 \si{\pico\farad}$.
+
+	\begin{astuce}
+		Référez-vous à la fiche technique, vous devez réaliser le montage «~\textit{Voltage Inverter Configuration (ADM660)}~».
+	\end{astuce}
+
+}{
+	% \begin{center}
+	% 	\begin{circuitikz}[scale=1]
+	% 		\draw 
+	% 		(0,0) node[dipchip,num pins=8,external pins width=0.1, scale=1.5](C){\small{\texttt{ADM660}}}
+	% 		% (C.pin 1) -- ++(-0.5,0) to [R] ++(0,-1.5) node[ground]{}
+	% 		(C.pin 3) to [short] ($(C.pin 3)-(0.5,0)$) node[tlground, rotate=-90]{}
+	% 		(C.pin 2) -- ++(-2,0) to [C, l_=$10\si{\micro\farad}$] ($(C.pin 4)-(2,0)$) to [short] (C.pin 4)
+	% 		(C.pin 8) -- ++(1,0) node[rground, yscale=-1](alim){}
+	% 		(alim) ++(0,0.6) node{\texttt{5V}}
+	% 		(C.pin 5) -- ++(1,0) ++(0.45,0.04)node{${\triangleright}$ \texttt{-5V}}
+	% 		(C.pin 5) ++(0.5,0) node[circle,fill,inner sep=1.5pt] () {}
+	% 		(C.pin 5) ++(0.5,0) to [C] ++(0,-1) node [tlground] {}
+	% 		;
+	% 	\end{circuitikz}
+	% 	\end{center}
+}
+
+Pour les prochaines questions, utilisez une sinusoïde issue du générateur pour tester vos montages.
+\Question
+{
+	Réalisez l'étage d'entrée de l'amplificateur et vérifiez que vous obtenez bien un gain de 40.
+	\begin{astuce}
+		Sur le \texttt{TLV274IN}, branchez la patte 4 à l'alimentation de 5 V et la patte 11 à celle de -5 V.
+	\end{astuce}
+}
+{}
+
+\Question
+{
+	Réalisez l'étage « filtre et volume des basses » \textbf{seul} et vérifiez que vous obtenez un gain compris entre -1 et 0 à 100 Hz et que les fréquences supérieures à 605 Hz sont bien atténuées.
+
+	\begin{astuce}
+		Pour utiliser le potentiomètre, connectez la patte du milieu et l'une des deux autres.
+	\end{astuce}
+
+	S'il fonctionne correctement, connectez la sortie de l'étage d'entrée à la résistance $R_3$.
+}
+{}
+
+\Question
+{
+	Réalisez l'étage « filtre et volume des aigus » \textbf{seul} et vérifiez que vous obtenez un gain compris entre -1 et 0 à 1 kHz et que les fréquences inférieures à 605 Hz sont bien atténuées.
+
+	S'il fonctionne correctement, connectez la sortie de l'étage d'entrée au condensateur $C_2$.
+}
+{}
+
+\Question
+{
+	Réalisez l'étage « volume général » \textbf{seul} en omettant $R_{10}$ dans un premier temps. Vérifiez que vous obtenez un gain compris entre -4 et 0.
+
+	S'il fonctionne correctement, connectez la sortie de l'étage de contrôle des basses à $R_9$. Ajoutez ensuite la résistance $R_{10}$ et connectez-y la sortie de l'étage de contrôle des aigus.
+}
+{}
+
+\Question
+{
+	Réalisez l'étage de sortie \textbf{seul}.
+	\begin{astuce}
+		Certains éléments sont déjà à l'intérieur du \texttt{NJM2113D}, vous ne devez ajouter que $C_3$, $C_4$, $R_{12}$ et $R_{13}$.
+	\end{astuce}
+
+	\begin{astuce}
+		Aidez-vous de la fiche technique pour déterminer la fonction de chaque pin :
+		\begin{center}
+			\begin{tabular}{ccc}
+				Patte & Nom & Connectée à ... \\\toprule
+				1 & CD & Inutilisée \\
+				2 & Vref & $C_4$ \\
+				3 & +Vin, in+ & $C_4$ \\
+				4 & -Vin, in- & $R_{12}$ \\
+				5 & Vout1, vo1 & $R_{13}$ \\
+				6 & V+, vdd & +5 V \\
+				7 & GND & Masse \\
+				8 & Vout2, vo2 & - \\\bottomrule
+			\end{tabular}
+		\end{center}
+	\end{astuce}
+
+	Observez que $V_{o1}$ et $V_{o2}$ simultanément sur les deux canaux de l'oscilloscope et remarquez qu'ils ont bien la même composante continue et des composantes alternatives en opposition de phase.\\
+	\textbf{ATTENTION}, vous ne pouvez pas observer $V_{o2} - V_{o1}$ sur un seul canal de l'oscilloscope. Pourquoi ?
+}
+{}
+
+\Question
+{
+Mettez les contrôles des basses et des aigus au maximum (position neutre), et relevez la fonction de transfert de votre ampli en utilisant le générateur de fonction comme source.\\
+Le cahier des charges est-il respecté ?
+}
+{}
+
+\Question
+{
+	Une fois que vous avez confirmé que le montage fonctionne à l'aide du générateur et de l'oscilloscope, remplacez ces appareils par des connecteurs Jack.
+
+	$\Rightarrow$ En entrée, connectez \texttt{RING2} à la masse et \texttt{RING1} à l'entrée de votre montage.
+
+	$\Rightarrow$ En sortie, connectez \texttt{RING2} à la masse, \texttt{RING1} à vo1 et \texttt{TIP} à vo2.
+}
+{}
 
 \end{document}
