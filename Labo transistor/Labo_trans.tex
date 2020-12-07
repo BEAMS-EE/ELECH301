@@ -416,6 +416,7 @@ Quel est le gain de votre montage ?
 \begin{astuce}
 	Utilisez une représentation du montage à petit signal.
 \end{astuce}
+\label{Q:gain}
 }
 {
 $$V_{ds}=-g_m\cdot R_D \cdot V_{in}$$
@@ -430,7 +431,6 @@ Bien que cette relation soit valable quel que soit le régime de fonctionnement 
 	Le mode XY de l'oscilloscope vous permet d'afficher directement $V_{out}$ (i.e. $V_{ds}$) en fonction de $V_{in}$ (i.e. $V_{gs}$).
 	\end{astuce}
 	Indiquez sur votre relevé les limites d'écrêtage et de linéarité, comparez avec le résultat de la question~\ref{Q:Q9}.
-\label{Q:gain}
 }
 {
 Utilisation du mode XY :
@@ -471,9 +471,11 @@ Le mode XY permet de constater l'effet de la polarisation sur le gain et sur l'�
 \end{itemize}
 }
 {
-mesure $\Longrightarrow$ gain en tension $\Longrightarrow $ valeur du $g_m$.
+	Étant donné que $g_m$ dépend de $I_D$ et que $I_D$ dépend univoquement de $V_{GS}$, si la polarisation ne change pas, $g_m$ ne change pas non plus.
+	Par contre, le point de fonctionnement de la caractéristique de sortie sera déplacé, étant donné que la pente de la droite de charge aura changé.
+	L'excursion maximale en sortie dépendra donc de $R_D$.
 
-Si $R_D$ change, \textit{a priori} $I_D$ change aussi et $g_m$ également. La relation de la question \ref{Q:gain} n'est pas remise en cause si on considère $g_m$ non constant dans celle-ci.
+	La relation de la question \ref{Q:gain} n'est donc pas remise en cause.
 }
 \end{predet}
 
