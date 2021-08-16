@@ -25,7 +25,6 @@
 
 \usepackage{mathastext} % math as standfard text : units are respecting typography conventions.
 \usepackage{fancyhdr}
-% \langexam{frenchb}
 
 \newboolean{koriG}
 \ifx\koriG\undefined
@@ -42,19 +41,19 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 2 : amplification\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.0.1\\ page \thepage}
+\rhead{v1.1.0\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Quentin Delhaye, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (TP 2 ELEC-H-301, amplification)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={TP 2 [ELEC-H-301] Électronique appliquée : Amplification},
-pdfauthor={Quentin Delhaye, ©2016 ULB - BEAMS  },
+pdfauthor={ULB - BEAMS  },
 pdfsubject={amplification}
 }
 
@@ -219,7 +218,9 @@ Le gain étant le rapport entre les tensions de sortie et d'entrée, on a un gai
 
 		\item $V_+$ = 0 V et $V_-$ = 1 V $\cdot \sin(2 \cdot \pi \cdot 1000 \cdot t)$
 
-			La sortie sature à nouveau sur les bornes d'alimentation. On obtient en sortie une onde carrée d'amplitude $\pm$12~V, d'un rapport cyclique de 50~\% et d'une période de 1~ms. Autrement dit, les $0.5 \cdot 10^{-3}$ premières secondes de la période, le signal est à 12~V et les $0.5 \cdot 10^{-3}$ suivantes à -12~V. Lorsque la sortie ne sature pas ($-12<V_{out}<12$), $V_{out}=A\cdot\left(V+-V-\right)$
+			La sortie sature à nouveau sur les bornes d'alimentation. On obtient en sortie une onde carrée d'amplitude $\pm$12~V, d'un rapport cyclique de 50~\% et d'une période de 1~ms. Autrement dit, les $0.5 \cdot 10^{-3}$ premières secondes de la période, le signal est à -12~V et les $0.5 \cdot 10^{-3}$ suivantes à 12~V. Lorsque la sortie ne sature pas ($-12<V_{out}<12$), $V_{out}=A\cdot\left(V+-V-\right)$
+
+			\includegraphics[width=\textwidth]{AOP-diff-c.png}
 
 		\item $V_+$ = 1 V $\cdot \sin(2 \cdot \pi \cdot 1000 \cdot t)$ et $V_-$ = -3 V
 
