@@ -40,19 +40,19 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 4 : Diodes\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.2.0\\ page \thepage}
+\rhead{v1.3.0\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Quentin Delhaye, ULB -- BEAMS)
+/Author (QULB -- BEAMS)
 /Title (TP 4 ELEC-H-301, diodes)
 /ModDate (D:\pdfdate)
 
 }
 \hypersetup{
 pdftitle={TP 4 [ELEC-H-301] Électronique appliquée : diodes},
-pdfauthor={Ken Hasselmann, ©2016 ULB - BEAMS  },
+pdfauthor={ULB - BEAMS  },
 pdfsubject={diodes}
 }
 
@@ -357,6 +357,13 @@ de $R2$, pour $V_{ac}$ représentée.
 }
 {%answer
 \begin{center} \includegraphics[width=300px]{image2corr.png} \end{center}
+Nous avons besoin des tensions de seuil des deux diodes.
+Pour la LED \texttt{NTE3019}, l'information se trouve à la ligne \texttt{Forward Voltage} et nous donne une valeur typique de 1.65 V.
+Pour la diode \texttt{1N4001}, il faut regarder la ligne \texttt{Maximum instantaneous forward voltage}, soit 1.1 V.
+
+Les courant seront maximaux lorsque $V_{ac}$ sera maximale, soit $3 V$.
+La tension maximale aux bornes de $R_1$ sera $3 - 1.1 = 1.9 V$, quant à $R_2$, nous aurons la chute de potentiel cumulée des deux diodes~: $3 - 1.1 - 1.65 = 0.25$.
+
 Les courants max sont :
 \begin{itemize}
     \item $I_{R1} = \frac{1.9}{10} = 190mA$
@@ -364,6 +371,32 @@ Les courants max sont :
     \item $I_{D1} = I_{R1} + I_{D2} = 215mA$
 \end{itemize}
 La puissance maximale dissipée par D1 est : $P_{D1} = U_{D1}*I_{D1} = 215mA*1.1V = 0.24W$
+
+
+Détaillons le raisonnement menant au graphe ci-dessus.
+Commençons par les alternances négatives de $V_{ac}$ lorsque les diodes sont idéales, mais ignorons complètement $D_2$ et $R_2$ pour le moment.
+Si $V_{ac} < 0$, nous pouvons mettre en évidence une maille $V_{ac} \rightarrow D_1 \rightarrow R_1$ dont l'équation est $V_{ac} - V_{D1} - V_{R1} = 0 \Leftrightarrow V_{D1} = V_{ac} - V_{R1}$. Si $D_1$ est passante, nous aurions $V_{D1} < 0$, ce qui n'est pas cohérent avec l'hypothèse.
+$D_1$ est donc bloquante, ce qui implique que $V_{R1} = 0$ et $V_{D1} = V_{ac} < 0$.
+En résumé, pour les alternances négatives de $V_{ac}$, $D_1$ est bloquante.
+
+En poussant la réflexion un peu plus loin, nous pouvons considérer les diodes non parfaitement idéales, mais avec une tension de seuil $V_{th} > 0$, nous trouverions que si $V_{ac} < V_{th}$, alors $V_{R1} = 0$.
+
+Dès que $V_{ac} > V_{th}$, la diode change de comportement et devient passante (de façon « idéale », donc un court-circuit, pour nous faciliter la tâche).
+Nous retrouvons notre même équation de maille~:
+\begin{align*}
+V_{ac} - V_{D1} - V_{R1} &= 0 \\
+\Leftrightarrow V_{R1} &= V_{ac} - V_{D1} \\
+\Leftrightarrow V_{R1} &= V_{ac} - V_{th}
+\end{align*}
+Puisque $V_{D1} = V_{th}$ lorsqu'elle est passante.
+
+Grâce à ce raisonnement, nous retrouvons la courbe rouge du graphe ci-dessus.
+
+À présent, qu'en est-il de $V_{R2}$ ?
+Nous pouvons appliquer le même raisonnement au comportement de la diode $D_2$, sauf que la tension à son entrée est la tension $V_{R1}$, cette fois-ci.
+C'est donc seulement lorsque $V_{R1}$ atteindra la tension de seuil de $D_2$ que cette dernière deviendra passante et permettra à la tension $V_{R2}$ de légèrement décoller.
+Il s'agit de la courbe mauve sur le graphe.
+
 }
 \includepdf[pages={1},scale=0.9,pagecommand={\pagestyle{plain}}]{nte3019.pdf}
 \includepdf[pages={1-2},scale=0.9,pagecommand={\pagestyle{plain}}]{1n4001.pdf}
