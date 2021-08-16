@@ -36,19 +36,19 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : analyse de problèmes d’électronique\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.1.1\\ page \thepage}
+\rhead{v1.1.2\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Yannick Allard, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (TP 6 ELEC-H-301, analyse de problèmes d’électronique)
 /ModDate (D:\pdfdate)
 
 }
 \hypersetup{
 pdftitle={TP 6 [ELEC-H-301] Électronique appliquée : analyse de problèmes d’électronique},
-pdfauthor={Yannick Allard, ©2016 ULB - BEAMS  },
+pdfauthor={ULB - BEAMS  },
 pdfsubject={analyse de problèmes d’électronique}
 }
 
@@ -319,7 +319,7 @@ La contrainte sur le filtre de la question précédente est respectée.
  \Question
  {
  %question
- En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=10kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, trois étages amplificateurs supplémentaires sont-ils suffisants (justifiez) ?
+ En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=10kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, combien d'étages supplémentaires sont nécessaires ?
 
  }
  {%answer
@@ -329,7 +329,7 @@ La contrainte sur le filtre de la question précédente est respectée.
 
  Gain nécessaire : 12000/86.6=138.6
 
- Le gain maximum par étage est de 10, par conséquent trois étages sont suffisants.
+ Le gain maximum par étage est de 100 (puisque le GBP est de $10^6$), par conséquent deux étages supplémentaires sont suffisants.
  }
 
 \subsection{Comparateur}
