@@ -25,8 +25,6 @@
 \usepackage{fancyhdr} %en-tête
 \usepackage{qrcode}
 
-% \langexam{frenchb}
-
 \newboolean{koriG}
 \ifx\koriG\undefined
 \correction{false}
@@ -43,26 +41,22 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 1 : filtrage et analyse fréquentielle\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v1.0.2\\ page \thepage}
+\rhead{v1.0.3\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Raoul Sommeillier, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (TP 1 ELEC-H-301, filtrage et analyse fréquentielle)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={TP 1 [ELEC-H-301] Électronique appliquée : filtrage et analyse fréquentielle},
-pdfauthor={Raoul Sommeillier, ©2016 ULB - BEAMS  },
+pdfauthor={2016 ULB - BEAMS  },
 pdfsubject={filtrage et analyse fréquentielle}
 }
 
-%\date{\vspace{-1cm}\mydate\today}
-%\title{\vspace{-2cm} Labo \no 6\\ Électronique appliquée [ELEC-H-301]\\Réalisation d'un ampli à transistor\ifthenelse{\boolean{corrige}}{~\\Corrigé}{}}
-
-%\author{\vspace{-1cm}}%\textsc{Yannick Allard}}
 
 \setlength{\parskip}{0.5cm plus4mm minus3mm} %espacement entre §
 \setlength{\parindent}{0pt}
@@ -82,15 +76,6 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 \end{itemize}
 \rule{\linewidth}{.5pt}
 
-%	Exo 4, 6 (+phaseurs example 8.7), 9, 12, 14
-%o	Examples
-%	 8.7, surtout pour le diagramme des phaseurs  
-%o	Exercises : Tous ok sauf 
-%	Simulation ? 8.7, 8.10, 8.13, 8.15, 8.20
-%	8.16 car besoin 8.15 simulation
-%	8.22-26 manquent d’explications
-
-% Q1.2 %%Raoul : j'ai avancé les 2 questions
 \Question{
 Exprimer une pulsation (ou fréquence angulaire) de $250rad/s$ en fréquence en $Hz$.
 
@@ -117,8 +102,8 @@ Calculer la réactance d'un condensateur (ou capacité) de $1\mu F$ à une fréq
 \textit{Calculate the reactance of a $1\mu F$ capacitor at a frequency of $10kHz$, and the reactance of a $20mH$ inductor at a frequency of $100rad/s$. In each case include the units in your answer.
 }}%
 {
-$$X_C=\frac{1}{\omega C}=\frac{1}{2\pi fC}=15.9\Omega$$
-$$X_L=\omega L=2\Omega$$
+$$X_C=\frac{1}{j\omega C} \Leftrightarrow |X_C| =\frac{1}{2\pi fC}=15.9\Omega$$
+$$X_L=j\omega L \Leftrightarrow |X_L| =2\Omega$$
 }
 
 % Q1.4
