@@ -20,6 +20,12 @@
 \usepackage{pdfpages}
 \usepackage{todo}
 \usepackage{fancyhdr}
+\usepackage{caption} % subfigure
+\usepackage{subcaption} % subfigure
+\usepackage{pgfplots} % axis
+\usepackage{siunitx} 
+
+\graphicspath{{./Figures/}}
 
 % \langexam{frenchb}
 
@@ -35,28 +41,28 @@
 
 %% fancy header & foot
 \pagestyle{fancy}
-\lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : analyse de problèmes d’électronique\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v1.1.2\\ page \thepage}
+\lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : Problèmes contextualisés\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
+\rhead{v2.0.0\\ page \thepage}
 \cfoot{}
 %%
 
 \pdfinfo{
 /Author (ULB -- BEAMS)
-/Title (TP 6 ELEC-H-301, analyse de problèmes d’électronique)
+/Title (TP 6 ELEC-H-301, Problèmes contextualisés)
 /ModDate (D:\pdfdate)
 
 }
 \hypersetup{
-pdftitle={TP 6 [ELEC-H-301] Électronique appliquée : analyse de problèmes d’électronique},
+pdftitle={TP 6 [ELEC-H-301] Électronique appliquée : Problèmes contextualisés},
 pdfauthor={ULB - BEAMS  },
-pdfsubject={analyse de problèmes d’électronique}
+pdfsubject={Problèmes contextualisés}
 }
 
 \author{The Fantastic Four}
 
 \begin{document}
 
-\tptitle{ELEC-H-301~: Électronique appliquée}{Séance 6~: analyse de problèmes d’électronique}
+\tptitle{ELEC-H-301~: Électronique appliquée}{Séance 6~: Problèmes contextualisés}
 
 % \todo{Arranger l'ordre des exercices}
 
@@ -68,333 +74,775 @@ Cette séance d'exercices a pour objectifs de vous apprendre à:
 
 
 
-% Q1.1
-%\Question{
-%Calculate the reactance of a $1\mu F$ capacitor at a frequency of $10kHz$, and the reactance of a $20mH$ inductor at a frequency of $100rad/s$. In each case include the units in your answer.
-%}%
-%{
-%}
 
-\section*{Le chronomètre du projet BA2}
-Le but de ce problème est de concevoir une barrière photoélectrique pour détecter (et chronométrer) les robots du projet BA2 de la filière Electromec pour l'année 2016-2017.
 
-Le dispositif est constitué comme suit :
 
-%emetteur
-%led
-%miroir
-%recepteur
-%sortie\marginpar{faire schéma émetteur + led + IR + pd + recepteur + info de sortie}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Transistor -- Janvier 2019}
+
+On désire dimensionner un étage amplificateur à l'aide du circuit suivant.
+Le gain à vide de cet étage est de $ 50~dB $.
+On dispose d'une alimentation continue $ V_{DC} $ de $ 10~V $ et d'un transistor BSH105.
+La résistance $ R_{d} $ vaut $ 90~\Omega $.
 \begin{center}
-\includegraphics[width=8cm]{ER_ir-crop.pdf}
+    \begin{circuitikz}[scale=1]\draw
+        (0,1) to [short,o-] (9,1)
+              to [battery, l=$ V_{DC} $, invert](9,6)
+        (4,6) to [short] (9,6)
+        (0,3) to [short,o-] (1,3)
+        (0,3) to [open, v_<=$ V_{in} $]  (0,1)
+        (1,3) to [C=$ C_{1} $ ](1.5,3)
+        (1.5,3) to [short,-*] (2,3)
+        (2,6) to [short] (4,6)
+        (2,6) to [R, l_=$ R_{1} $] (2,3)
+              to [R, l_=$ R_{2} $] (2,1)
+        (4,3) node[nfet] (mos) {}
+        (mos.G) to [short] (2,3)
+        (mos.D) to (4,4) to [R, l_=$ R_{d} $] (4, 6)        
+        (mos.D) to [short,-*](4,3.5)  to [short] (4.25,3.5)
+        (mos.S) to [short] (4,1)
+        (mos.S) -- (mos.B) %source to bulk connection
+        (4.25,3.5) to [C, l^=$ C_{2} $] (6,3.5) 
+                   to [short](6,3.5)
+         %          to [short,-o](6.5,3.5)node [anchor=south] {Out} 
+        (6,3.5) to [resistor, l_=$ R_{ch} $, *-*] (6,1)
+        (6.5,3.5) to [open,v^<=$ V_{out} $] (6.5,1)
+        (0,0.5) -- (0,1) node[ground]{}
+    ;\end{circuitikz}
+\end{center}
+\begin{figure}[h!]
+    \centering
+    
+    \begin{subfigure}[b]{0.49\linewidth}
+        \includegraphics[width=\linewidth]
+            {datasheet_transistor_sortie.png}
+        \caption{}
+        \label{fig:Sortie}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.49\linewidth}
+        \includegraphics[width=\linewidth]
+            {datasheet_transistor_transfer.png}
+        \caption{}
+        \label{fig:Transfer}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.49\linewidth}
+        \includegraphics[width=\linewidth]
+            {datasheet_transistor_transconductance.png}
+        \caption{}
+        \label{fig:Transconductance}
+    \end{subfigure}
+    
+    \caption{Extrait datasheet BSH105.}
+
+\end{figure}
+
+\Question
+{
+    Dessinez le schéma équivalent à petits signaux pour des fréquences telles que les effets dûs aux condensateurs \textbf{ne} sont \textbf{pas} négligeables.
+}{
+    \begin{center}
+      \begin{circuitikz}[scale=0.8]\draw
+          % Left side
+          (0,0) to [open, v^>=$ V_{in} $, ]  (0,3)
+                  to [C, l=$ C_{1} $, o-] (2,3)
+                to [short, -o] (4,3)
+                to [open, v^<=$ V_{g} $](4,0)
+            (2,3) to [R, l_=$ R_{1} $] (2,0)
+            (3,3) to [R, l=$ R_{2} $] (3,0)
+            
+            % Right side
+            (0,0) to [short, o-o] (12,0)
+                  to [open, v>=$ V_{out} $](12,3)
+                  to [short, o-] (11,3)
+                  to [C, l_=$ C_{2} $] (9,3)
+                  to [short, -](6,3)
+                  to [cI=$ g_m \cdot V_{g} $] (6,0)
+            (9,3) to [R, l_=$ R_{D} $] (9,0)
+            (11,3) to [R, l=$ R_{ch} $] (11,0)
+        ;\end{circuitikz}
+    \end{center}
+}
+
+\Question
+{
+    Donnez l'expression du gain \textbf{à vide} de ce montage à très haute fréquence tel que les effets dûs aux condensateurs soient négligeables.
+    Déduisez-en la valeur de la transconductance pour le gain donné.
+}{
+    Le gain est donné par:
+    \[G = - g_{m} R_{d}\]
+    
+    Un gain de $ 50~dB $ correspond à un gain de $ 10^{50/20} = 316 $ en naturel.
+    
+    \[ g_{m} = \frac{|G|}{R_{d}} = 3.5~S \]
+}
+
+\Question
+{
+    Trouvez le $ V_{gs} $ correspondant. Justifiez graphiquement.
+}{
+    On trouve le courant de sortie $ I_{D} \approx 1~A $ grâce à la Figure~\ref{fig:Transconductance} pour $ g_m = 3.5~S $.
+    Le $ V_{gs} $ est donné par la Figure~\ref{fig:Transfer} et vaut approximativement $ 1.4~V $
+    
+}
+
+\Question
+{
+    Déterminez l'expression de la résistance d'entrée, en négligeant l'effet du condensateur.
+}{
+    \[ R_{in} = R_{1} // R_{2} = \frac{R_{1} R_{2}}{R_{1} + R_{2}} \]
+}
+
+\Question
+{
+    Dimensionnez $ R_{1} $ et $ R_{2} $ pour avoir une résistance d'entrée de $ 5~k\Omega $. Si vous n'avez pas trouvé $ V_{gs} $ considérez $ V_{gs} = 1.7~V $.
+}{
+    On a:
+    \[
+        R_{in} = \frac{R_{1} R_{2}}{R_{1} + R_{2}} = 5~k\Omega
+        \qquad\text{et}\qquad
+        V_{gs} = \frac{R_{2}}{R_{1} + R_{2}} V_{DC} = 1.4~V
+    \]
+    Par conséquent:
+    \[
+        \left\{ 
+            \begin{array}{ll}
+                R_{1} &= R_{in} \frac{V_{DC} }{ V_{gs} } = 35,7~k\Omega\\
+                R_{2} &= \frac{ R_{in} R_{1} }{ R_{1} - R_{in} } = 5,8~k\Omega
+            \end{array}
+        \right.
+    \]
+    
+}
+
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Analyse fréquentielle -- Janvier 2019}
+
+\Question
+{
+Réalisez le tracé asymptotique des courbes de Bode de la fonction de transfert suivante.
+Listez clairement les pôles et zéros identifiés, ainsi que leur degré respectif.
+Légendez clairement les repères.
+
+\[H(p) = \frac{10^3 \cdot (p + 10^2)^3 \cdot(p+10^4)}{p \cdot (p+10^3) \cdot (p+10^5)^3}\]
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm,
+    % height=5cm,
+    xmode=log, ymode=log,
+    xmin=1e-1, xmax=1e8,
+    ymin=1e-1, ymax=1e7,
+    grid=both,
+    major grid style={black!50},
+    yticklabels={,,},
+    xticklabels={,,}
+]
+\end{axis}
+\end{tikzpicture}
 \end{center}
 
-Pour améliorer la fiabilité de la barrière photoélectrique, le faisceau infra-rouge sera modulé.
-
-Toutes les questions du problème sont \textbf{indépendantes}, il n'est pas nécessaire d'avoir répondu aux questions précédentes pour répondre à une question. 
-
-L'émetteur et le récepteur seront étudiés séparément, respectivement aux sections \ref{Q:emetteur} et \ref{Q:recepteur}. Pour le récepteur, les différentes questions portent sur différents étages et sont indépendantes du contexte du problème.
-\newpage
-
-
-
-\section{Chronomètre: émetteur}
-L'émetteur est constitué d'une source de tension $E1$ produisant un signal rectangulaire 0--5V à 10kHz, rapport cyclique 10\% :
-\label{Q:emetteur}
 \begin{center}
-%\shorthandoff{:!}
-		\begin{circuitikz}%\draw
-			\draw		
-			(0,0) to [square voltage source, l=$E1$] (0,2) to [R, l=$R$] (2,2) to [led, l_=$D$](2,0) --(0,0)
-			;
-		\end{circuitikz}
-		%\shorthandon{:!}
-	\end{center}
-    
-%\newpage
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm,
+    % height=5cm,
+    xmode=log,
+    xmin=1e-1, xmax=1e8,
+    ymin=0, ymax=4,
+    grid=both,
+    major grid style={black!50},
+    yticklabels={,,},
+    xticklabels={,,}
+]
+\end{axis}
+\end{tikzpicture}
+\end{center}
+% Question
+}{
+Passons d'abord à la forme canonique :
+\begin{align*}
+H(p) & = \frac{10^3 \cdot (p + 10^2)^3 \cdot(p+10^4)}{p \cdot (p+10^3) \cdot (p+10^5)^3} \\
+     & = \frac{10^3 \cdot 10^6 \cdot (1+\frac{p}{10^2})^3 \cdot 10^4 \cdot (1+\frac{p}{10^4})}{p \cdot 10^3 \cdot (1 + \frac{p}{10^3}) \cdot 10^{15} \cdot (1 + \frac{p}{10^5})^3} \\
+     & = \frac{10^{-5} \cdot (1+\frac{p}{10^2})^3 \cdot (1+\frac{p}{10^4})}{p \cdot (1 + \frac{p}{10^3}) \cdot (1 + \frac{p}{10^5})^3} \\
+\end{align*}
 
 
-{\color{white} Cet énoncé est un prototype de question d'examen, have fun! }
-\Question
-{
-%question
-Sur base de la documentation fournie page suivante, dimensionnez $R$ de façon à limiter le courant dans la diode à 100mA.
-}
-{%answer
-La courbe $I_F=f(V_F)$ permet de constater que $V_F=1.35V$ pour $I_F=100mA$, par conséquent $R=\frac{E-V_F}{I_F}=36.5\Omega$.
-}
-\includepdf[pages={1},scale=0.9,pagecommand={\pagestyle{plain}}]{doc_led.pdf}
-
-
-
-\section{Chronomètre: récepteur}
- Le capteur infrarouge utilisé est une photodiode et nous allons l'utiliser comme source de tension.
-\label{Q:recepteur}
-Le récepteur est constitué de multiples blocs (voir schéma ci-dessous):
- \begin{itemize}
- \item photodiode (=capteur infra-rouge)
- \item amplificateur
- \item filtre
- \item deuxième amplificateur %(non étudié dans cet examen)
- \item comparateur
- \item circuits logiques de sortie, deux sorties logiques :
- \begin{itemize}
- \item "Pas d'obstacle" indique que le faisceau est établi entre l'émetteur et le récepteur.
- \item "Éblouissement" indique que le circuit n'est plus capable de décider si le faisceau est établi parce que l'éclairage ambiant est trop important et/ou un signal parasite perturbe la mesure (malgré la modulation). %Cette sortie ne sera pas étudiée dans cet examen.
- \end{itemize}
- \end{itemize}
+\begin{itemize}
+\item Zéros : $10^2$ (degré 3) et $10^4$ (degré 1)
+\item Pôles : $0$ (degré 1), $10^3$ (degré 1) et $10^5$ (degré 3)
+\item $A_o = 10^{-5}$
+\end{itemize}
 
 \begin{center}
- \includegraphics[width=12cm]{recepteur-crop.pdf}
- \end{center}
+\includegraphics[width=10cm]{elech301_bode.png}
+\end{center}
+}
+\clearpage
 
 
-\subsection{Photodiode+amplificateur}
-Les deux premiers étages du récepteur forment le circuit ci-dessous.
 
-La photodiode est assimilable à une source de tension dont l'amplitude est proportionnelle à la puissance lumineuse reçue et vaut environ 0.5V en moyenne dans une pièce correctement éclairée.
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Accordeur électronique -- Janvier 2020}
+
+Nous aimerions réaliser un accordeur électronique fonctionnant de la manière suivante~: une note est jouée devant le micro du système qui indique ensuite à l'aide de trois LED à l'utilisateur si elle est trop basse, trop aiguë ou juste.
+Pour y parvenir, le signal est d'abord séparé selon deux pistes : l'une au travers d'un filtre passe-bas réglé à la fréquence de référence, l'autre passe-haut à la même fréquence.
+Le bloc de lissage adjacent permet ensuite de conserver le valeur maximale de la sinusoïde entre deux période du signal.
+
+Le schéma suivant vous donne quelques indications quant à sa conception~:
 
 \begin{center}
-\shorthandoff{:!}
-\begin{circuitikz}%\draw
-			\draw	
-%			(0,6) to [short,i=$I$] 
-			(0,4.5) to [photodiode,v_<=$V_D$, ] (0,0) node [ground] {}
-%			  (-2,0) node [ground] {}to [european voltage source,v=$ $,l_=$\equiv V_{D}$ ](-2,4.5) to [short] (-1,4.5) 
-			(4,4) node[op amp, yscale=-1] (opamp) {}
-            % (opamp.+) node[left] {$v_+$}
-            % (opamp.-) node[left] {$v_-$}
-            % (opamp.out) node[right] {$v_o$}
-			(opamp.down) ++ (0,+0.5) node[above] {12V} -- (opamp.down)
-			 (opamp.up) ++ (0,-0.5) node[below] {-12V} -- (opamp.up)
-			 (opamp.-) -| ++(-0.5,-1.5) to [R, l_=$R_2$] ++(2.75,0) -|  (opamp.out)
-			 (opamp.-) -| ++(-0.5,-1.5) to [R, l=$R_1$] (2.25,0) node[ground] {}
-			 (opamp.+) to [short](0,4.5)
-			% (0.5,0) to [open, v=$V_{R_m}$] ((0.5,4.5)
-			 (opamp.out) to [short] ++(1.5,0) node (A) {}
-			 to [open, v^<=$V_{amp}$, o-o] ++(0,-4) node [ground]{}; %<= end of the first draw
-			;
-		\end{circuitikz}
-		\shorthandon{:!}
-	\end{center}
-    
- \Question
- {
- %question
- On utilise la photodiode en tant que source de tension. Marquez l'ensemble des points de fonctionnement possibles sur le graphe ci-dessous, \textit{par rapport au circuit électrique de la page précédente} :\\
- \begin{center}
- \includegraphics[width=11cm]{pdo.png}
- \end{center}
- }
- {%answer
- L'impédance d'entrée de l'AO est quasi infinie, par conséquent le courant circulant dans la diode est nul. Le point de fonctionnement est donc sur la demi-droite $[(0,0); (V>0,0)]$, par exemple $v_{oc}$ ou $v_{oc}'$.
- }
-
-\Question
-{
-%question
-\label{Q:ampli}
-Sachant que le produit gain--bande passante de l'amplificateur utilisé vaut $10^6$Hz et que la bande passante doit être supérieure à 100kHz, dimensionnez R1 et R2 pour maximiser le gain.
-}
-{%answer
-$GBW=10^6$, $BW=10^5Hz$ donc $G_{max}=10$, amplificateur non-inverseur, $G=1+R2/R1$ donc $R2=9\cdot R1=9k\Omega$.
-Étant donné qu'on ne donne pas davantage de contrainte sur les résitances, on peut choisir une valeur arbitrairement pour $R_1$ ou $R_2$ ($R_1 = 1k\Omega$ dans notre cas).
-}
-
- \subsubsection{Flux lumineux reçu}
- On souhaite pouvoir différentier le clignotement de la LED par rapport à l'éclairage ambiant.
-
-% Considérons dans un premier temps un éclairage standard comme suit :
- \begin{center}
- %\shorthandoff{:!}
- 		\begin{circuitikz}%\draw
- 			\draw		
- 			(0,0) to [sinusoidal voltage source, l=$E$] (0,2)--(2,2) to [lamp, l=$R$] (2,0) --(0,0)
- %			(1,1) to [battery1,l=$E$](1,6)
- 			;
- 		\end{circuitikz}
- 		%\shorthandon{:!}
- 	\end{center}
-
- \Question
- {
- %question
- En considérant la lampe comme une charge purement résistive, démontrez que la puissance consommée (et par conséquent le flux lumineux émis) contient une composante continue et une composante alternative à 100Hz. Un raisonnement utilisant un graphique peut vous aider.\\
- $E=311 \cdot sin(2\cdot\pi\cdot50t) V, R=311\Omega$
-
- }
- {%answer
- On peut résoudre en temporel :% ou en phaseurs
- 
- $p(t)=E(t)^2/R=311\cdot\sin^2(2\pi\cdot50t) W=\frac{311}{2}\cdot(1-cos(2\pi\cdot100t))$.
-
-En phaseurs :
- $P=E^2/R=E^2\cdot e^{2j\omega}/R$, qui a une moyenne temporelle $>0$
-
- Ce qui permet de conclure que le flux lumineux émis par la lampe comporte une composante continue et une composante alternative à 100Hz.
- }
-%\vspace*{-0.5cm}
-\enlargethispage{0.5cm}
- \Question
- {
- %question
- Qu'en est-il pour l'éclairage naturel (soleil) ?
-
- }
- {%answer
- L'éclairage solaire est constant au premier ordre (même si la couverture nuageuse fait apparaître des fréquences $<<1Hz$ dans le spectre).
- }
- 
-\subsection{Filtre}
-On fixe le seuil de détection à 0.1\%, c'est à dire que la variation due au clignotement de la LED mesurée au niveau de la photodiode doit être supérieure à 0.1\% de l'éclairage ambiant pour que le faisceau soit considéré comme établi. En dessous de 0.1\% (ou si un obstacle occulte le faisceau), on considère le faisceau comme interrompu.
-
-L'éclairage ambiant est tel que la photodiode produit une tension de 0.5V. La tension produite est une combinaison entre une composante continue et une composante alternative à 100Hz due à l'alimentation alternative des lampes. Le système doit fonctionner dans le cas extrème où l'éclairage ambiant est uniquement alternatif (0.5V, 100Hz).
-
-La lumière de la LED de l'émetteur s'ajoute à l'éclairage ambiant. On décide que le faisceau lumineux entre l'émetteur et le récepteur est établi si la composante qui correspond à la LED a une amplitude supérieure à 0.5mV (0.1\% de l'éclairage ambiant) dans la tension produite par la photodiode.
-
-Pour simplifier la résolution, 
- les contributions à la tension produite par la photodiode sont :
- \begin{itemize}
- \item éclairage ambiant : 0.5V, continu
- \item éclairage ambiant : composante alternative 0.5V, 100Hz, sinusoïdale
- \item LED de l'émetteur : 0.5mV, 10kHz, tension en créneaux (0--0.5mV, rapport cyclique 10\%)
- \end{itemize}
-\vspace*{4mm}
-
- \Question
- {
- %question
- Pour conserver la composante correspondant à la LED et atténuer les composantes de l'éclairage ambiant :
- \begin{itemize}
- \item quel type de filtre utiliser ?
- \item spécifiez ses caractéristiques (ordre, gain, fréquences\dots)
- \end{itemize}
- 
- Aide : la fréquence la plus haute de l'éclairage ambiant doit avoir une amplitude inférieure à 0.1\% en sortie du filtre. La fréquence correspondant à la LED ne doit pas être atténuée significativement.
-
- }
- {%answer
- Il faut que l'atténuation à 10kHz soit $\leq 3dB$ et l'atténuation à 100Hz $>60dB$ (=0.1\%). Il y a 2 décades entre les deux fréquences, pour respecter les contraintes, il faut un filtre d'ordre 2, passe-haut. Sa fréquence de coupure doit être $\leq 10kHz$ telle que les 60dB d'atténuation soient respectés.
-
- }
-
-
-\Question
-{
-%question
-Soit le filtre suivant :
-
-\vspace*{-1cm}
-\begin{center}
-%\shorthandoff{:!}
-		\begin{circuitikz}[scale=0.8]%\draw
-			\draw		
-			(0,0) to [open, v^>=$v_{in}$,o-o] (0,4) to [C,l=$22nF$] (2,4) to [L,l=$12mH$]  (2,2) to [R,l=$82\Omega$](2,0) to [short](0,0)
-			(2,4) -- (4,4) to [open, v^<=$v_{out}$,o-o] (4,0) -- (2,0)
-			;
-		\end{circuitikz}
-		%\shorthandon{:!}
-	\end{center}
-
-Déterminez le module de la fonction de transfert à 100Hz et à 10kHz. Que pouvez-vous conclure sur ce filtre ?
-}
-{%answer
-$$\underline{V}_{out}=\underline{V}_{in}\dfrac{R+j2\pi f\cdot L}{R+j2\pi f\cdot L+1/\left(j2\pi f\cdot C\right)}$$
-à 100Hz :
-$\left| \dfrac{\underline{V}_{out}}{\underline{V}_{in}} \right| = 1.13e-3=-58.8dB$
-
-à 10kHz :
-$\left| \dfrac{\underline{V}_{out}}{\underline{V}_{in}} \right| = 8.66=18.75dB$
-
-C'est un filtre passe-haut passif du deuxième ordre. Ce circuit RLC présente un phénomène de résonnance (le gain du filtre passif dépasse 1 à 10kHz)
-
-La contrainte sur le filtre de la question précédente est respectée.
-}
-\enlargethispage{0.5cm}
-\newpage
- \subsubsection{Gain de la chaîne}
-
- Les 0.1\% (0.5mV@10kHz) que représentent le clignotement de la LED au niveau de la photodiode doivent être amplifiés pour obtenir une amplitude de 6V à l'entrée du comparateur.
-
- \Question
- {
- %question
- En tenant compte du gain de 10 du premier étage, du gain de 8.66 apporté par le filtre RLC à 10kHz, déterminez le gain nécessaire pour respecter le cahier des charges (BW de cet étage=10kHz). En utilisant un amplificateur du même modèle que celui utilisé à la question \ref{Q:ampli}, combien d'étages supplémentaires sont nécessaires ?
-
- }
- {%answer
- Gain total : 12000
-
- Gain du premier étage +filtre à 10kHz : 86.6
-
- Gain nécessaire : 12000/86.6=138.6
-
- Le gain maximum par étage est de 100 (puisque le GBP est de $10^6$), par conséquent deux étages supplémentaires sont suffisants.
- }
-
-\subsection{Comparateur}
-Un fois le signal amplifié et filtré, il faut vérifier si son amplitude est suffisante. Un comparateur de tension est suffisant pour cette tâche.
-\Question
-{
-Tracez le schéma d'un circuit permettant de comparer une tension avec une tension continue de 5 V.
-}
-{%answer
-Pour réaliser un comparateur, on peut utiliser un ampli-op en saturation.
-
-\begin{center}
-	\includegraphics[scale=1.4]{comparateur.pdf}
+\includegraphics[width=\textwidth]{elech301_schema-bloc_mystere.png}
 \end{center}
 
-En connectant le signal de référence sur l'entrée inverseuse et le signal à comparer sur l'entrée non-inverseuse, on peut exploiter la gain différentiel de l'ampli-op $A_d \cdot (V_+ - V_-)$ afin que la sortie vaille 0~V lorsque $V_{in} < VCC$ et 5~V lorsque $V_{in} > VCC$.
-}
-%
-\subsection{Logique}
-Le faisceau lumineux étant modulé, il est nécessaire d'éffectuer une démodulation du signal reçu. 
-
-Lorsque le signal a été comparé avec le seuil, le signal obtenu est identique au signal fourni par la source de l'émetteur (si le faisceau est établi, sinon nul), un circuit logique est nécessaire pour transformer ce signal en créneaux en un signal logique représentant l'information "Pas d'obstacle". Ce circuit peut accèder à la source de l'emetteur.
-
-On dispose de deux signaux :
-
-\begin{itemize}
-\item la source alimentant la LED de l'émetteur: signal en créneau 0--5V, 10kHz, rapport cyclique 10\%
-\item la sortie du comparateur, qui est le \textbf{même} signal en créneaux (si le faisceau émetteur-récepteur est établi), 0V sinon
-\end{itemize}
+Votre tâche consiste à comprendre, concevoir et dimensionner ce système et les blocs le composant.
 
 \Question
 {
-Tracez le schéma d'un circuit permettant d'obtenir le comportement suivant :
+Notre accordeur utilise comme note de référence le $la_3$ à 440 Hz. Dessinez et dimensionnez les deux filtres passe-haut et passe-bas d'ordre 1 à l'entrée du montage.
+}
+{
+\begin{enumerate}
+\item Filtre passe-haut, RC ou RL.
 
-\begin{itemize}
-\item La sortie passe à 1 lorsque la sortie du comparateur vaut 1
-\item La sortie passe à 0 lorsque la source alimentant la LED vaut 1(=5V), sauf si la sortie du comparateur vaut 1 au même moment.
-\item La sortie conserve sa valeur précédente dans les autres cas
-\end{itemize}
+    \begin{itemize}
+    \item RC avec $\omega_C = \frac{1}{RC} = 2\pi \cdot 440$. Si l'on choisit $R = 1k\Omega$, $C = 361.7 nF$.
+    
+    \begin{circuitikz} \draw
+    (0,0)   node[ground]{}
+            to[american voltage source, v=$V_{in}$, invert] (0,3)
+            to[C, l=$C$] (3,3)
+            (3,0) to[R, l=$R$, v=$V_{out}$] (3,3)
+            (3,0)--(0,0)
+    ;
+    \end{circuitikz}
+    
+    \item RL avec $\omega_C = \frac{R}{L} = 2\pi \cdot 440$. Si l'on choisit $R = 1k\Omega$, $L = 361.7 mH$.
+    
+    \begin{circuitikz} \draw
+    (0,0)   node[ground]{}
+            to[american voltage source, v=$V_{in}$, invert] (0,3)
+            to[R, l=$R$] (3,3)
+            (3,0) to[L, l=$L$, v=$V_{out}$] (3,3)
+            (3,0)--(0,0)
+    ;
+    \end{circuitikz}
+    \end{itemize}
+
+
+\item Filtre passe-bas, RC ou RL.
+
+    \begin{itemize}
+    \item RC avec $\omega_C = \frac{1}{RC} = 2\pi \cdot 440$. Si l'on choisit $R = 1k\Omega$, $C = 361.7 nF$.
+    
+    \begin{circuitikz} \draw
+    (0,0)   node[ground]{}
+            to[american voltage source, v=$V_{in}$, invert] (0,3)
+            to[R, l=$R$] (3,3)
+            (3,0) to[C, l=$C$, v=$V_{out}$] (3,3)
+            (3,0)--(0,0)
+    ;
+    \end{circuitikz}
+    
+    \item RL avec $\omega_C = \frac{R}{L} = 2\pi \cdot 440$. Si l'on choisit $R = 1k\Omega$, $L = 361.7 mH$.
+   
+    \begin{circuitikz} \draw
+    (0,0)   node[ground]{}
+            to[american voltage source, v=$V_{in}$, invert] (0,3)
+            to[L, l=$L$] (3,3)
+            (3,0) to[R, l=$R$, v=$V_{out}$] (3,3)
+            (3,0)--(0,0)
+    ;
+    \end{circuitikz}
+    \end{itemize}
+\end{enumerate}
+}
+
+
+\Question
+{
+Dessinez un montage effectuant l'opération de lissage décrite dans l'introduction.
+}
+{
+Un montage avec une seule diode est suffisant, mais un pont de Wien est aussi possible.
+
+\begin{circuitikz}\draw
+    (0,0) to [sV, l=$V_{ac}$] (0,3)
+    to [Do] (5,3)
+    to [european resistor,l=$R_{Ch}$] (5,0) to (0,0)
+    (4,3) to [eC,l_=$C$, *-*] (4,0)
+    (6,3) to [open, v^<=$V_{charge}$] (6,0)
+;\end{circuitikz}
+
+Étant donné qu'on souhaite lisser la tension à l'entrée de l'ampli-op, la charge est nécessaire pour que les charges accumulées dans le condensateur puissent y circuler.
+En l'absence de cette charge, le condensateur ne peut pas se décharger et ne sert donc pas son rôle de lissage.
+De plus, le condensateur doit être polarisé pour que les charges puissent s'y accumuler lors des alternances positives et se décharger lors des alternances négatives.
+}
+
+
+\Question
+{
+Comment appelle-t-on le bloc A~? Quel est son rôle et quelle serait une valeur pertinente pour $V_{Ref}$, si $V_{in}$ a une amplitude maximale de 1~V ?
+Justifiez votre réponse.
+}
+{
+Il s'agit d'un montage comparateur.
+Pour rappel, il fonctionne en mode différentiel, sans rétroaction. Lorsque $V_+ > V_-$, $V_{out} = 5 V$ et lorsque $V_+ < V_-$, $V_{out} = 0 V$.
+
+La \texttt{LED1} doit être allumée si la fréquence de $V_{in}$ est trop basse, donc si cette fréquence est plus basse que la fréquence de coupure du filtre passe-bas.
+On peut donc fixer $V_{Ref} = \frac{1}{\sqrt{2}} = 0.7 V$.
+}
+
+
+\Question
+{
+Le bloc de contrôle numérique permet de déterminer quand la \texttt{LED3} est allumée ou non.
+Il est composé de deux entrées et d'une sortie, et doit fonctionner de la façon suivante~:
+La LED ne doit s'allumer que si les deux autres sont éteintes et si l'une des deux autres est allumée, la \texttt{LED3} doit être éteinte. Une fois que la \texttt{LED3} a été allumée, elle doit le rester même si la note n'est plus jouée à l'entrée du diapason.
+
+Dessinez le montage répondant à ce cahier des charges en utilisant des portes logiques et des organes mémoires si nécessaire.
+}
+{
+\begin{center}
+\includegraphics[width=\textwidth]{elech301_schema-bloc_logic.jpg}
+\end{center}
+
+Notez que le bistable n'est pas nécessaire au bon fonctionnement du montage~; la combinaison d'une porte \texttt{OR} avec une porte {NOT} est suffisante.
+}
+
+
+Les trois LED ont les mêmes caractéristiques dont vous pouvez trouver un extrait au travers des courbes suivantes~:
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{led_datasheet.png}
+Bien qu'une simple porte \texttt{NOR} fasse l'affaire.
+\end{center}
+
+\Question
+{
+\begin{enumerate}
+\item Dimensionnez la résistance connectée à l'anode de la LED afin qu'elle s'illumine avec une intensité lumineuse relative (\textit{Relative Intensity}) de 1 lorsqu'on applique une tension de 5 V à l'autre borne de la résistance.
+
+\item Vous n'avez malheureusement sous la main qu'une résistance de $1 k\Omega$.
+Sachant que la puissance maximale que la diode peut dissiper est de 100~mW, la LED ...
+    \begin{itemize}
+    \item[$\square$]... s'allume normalement. Déterminez sa nouvelle intensité lumineuse.
+    \item[$\square$]... s'allume brièvement avant de brûler. Déterminez la puissance qu'elle dissipe brièvement avant d'être inutilisable.
+    \item[$\square$]... se transforme spontanément en or. Déterminez comment reproduire ce phénomène à l'échelle industrielle.
+    \end{itemize}
+\textit{Note : Cochez la bonne réponse et ne répondez qu'à la sous-question correspondante.}
+\end{enumerate}
 
 }
-{%answer
-Circuit RS à Set prioritaire :
-\begin{itemize}
-\item S = sortie du comparateur
-\item R = source alimentant la LED
-\end{itemize}
+{
+\begin{enumerate}
+\item En suivant les différentes courbes, on constate qu'une intensité lumineuse relative de 1 correspond à un courant de 20 mA pour une tension de 3.5 V aux bornes de la diode.
+Nous avons une maille d'équation $5V - V_R - V_D = 0$, avec $V_R = i \cdot R$. Étant donné que $V_D = 3.5 V$ et que $i = 20 mA$, on trouve $R = 75 \Omega$.
+
+\item La LED s'allume normalement. Une droite de charge permet de déterminer qu'elle est parcourue par un courant d'environ 3 mA sous une tension d'environ 3 V, entraînant une intensité lumineuse relative d'environ 0.2.
+
+Attention ! Cette question ne signifie pas que la diode dissipe 100 mW quand on utilise une résistance $100 k\Omega$.
+De plus, on ne peut pas utiliser la relation $P = R\cdot I^2$ pour une diode, puisqu'il s'agit de l'expression de la puissance dissipée par une résistance.
+\end{enumerate}
+}
+
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Dimensionnement d'une amplification -- Janvier 2020}
+
+On souhaite créer un circuit d'amplification pour un signal sinusoïdal dont la plage de fréquence s'étend de \si{20}{kHz} à \si{40}{kHz}.
+Ce signal peut être représenté par une sinusoïde d'amplitude \si{1}{mV} centré sur zéro produite par un générateur dont la résistance de sortie est \si{1}{k\ohm}.
+En sortie, le signal amplifié doit avoir une amplitude de \si{12}{V} et sera connecté à une charge de \si{200}{\ohm}.
+Le signal de sortie peut être déphasé par rapport au signal d'entré.
+\begin{center}
+\begin{circuitikz}[scale=0.8]
+    \draw
+        (0,0) node[ground]{}
+            to[sinusoidal voltage source, v=$V_{in}$] (0,3)
+            to[R, l=\si{1}{k\ohm}] (2,3)
+            to[short] (3,3)
+            to[open] (7,3)
+            to[short] (10,3)
+            to[R, l_=\si{200}{\ohm}, v^<=$ V_{out} $](10,0)
+            to[short] (7,0)
+            to[open] (3,0)
+            to[short] (0,0)
+        (0,4.3) node[anchor=south] {Générateur}
+        (5,4.3) node[anchor=south] {Amplification}
+        (10,4.3) node[anchor=south] {Sortie}
+        (5,1.2) node[anchor=south] {{\large ?}}
+    ;
+    \draw[thick] (3, 3.5) -- (7, 3.5) -- (7, -0.5) -- (3, -0.5) -- (3, 3.5);
+    \draw[dotted](-2,-1)--(-2,4)--(2,4)--(2,-1)--(-2,-1);
+    \draw[dotted](8.3,-1)--(8.3,4)--(11.7,4)--(11.7,-1)--(8.3,-1);
+\end{circuitikz}
+\end{center}
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    %\resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|r|}
+        \hline
+        Ampli-op & $ I_{out, max} [mA]$ & $ A.B_{W} [MHz]$ & Alimentation [V]& Prix [€]\\ \hline
+        %     & [mA]& [MHz]  & [V] & [€] \\ \hline
+        \texttt{MCP6V36T}  & 21   & 0.3 & 1,8 à 5,5             & 0,71\\ \hline
+        \texttt{OPA548T}   & 5000 & 1   & $\pm 4$ à $\pm 30$    & 13,76\\ \hline
+        \texttt{UA741CD}   & 25   & 1   & $\pm 9$ à $\pm 15$    & 0,3\\ \hline
+        \texttt{AD8021ARZ} & 75   & 200 & $\pm 2,25$ à $\pm 12$ & 3,52\\ \hline
+    \end{tabular}
+    %}
+\end{table}
+
+\Question
+{
+    Dimensionnez le circuit d'amplification de la manière la plus économique possible. 
+    Vous ne devez considérer que le prix des ampli-op listés ci-dessus.
+    Le prix de tous autres composants (résistances,...) est négligeable. 
+    %Vous ne devez pas considérer le prix des résistances et autres composants basiques.
+    Proposez des valeurs de résistance réalistes et dessinez le schéma de ce circuit.\\
+    \textit{Remarque: Commencez par établir la liste des contraintes du problème.}
+}
+{
+    Les contraintes sont:
+    \begin{itemize}
+        \item Le gain total est $ G = \frac{\si{12}{V}}{\si{1}{mV}} = 12000 $,
+        \item l'impédance d'entrée doit être supérieur à \si{1}{k\ohm},
+        \item le dernière étage doit être capable de fournir un courant de sortie supérieur à 
+            $ \frac{ \si{12}{V} }{ \si{200}{\ohm} } = \si{60}{mA} $.
+    \end{itemize}
+    ~\\
+
+    On choisit un premier étage non-inverseur pour que l'impédance d'entrée du montage soit égale à celle de l'ampli-op.
+    ~\\
+
+    Le \texttt{MCP} peut être écarté car son alimentation n'est pas symétrique et ses performances sont moins bonnes que les autres ampli-op.
+    ~\\
+    
+    Déterminons le gain maximum par étage pour chacun des ampli-op à la bande passante considérée:
+    \begin{itemize}
+        \item \texttt{OPA548T}: $ G_{max} = \frac{A.B_{W}}{B_{W}} =
+            \frac{\si{1}{MHz}}{\si{40}{kHz}} = 25 $,
+        \item \texttt{UA741CD}: $ G_{max} = 25 $,
+        \item \texttt{AD8021ARZ}: $ G_{max} = 5000 $.
+    \end{itemize}
+    Il nous faut donc au minimum 2 étages si on utilise l'\texttt{AD8} et 3 étages si on utilise l'\texttt{UA7} ou l'\texttt{OPA}.
+    ~\\
+    
+    Le dernière étage doit pouvoir fournir un courant de \si{60}{mA}.
+    Seul l'\texttt{OPA} et l'\texttt{AD8} peuvent fournir un tel courant.
+    On préféra l'\texttt{AD8} pour son prix.
+    ~\\
+    
+    La solution la moins chère est :
+    \begin{itemize}
+        \item Le 1er étage non-inverseur avec un \texttt{UA741CD}, on prendra des résistances de \si{1}{k\ohm} et \si{24}{k\ohm} pour avoir un gain de $ G = 1 + \frac{24}{1} = 25 $.
+        \item Le second étage inverseur ou non-inverseur avec un \texttt{AD8021ARZ}, on prendra comme résistance \si{1}{k\ohm} et \si{480}{k\ohm} dans le cas d'un étage inverseur.
+    \end{itemize}
+
+}
+
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Diodes -- Janvier 2018}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}\draw
+            % Source
+            (3,3) to[short, -o] node[anchor=west]{\quad$+12V$} (3.5,3)
+            
+            % Diodes
+            (0,3) to [Do, l=$D_{1}$] (0,0)
+            (3,0) to [Do, l=$D_{2}$, i>=$i_2$] (0,0)
+            
+            % Resistances
+            (0,3) to [R=$R_1$] (3,3)
+            (3,3) to [R=$R_2$] (3,0)
+            (0,-3) to [R=$R_3$, v=$v_3$] (0,0)
+            (3,0) to [R=$R_4$] (3,-3)
+            
+            % Masses
+            (0,-3) node[ground]{} %(0,-3.5)
+            (3,-3) node[ground]{} %(3,-3.5)
+            
+            % Annotations
+            %(0,0) to [open, v^<=$V_{3}$] (0,-2)
+        ;\end{circuitikz}
+    \end{center}
+\end{figure}
+
+\Question
+{
+    En considérant les diodes comme idéales ($ V_{TH} = 0~V $), calculez la tension $ v_{3} $ et le courant $ i_{2} $ sachant que $ R_{1} = 3k\ohm $, $ R_{2} = 2k\ohm $, $ R_{3} = 4k\ohm $ et $ R_{4} = 6k\ohm $.
+}
+{
+    Pour résoudre ce circuit, il faut poser l'hypothèse que chacune des diodes est soit bloquante, soit passante. Les hypothèses menant à des incohérences sont ensuite  éliminées. 
+
+  \begin{enumerate}
+      \item $ D_{1} $ et $ D_{2} $ sont bloquantes.
+
+      Les deux diodes sont assimilées à des circuits ouverts.
+      Dès lors, $ v_{3} = 0V $ et $ v_{4} = \dfrac{ R_{4} }{ R_{2} + R_{4}} \cdot 12V = 9V$.
+      La tension aux bornes de la diode $ D_{2} $ est positive ce qui est \textbf{incohérent} avec l'hypothèse que celle-ci est bloquante.
+
+      \item $ D_{1} $ est passante et $ D_{2} $ bloquante.
+
+      Idem, le calcule de la tension aux bornes de la diode $ D_{2} $ montre que l'hypothèse $ D_{2} $ bloquante est \textbf{fausse}:
+      $$ v_{3} = \frac{ R_{3} }{ R_{3} + R_{1} } = 6.86V \qquad\text{et}\qquad  v_{4} = \frac{ R_{4} }{ R_{2} + R_{4} } = 9V $$
+      $$ \Rightarrow v_{D2} = v_{4} - v_{3} = 2.41V > 0 $$
+
+      \item $ D_{1} $ est bloquante et $ D_{2} $ passante.
+
+      Comme $ D_{1} $ est assimilé à un circuit-ouvert, aucun courant ne passe dans la resistance $ R_{1} $, l'anode de $ D_{1} $ est donc à $ 12V $.
+      La cathode est au potentiel $ v_{3} = v_{4} = \dfrac{ ( R_{3} // R_{4} ) }{ R_{2} + ( R_{3} // R_{4} ) } \cdot 12V $. 
+      On remarque, dès lors, une tension $v_{D1}$ positive. 
+      Cette hypothèse est \textbf{écartée}.
+
+      \item $ D_{1} $ et $ D_{2} $ sont passantes.
+
+       Les deux diodes sont assimilées à des court-circuits:
+      $$ v_{3} = v_{4} = \dfrac{ ( R_{3} // R_{4} ) }{ ( R_{1} // R_{2} ) + ( R_{3} // R_{4} ) } \cdot 12V = \boxed{8V} $$
+      On trouve que le courant $ i_{1} = \dfrac{ 12V - 8V }{ R_{1} } = 1.33mA $ est positif. La loi des noeuds donne:
+      $$ i_{2} = i_{3} - i_{1} = \frac{ 8V }{ R_{3} } -i_{1} = \boxed{0.67mA} > 0 $$
+
+  \end{enumerate}
+
+}
+
+% \begin{figure}[h!]
+%   \begin{center}
+%       \begin{circuitikz}\draw
+%           (-2,1) to [sV, l_=$V_{in}$] (-2,3)
+%           (-2,1) to (-1,1) to (-1,1.75) to [short,-*](2,1.75)
+%           (-2,3) to (-1,3) to (-1,2.25) to [short,-*](0,2.25)
+%           (0,0) to [open, *-] (0,2) to [Do](0,4)
+%           (2,0) to [Do,*-] (2,2) to [Do, -*](2,4)
+%           (0,4) to [short](5,4)
+%           (0,0) to [short](2,0)
+%           (5,4) to [R,l=$R_{Ch}$] (5,0) to (2,0)
+%           %4,4) to [eC,l_=$C$, *-*] (4,0)
+%           (6,4) to [open, v^<=$V_{out}$] (6,0)
+%       ;\end{circuitikz}
+%   \end{center}
+% \caption{Redresseur double alternance endommagé.}
+% \label{fig:source}
+% \end{figure}  
+% 
+% \Question{4}{1}
+% {
+%   
+% }
+% {
+% }
+
+
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Diodes -- Janvier 2019}
+
+Soit le circuit suivant composé de deux diodes IN4736A. $ R_{1} = 1~k\Omega $ et $ R_{ch} = 9~k\Omega$
+\begin{center}
+    \begin{circuitikz}\draw
+        (0,0) to [american voltage source, invert, v=$ V_{in} $] (0,4)
+              to [resistor, l=$ R_{1} $] (4,4)
+              to [zzDo, l=$ D_{1} $] (4,2)
+              to [zzDo, l=$ D_{2} $, invert] (4,0)
+              to (0,0)
+        (4,0) to [short, -] (7,0)
+              to [resistor, l=$ R_{ch} $, v>=$ V_{out} $] (7,4)
+              to [short, -] (4,4)
+    ;\end{circuitikz}
+\end{center}
+
+
+\Question
+{
+    À l'aide des datasheet fournies en annexe déterminez les tensions de seuil et d'avalanche de ces diodes.
+}{
+    $ V_{th} = 1.2~V $ (\textit{Forward voltage}).
+    
+    $ V_{z} = 6.8~V $ (ligne 1N4736A)
+}
+
+\Question
+{
+    Pour $ V_{in} = 10~V $, déterminez les états des diodes.
+}{
+    Pour résoudre un circuit à diodes il faut commencer par faire des hypothèses sur l'état de chaque diode et ensuite vérifier si ces hypothèses sont cohérentes. Ici nous avons 2 diodes qui peuvent être dans 3 états differents: \textit{passante}, \textit{bloquante} ou \textit{en avalanche}, ce qui fait 9 combinaisons possibles. Heureusement, la plupart de ces combinaisons peuvent directement être écartées par exemple: $ D_{1} $ et $ D_{2} $ passantes, si le courant $ i_{D1} $ est positif alors le courant $ i_{D2} $ est obligatoirement négatif, $ D_{2} $ ne peut être passante. Il reste trois possibilités:
+    
+    \paragraph{$ D_{1} $ et $ D_{2} $ bloquantes} 
+    On a :
+    \[ V_{D1} - V_{D2} = V_{out} = \frac{9}{1+9} 10~V = 9~V \]
+    Or comme les diodes sont bloquantes leur tension doivent être comprises entre $ -6.8~V $ et $ 1.2~V $ ce qui n'est pas possible si $ V_{out} = 9~V $.
+    
+    \paragraph{$ D_{1} $ en avalanche et $ D_{2} $ passante}
+    En faisant une loi des noeuds sur le noeud connectant $ D_{1} $ et les résistances on se rend compte que ça ne va pas.
+    \[
+        i_{1} = i_{D1} + i_{ch} 
+    \]
+    Le courant $ i_{ch} = 8~V / 9~k\Omega = 0.8~mA $ est plus faible que $ i_{1} = (10-8)~V / 1~k\Omega = 2~mA $ or, $ i_{D1} $ devrait être négatif.
+    
+    \paragraph{$ D_{1} $ passante et $ D_{2} $ en avalanche}
+    Le courant $ i_{D1} = 1.8~mA $ est positif et donc $ i_{D2} = - i_{D1} $ est négatif.
+    Les hypothèses sont vérifiées.
+    
+}
+
+\Question
+{
+    Représentez $ V_{out} $ sur le graphique suivant pour  $ V_{in} $ sinusoïdale d'amplitude $ 12~V $.
+    
+    \includegraphics[width=.8\textwidth]{sinus.png}
+    % x=[0:0.01:2*2*pi];plot(x,12*sin(x), "linewidth", 2);set(gca,'YTick',-14:2:14, "ygrid", "on", "xticklabel",[]); ylabel("[V]")
+    
+
+}{
+
+    Pour $| V_{in} \geq 8 V$, nous serons dans la même situation que la question précédente : $D_1$ passante et $D_2$ en avalanche.
+    Dans cette configuration, la somme des tensions aux bornes des diodes (et donc aux bornes de la charge) est $1.2 V + 6.8 V = 8 V$.
+    On peut donc observer une saturation à cette tension, comme illustré dans le graphe suivant.
+
+    \begin{center}
+    \includegraphics[width=.8\textwidth]{sinus_correction.png}
+    \end{center}
+}
+
+\Question
+{
+    À quoi sert ce circuit ?
+}{
+    Ce circuit permet de limiter la tension de sortie et ainsi d'éviter que des piques de tension ne viennent endommager la charge.
+    
+    Ici la tension de sortie est limitée à $ \pm 8~V $.
 }
 
 
- \Question
- {
- On désire également avoir une sortie qui marque l'éblouissement du capteur, c'est-à-dire quand la sortie du comparateur vaut 1 quel que soit l'état de la source alimentant la LED. Les contraintes sont :
- \begin{itemize}
- \item La sortie passe à 1 si la sortie du comparateur vaut 1 \textbf{et} que la source alimentant la LED vaut 0.
- \item La sortie passe à 0 si la source alimentant la LED vaut 0 sauf si la condition précédente est vraie.
- \end{itemize}
+\subsection*{Datasheet diode $ 1N4740A $}
+\fbox{\includegraphics[page=1, width=\textwidth]{datasheet_diode.pdf}} \newpage
+\fbox{\includegraphics[page=2, width=\textwidth]{datasheet_diode.pdf}}
 
- }
- {%answer
- Circuit RS à Set prioritaire :
- \begin{itemize}
- \item  S = sortie du comparateur AND NOT  (source alimentant la LED)
- \item  R = NOT(source alimentant la LED)
- \end{itemize}
- }
+
+
 
 \end{document}
