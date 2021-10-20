@@ -42,20 +42,20 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 5 : transistors MOS}
-\rhead{v1.2.0\\ page \thepage}
+\rhead{v1.3.0\\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
 
 \pdfinfo{
-/Author (Yannick Allard, ULB -- BEAMS)
+/Author (ULB -- BEAMS)
 /Title (TP 5 ELEC-H-301, transistors MOS)
 /ModDate (D:\pdfdate)
 }
 
 \hypersetup{
 pdftitle={TP 5 [ELEC-H-301] Électronique appliquée : transistors MOS},
-pdfauthor={Yannick Allard, ©2016 ULB - BEAMS  },
+pdfauthor={©2016 ULB - BEAMS  },
 pdfsubject={Transistor MOS}
 }
 
@@ -330,7 +330,21 @@ $R1=1k\Omega$, $R2=10k\Omega$, $C1=1\mu F$, $v_{in}=0.42 sin(\omega t) V$, $V_C=
 
 
 }
-{Dans le cas où $\frac{1}{j\cdot C1\omega}\ll R1$, voir schéma.
+{
+
+Nous pouvons utiliser le principe de superposition afin de déterminer les contributions de $V_C$ et $v_{in}$ respectivement avant de les sommer.
+
+Commençons par les contributions de $V_C$.
+Nous avons tout d'abord $V+ = V_C$ et par le zéro virtuel (en supposant qu'on ne sature pas et qu'il s'agit bien d'un ampli op idéal), $V- = V+ = V_C$.
+Étant donné qu'il s'agit d'une source de tension continue, nous pouvons appliquer la loi long terme du condensateur (loi basse fréquence) et considérer qu'il se comporte comme un \textbf{circuit ouvert}.
+On n'a alors pas de courant circulant dans $R_1$, donc pas de chute de potentiel sur $R_1$, donc on retrouve $V_C$ à sa borne gauche.
+De même, nous n'avons pas de courant circulant dans $R_2$ (aucun courant n'entre par l'entrée de l'AOP et le condensateur se comporte comme un circuit ouvert), donc pas de chute de potentiel, donc toujours le même $V_C$ à la tension de sortie.
+Nous retrouvons bien un montage \textbf{suiveur}.
+
+Passons aux contributions de $V_{in}$. Cette fois-ci, nous appliquons la loi court terme (haute fréquence) du condensateur, il se comportera comme un \textbf{court-circuit}.
+Étant donné que nous court-circuitons $V_C$ dans cette étape de la superposition, nous avons devant nous un montage \textbf{inverseur} classique.
+Sachant que son gain est $\frac{- R_2}{R_1}$, nous trouvons $V_{out} = 10 \cdot V_{in}$.
+
 
 }
 
@@ -398,7 +412,8 @@ Soit le circuit suivant :
 	Valeurs des composants/sources : 	$V_{DC}=6.2V$, $R_{B1}=R_{B2}=100k\Omega$, $R_D=100\Omega$, $C_{in}=100nF$, $C_{out}=2.2\mu F$, $E=12V$, $R_{ch}=3.3k\Omega$, $V_{in}$ sinusoïdale
 	
 	\begin{itemize}
-	\item Calculer les tensions et courants \textbf{continus} en tout point du circuit. 
+	\item Calculer les tensions et courants \textbf{continus} en tout point du circuit.
+	Aidez-vous des caractéristiques du BS170 en annexe si nécessaire.
 	\item Placer le point de fonctionnement sur les courbes caractéristiques du BS170 en annexe, en déduire $I_D$ et $g_m$.
 	\item Tracer également la droite de charge et indiquer les limites de linéarité. % statique.
 	\end{itemize}
@@ -407,15 +422,20 @@ Soit le circuit suivant :
 	
 	}
 	{%
-	Voir schéma ci-dessus et courbes en annexe.
+	Étant donné que nous ne travaillons qu'avec les tensions \textbf{continues} du montage, nous ignorons complètement $V_{in}$.
+	De plus, les condensateurs se comportent comme des circuits \textbf{ouverts} (loi long terme, basse fréquence).
+	Sachant qu'aucun courant ne peut entrer par la grille du transistor, l'intégralité du courant débité par la source $V_{DC}$ passe par $R_{B1}$ et $R_{B2}$.
+	On retrouve un classique diviseur résistif nous permettant de déterminer $V_G = 3.1 V$.
+
+	Étant donné que $V_S = 0 V$, nous pouvons utiliser la caractéristique de \textbf{transfert} du transistor pour déterminer $I_D$ sachant que $V_{GS} = 3.1 V$. On lit ainsi que $I_D = 67 mA$.
+
+	Passons ensuite à la partie droite du montage.
+	Puisque $C_{out}$ est un circuit ouvert pour les grandeurs continues, nous n'avons qu'une seule et unique maille dont l'équation est $E = R_D \cdot I_D - V_{DS}$, soit $V_{DS} = 5.3 V$.
+
 	
-	Pour $V_{GS}=3.1V, I_D=67mA$, $g_m=197mS$.
 	}
 
-\ifgv{\newpage}
-
 %TODO : ajouter droite de charge
-%TODO : qqch fait dlm avec l'espace avant itemize FIXED
 
 \section{Schéma à petit signal}
 
@@ -598,7 +618,8 @@ Sachant que $V_{DC}$ a été judicieusement choisie pour obtenir $g_m=0.197S$ :
 	En entrée, nous avons un simple filtre RC où la sortie est prise sur la mise en parallèle des deux résistance.
 	Nous pouvons donc en déduire que : $$f_{c_{in}}=\frac{1}{2\pi\cdot\left(R_{b1}//R_{b2}\right)\cdot C_{in}}$$
 
-	En sortie, la charge influe sur la fréquence de coupure. Nous avons donc un montage comme suit :
+	En sortie, la charge influe sur la fréquence de coupure.
+	Nous pouvons construire un équivalent de Thévenin du comportement du montage (hors charge) comme suit :
 	\begin{center}
 		\begin{circuitikz}[scale=0.8]\draw
 		(6,0) to [open, v^=$V_{in}$] (6,3)
@@ -646,7 +667,7 @@ En considérant le gain du montage comme linéaire :
 \begin{itemize}
 \item pour le BS170, $V_{GS}=3.1V$ pour $g_m=0.197S$
 \item l'amplitude maximale en sortie vaut $4.34V$ (voir courbes en annexe).
-\item le gain du montage vaut $A_v=-g_m\cdot \left(R_D//R_ch\right)=-19.1$, par conséquent, pour $4.34V$ en sortie, l'amplitude de l'entrée vaut $0.23V$
+\item le gain du montage vaut $A=-g_m\cdot \left(R_D//R_{ch}\right)=-19.1$, par conséquent, pour $4.34V$ en sortie, l'amplitude de l'entrée vaut $0.23V$
 \item non
 \item si $V_{DC}$ change, alors $g_m$ change et donc le gain du montage change. Comme le point de fonctionnement sera différent, l'amplitude maximale en sortie changera également.
 \item non, plus $V_{GS}$ augmente, plus l'écart entre les courbes est grand, donc plus $g_m$ est grand. Il suffit de lire la courbe $g_m=f(V_{GS})$ pour le constater.
@@ -654,8 +675,6 @@ En considérant le gain du montage comme linéaire :
 \item il suffit d'ajouter une résistance de source qui introduit une rétroaction négative qui stabilise les caractéristiques de cet amplificateur. 
 \end{itemize}
 }
-
-\itgv{\newpage}
 
 \section{Lecture de documentation~: extraction de paramètres}
 
@@ -673,59 +692,87 @@ En considérant le gain du montage comme linéaire :
 \end{itemize}
 }
 
-\section{Exercices}
+\section{Dimensionnement d'un montage amplificateur}
 \Question{
-Sur base des courbes disponibles en annexe et de la documentation complète des transistors\footnote{Que vous devez trouver par vous-même}, dimensionner un étage à transistor MOS de gain à vide $32dB$ pour chacun des transistors. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
+Dimensionner un étage à transistor MOS de gain à vide $32dB$. La fréquence de coupure à l'entrée doit être de maximum $123Hz$. La tension d'alimentation vaut $24V$. Veillez à ne pas dépasser la puissance limite admissible par les transistors. La charge a une impédance supérieure à $3.3k\Omega$. Le signal à amplifier a une amplitude de $5mV$.
+Vous devez utiliser un BS170 dont les courbes caractéristiques sont en annexe et dont la puissance maximale dissipable est $P_D = 830 mW$.
 }{
+Un bon montage amplificateur utilisant un transistor est le classique montage à source commune.
+
+
+\begin{center}
+	\begin{circuitikz}[scale=1]\draw
+	(0,1) to [short,o-] (9,1)
+	(4,6) to [short] (9,6)
+	(0,3) node[anchor=east] {In} to [short,o-] (1,3)
+	(0,3) node[anchor=south]{} to [open, v_<=$V_{in}$] (0,1)
+	(1,3) to [C=$C_{in}$ ](1.5,3)
+	(1.5,3) to [short,-*] (2,3) node[anchor=south west]{}
+	(2,6) node[anchor=south ] (alim) {$E$}
+	(1.6,6) -- (2.4,6) %bar under the label
+	(2,3) to [R, l_=$R_{B1}$](2,6)
+	(2,3) to [R=$R_{B2}$](2,1)
+	(4,3) node[nfet] (mos) {}
+	(mos.G) to [short] (2,3)
+	(mos.D) to (4,4) to [R, l_=$R_D$] (4, 6)
+	(mos.D) to [short,-*](4,3.5) to [short] (4.25,3.5)
+	(mos.S) to [short] (4,1)% to [short, -o](2,0) node[anchor=west] {S}
+	(mos.S) -- (mos.B) %source to bulk connection
+	(4.25,3.5) node[anchor=south]{} to [C, l^=$C{out}$] (6,3.5) to [short](6,3.5)node[anchor=south]{} to [short,-o](6.5,3.5)node [anchor=south] {Out}
+	(6,3.5) to [generic, l_=$R_{ch}$] (6,1)
+	(6.5,3.5) to [open,v^<=$V_{out}$] (6.5,1)
+	(9,6) to [battery, l_=$E$](9,1)
+	(4,1) node[circ]{}
+	(4,1) node[ground]{}
+	;\end{circuitikz}
+
+\end{center}
+
+
 On doit réaliser un ampli de gain $32dB=\pm 40$. Avec un seul étage à source commune, le gain sera de $-40$.
 
-La puissance maximum admissible par le BS170 est $P_T=830mW$. %, ce qui nous donne un courant de drain maximum de $69mA$.
+
+
+Commençons par trouver une contrainte sur la résistance de drain à l'aide de la puissance maximale que peut dissiper le transistor.
+Dans le cas du BS170, la fiche technique renseigne $P_D=830mW$.
 	
-	$$P_T=V_{DS}\cdot I_D = \left(E-R_D\cdot I_D \right)\cdot I_D$$
-	d'où : $$ P_T=E\cdot I_D - R_D \cdot {I_D}^2$$
+	$$P_D=V_{DS}\cdot I_D = \left(E-R_D\cdot I_D \right)\cdot I_D$$
+	d'où : $$ P_D=E\cdot I_D - R_D \cdot {I_D}^2$$
 	
-	L'extremum (ici : maximum) se trouve en :
+	Le courant $I_D$ provoquant la plus grande dissipation d'énergie peut être trouvé par optimisation :
 	
-	$$\frac{\partial P_T}{\partial I_D}=0 \Longleftrightarrow E-2R_D \cdot {I_D}_{max} = 0$$
+	$$\frac{\partial P_D}{\partial I_D}=0 \Longleftrightarrow E-2R_D \cdot {I_D}_{max} = 0$$
 	
 	$$\Longrightarrow {I_D}_{max}=\frac{E}{2R_D}$$
-	
-	d'où : $${P_T}_{max}=\frac{E^2}{4\cdot R_D}$$
 
-	Pour ce transistor : $R_D\geq 173\Omega$ %, donc ${I_D}_{Pmax}\leq 69mA$
-%	finalement : $$R_D=\frac{E^2}{4\cdot {P_T}_{max}}$$
+	En injectant cette valeur dans l'expression $P_D(E, I_D, R_D)$, on trouve : 
 
-Les courbes en annexe ne permettant pas une résolution graphique, il faut utiliser l'expression de la droite de charge~: $I_D = \frac{-1}{R_D} \cdot V_{DS} + \frac{E}{R_D}$.
-Si on se place à la moitié de la droite de charge pour cette valeur (qui correspond au point où le transistor dissipe le plus), le point de fonctionnement sera $(12V, 69mA)$.
+	$${P_D}_{max}=\frac{E^2}{4\cdot R_D}$$
 
-On en déduit via les courbes caractéristiques un $g_m$ de $0.2S$ pour $V_{GS}=3.11V$.
+	Pour le BS170, si $E = 24 V$ et $P_D=830mW$ : \fbox{$R_D \geq 173\Omega$} %, donc ${I_D}_{Pmax}\leq 69mA$
+%	finalement : $$R_D=\frac{E^2}{4\cdot {P_D}_{max}}$$
 
-Pour obtenir le gain de $-40$ et dont l'expression est $-g_m \cdot R_D$, on doit choisir $R_D=200\Omega$, qui est bien supérieure à celle mentionnée au dessus.
+Prenons par exemple une résistance $R_D$ de $200 \Omega$.
+Sachant que le gain en boucle ouverte d'un montage à source commune $A_v = - g_m \cdot R_D$, on obtient \fbox{$g_m = 0.2 S$}.
 
-%Une des solutions est de diminuer $I_D$, ce qui va diminuer $g_m$ et $R_D$ aura une valeur plus élevée pour compenser.
+À partir de la caractéristique de transfert du BS170, on trouve pour la valeur de $g_m$ sélectionnée que $V_{GS} = 3.1 V$ et \fbox{$I_D = 67 mA$}.
 
-%A%vec $I_D=33mA$, $g_m=0.14S$ pour $V_{GS}=2.97V$ et donc $R_D=$
+En utilisant l'expression de la droite de charge de ce même montage, $I_D = \frac{E - V_{DS}}{R_D}$, on peut trouver la valeur de polarisation de $V_{DS} = 10.6 V$.
+On vérifie ainsi que $P_D = V_{DS} \cdot I_D = 10.6 V \cdot 67 mA = 710 mW \leq 830 mW$.
 
-Pour la fréquence de coupure à l'entrée, si on garde la même topologie qu'à l'exercice \ref{Q:ex4}, avec $R_{B1}=R_{B2}=100k\Omega$, on trouve $C_{in}\geq 26nF$ pour $f_{cin}\leq 123Hz$.
+Il s'agit à présent de dimensionner $R_{B1}$ et $R_{B2}$ (si on a toujours la même topologie qu'à l'exercice~\ref{Q:ex4}) sachant que nous avons une alimentation $E = 24 V$ et qu'on souhaite atteindre $V_{GS} = 3.1 V$.
+Le rapport du diviseur résistif $\frac{R_{B2}}{R_{B1} + R_{B2}} = \frac{3.1}{24}$.
+En choisissant arbitrairement \fbox{$R_{B1} = 1 M\Omega$}, on obtient \fbox{$R_{B2} = 148 k\Omega$}.
 
-Pour l'autre transistor, on trouve :
-$Pmax=2W$
+En reprenant l'expression de la fréquence de coupure à l'entrée du montage $f_{c_{in}} = \frac{1}{2\pi\cdot\left(R_{b1}//R_{b2}\right)\cdot C_{in}} \leq 123 Hz$, on peut trouver \fbox{$C_{in} \geq 10 nF$}.
 
-En suivant le même raisonnement que pour le BS170, on trouve les valeurs suivantes~: $R_D\geq 72\Omega$ et un point de fonctionnement à $(12V, 166mA)$.
-Ainsi, $g_m=2.5S$.
-
-Cependant, pour obtenir un gain de 40, il faudrait utiliser une résistance $R_D$ de $16 \Omega$, ce qui ne respecte pas la contrainte $R_D > 72 \Omega$. Il faut donc diminuer $g_m$ afin de pouvoir utiliser une résistance de drain plus grande.
-
-Si $R_D > 72 \Omega$ et $-g_m \cdot R_D$, on a $g_m < 0.56 S$.
-Via la caractéristique, on trouve ensuite $I_D\simeq 40mA$.
-En utilisant l'expression de la droite de charge, il en découle que $V_{DS} = 21.1 V$.
-Enfin, on peut déterminer l'excursion en sortie qui est de $24 V - 21.1V = 2.9 V$.
-Sachant que le gain est de 40, on peut amplifier sans saturation une entrée allant jusqu'à $2.9 V / 40 = 72.5 mV$.
+Il nous reste deux éléments à vérifier pour confirmer le bon suivi du cahier des charges.
+Premièrement, l'impédance de sortie de notre montage $Z_{out} = R_D = 200 \Omega$ est bien au moins un ordre de grandeur plus faible que l'impédance de la charge ($3.3 k\Omega$), assurant une bonne adaptation d'impédance en tension.
+Enfin, l'amplitude de la tension d'entrée étant de $5 mV$ et le gain idéal de 40, la tension maximale en sortie sera de $200 mV$. Étant donné le point de fonctionnement ($I_D, V_{DS}$) suffisamment centré sur  la droite de charge, nous devrions pouvoir amplifier un signal sinusoïdal sans déformation.
 
 
 }
 
-\newpage
 \section{Exercice d'examen (Session 1, 2015)}
 \input{transistor.tex}
 %\newpage
