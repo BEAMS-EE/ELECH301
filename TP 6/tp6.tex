@@ -42,7 +42,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : Problèmes contextualisés\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v2.0.0\\ page \thepage}
+\rhead{v2.0.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -579,8 +579,8 @@ Le signal de sortie peut être déphasé par rapport au signal d'entré.
     Les contraintes sont:
     \begin{itemize}
         \item Le gain total est $ G = \frac{\si{12}{V}}{\si{1}{mV}} = 12000 $,
-        \item l'impédance d'entrée doit être supérieur à \si{1}{k\ohm},
-        \item le dernière étage doit être capable de fournir un courant de sortie supérieur à 
+        \item l'impédance d'entrée doit être supérieure à \si{1}{k\ohm},
+        \item le dernier étage doit être capable de fournir un courant de sortie supérieur à 
             $ \frac{ \si{12}{V} }{ \si{200}{\ohm} } = \si{60}{mA} $.
     \end{itemize}
     ~\\
@@ -601,7 +601,7 @@ Le signal de sortie peut être déphasé par rapport au signal d'entré.
     Il nous faut donc au minimum 2 étages si on utilise l'\texttt{AD8} et 3 étages si on utilise l'\texttt{UA7} ou l'\texttt{OPA}.
     ~\\
     
-    Le dernière étage doit pouvoir fournir un courant de \si{60}{mA}.
+    Le dernier étage doit pouvoir fournir un courant de \si{60}{mA}.
     Seul l'\texttt{OPA} et l'\texttt{AD8} peuvent fournir un tel courant.
     On préféra l'\texttt{AD8} pour son prix.
     ~\\
@@ -644,7 +644,7 @@ Le signal de sortie peut être déphasé par rapport au signal d'entré.
 
 
 
-\section{Diodes -- Janvier 2018}
+\section*{Diodes -- Janvier 2018}
 
 \begin{figure}[h!]
     \begin{center}
@@ -683,18 +683,18 @@ Le signal de sortie peut être déphasé par rapport au signal d'entré.
       \item $ D_{1} $ et $ D_{2} $ sont bloquantes.
 
       Les deux diodes sont assimilées à des circuits ouverts.
-      Dès lors, $ v_{3} = 0V $ et $ v_{4} = \dfrac{ R_{4} }{ R_{2} + R_{4}} \cdot 12V = 9V$.
+      Dès lors, $ v_{3} = 0V $ et $$ v_{4} = \dfrac{ R_{4} }{ R_{2} + R_{4}} \cdot 12V = 9V$$.
       La tension aux bornes de la diode $ D_{2} $ est positive ce qui est \textbf{incohérent} avec l'hypothèse que celle-ci est bloquante.
 
       \item $ D_{1} $ est passante et $ D_{2} $ bloquante.
 
-      Idem, le calcule de la tension aux bornes de la diode $ D_{2} $ montre que l'hypothèse $ D_{2} $ bloquante est \textbf{fausse}:
+      Idem, le calcul de la tension aux bornes de la diode $ D_{2} $ montre que l'hypothèse $ D_{2} $ bloquante est \textbf{fausse}:
       $$ v_{3} = \frac{ R_{3} }{ R_{3} + R_{1} } = 6.86V \qquad\text{et}\qquad  v_{4} = \frac{ R_{4} }{ R_{2} + R_{4} } = 9V $$
       $$ \Rightarrow v_{D2} = v_{4} - v_{3} = 2.41V > 0 $$
 
       \item $ D_{1} $ est bloquante et $ D_{2} $ passante.
 
-      Comme $ D_{1} $ est assimilé à un circuit-ouvert, aucun courant ne passe dans la resistance $ R_{1} $, l'anode de $ D_{1} $ est donc à $ 12V $.
+      Comme $ D_{1} $ est assimilée à un circuit-ouvert, aucun courant ne passe dans la resistance $ R_{1} $, l'anode de $ D_{1} $ est donc à $ 12V $.
       La cathode est au potentiel $ v_{3} = v_{4} = \dfrac{ ( R_{3} // R_{4} ) }{ R_{2} + ( R_{3} // R_{4} ) } \cdot 12V $. 
       On remarque, dès lors, une tension $v_{D1}$ positive. 
       Cette hypothèse est \textbf{écartée}.
@@ -794,17 +794,17 @@ Soit le circuit suivant composé de deux diodes IN4736A. $ R_{1} = 1~k\Omega $ e
     \paragraph{$ D_{1} $ et $ D_{2} $ bloquantes} 
     On a :
     \[ V_{D1} - V_{D2} = V_{out} = \frac{9}{1+9} 10~V = 9~V \]
-    Or comme les diodes sont bloquantes leur tension doivent être comprises entre $ -6.8~V $ et $ 1.2~V $ ce qui n'est pas possible si $ V_{out} = 9~V $.
+    Or comme les diodes sont bloquantes leurs tensions doivent être comprises entre $ -6.8~V $ et $ 1.2~V $ ce qui n'est pas possible si $ V_{out} = 9~V $.
     
     \paragraph{$ D_{1} $ en avalanche et $ D_{2} $ passante}
     En faisant une loi des noeuds sur le noeud connectant $ D_{1} $ et les résistances on se rend compte que ça ne va pas.
     \[
         i_{1} = i_{D1} + i_{ch} 
     \]
-    Le courant $ i_{ch} = 8~V / 9~k\Omega = 0.8~mA $ est plus faible que $ i_{1} = (10-8)~V / 1~k\Omega = 2~mA $ or, $ i_{D1} $ devrait être négatif.
+    Le courant $ i_{ch} = 8~V / 9~k\Omega = 0.88~mA $ est plus faible que $ i_{1} = (10-8)~V / 1~k\Omega = 2~mA $ or, $ i_{D1} $ devrait être négatif.
     
     \paragraph{$ D_{1} $ passante et $ D_{2} $ en avalanche}
-    Le courant $ i_{D1} = 1.8~mA $ est positif et donc $ i_{D2} = - i_{D1} $ est négatif.
+    Le courant $ i_{D1} = 1.12~mA $ est positif et donc $ i_{D2} = - i_{D1} $ est négatif.
     Les hypothèses sont vérifiées.
     
 }
@@ -819,7 +819,7 @@ Soit le circuit suivant composé de deux diodes IN4736A. $ R_{1} = 1~k\Omega $ e
 
 }{
 
-    Pour $| V_{in} \geq 8 V$, nous serons dans la même situation que la question précédente : $D_1$ passante et $D_2$ en avalanche.
+    Pour $|V_{in}| \geq 8V$, nous serons dans la même situation que la question précédente : $D_1$ passante et $D_2$ en avalanche.
     Dans cette configuration, la somme des tensions aux bornes des diodes (et donc aux bornes de la charge) est $1.2 V + 6.8 V = 8 V$.
     On peut donc observer une saturation à cette tension, comme illustré dans le graphe suivant.
 
