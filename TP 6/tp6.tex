@@ -489,12 +489,17 @@ Sachant que la puissance maximale que la diode peut dissiper est de 100~mW, la L
 }
 {
 \begin{enumerate}
-\item En suivant les différentes courbes, on constate qu'une intensité lumineuse relative de 1 correspond à un courant de 20 mA pour une tension de 3.5 V aux bornes de la diode.
-Nous avons une maille d'équation $5V - V_R - V_D = 0$, avec $V_R = i \cdot R$. Étant donné que $V_D = 3.5 V$ et que $i = 20 mA$, on trouve $R = 75 \Omega$.
+\item L'une des difficultés de l'exercice est de comprendre le circuit équivalent à la sortie du montage.
+Étant donné que l'étage à AOP sature sur $0 V$ ou $5 V$, on peut conceptuellement le remplacer par une source de tension continue $E$ de $0 V$ ou $5 V$.
+On obtient alors une maille $E - V_R - V_D = 0$.
+En suivant les différentes courbes, on constate qu'une intensité lumineuse relative de 1 correspond à un courant de 20 mA pour une tension de 3.5 V aux bornes de la diode.
+Pour une sortie d'AOP comparateur de $5 V$, nous avons une maille d'équation $5V - V_R - V_D = 0$, avec $V_R = i \cdot R$.
+Étant donné que $V_D = 3.5 V$ et que $i = 20 mA$, on trouve $R = 75 \Omega$.
 
-\item La LED s'allume normalement. Une droite de charge permet de déterminer qu'elle est parcourue par un courant d'environ 3 mA sous une tension d'environ 3 V, entraînant une intensité lumineuse relative d'environ 0.2.
 
-Attention ! Cette question ne signifie pas que la diode dissipe 100 mW quand on utilise une résistance $100 k\Omega$.
+\item La LED s'allume normalement. Une droite de charge permet de déterminer qu'elle est parcourue par un courant d'environ 3 mA sous une tension d'environ 3 V, entraînant une intensité lumineuse relative d'environ 0.2 et une puissance dissipée de $3 V \cdot 3 mA = 9 mW$.
+
+Attention ! Cette question ne signifie pas que la diode dissipe 100 mW quand on utilise une résistance $1 k\Omega$.
 De plus, on ne peut pas utiliser la relation $P = R\cdot I^2$ pour une diode, puisqu'il s'agit de l'expression de la puissance dissipée par une résistance.
 \end{enumerate}
 }
@@ -827,6 +832,9 @@ Soit le circuit suivant composé de deux diodes IN4736A. $ R_{1} = 1~k\Omega $ e
     \begin{center}
     \includegraphics[width=.8\textwidth]{sinus_correction.png}
     \end{center}
+
+    Attention, notez que la forme de $V_{out}$ (en rouge) devrait être légèrement atténuée.
+    En effet, lorsque les diodes sont bloquantes ($|V_{in}| < 8 V$), $V_{out}$ est la tension d'un diviseur résistif formé de $R_1$ et $R_{ch}$ de rapport $\frac{9}{10}$.
 }
 
 \Question
