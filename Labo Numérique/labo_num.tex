@@ -54,7 +54,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 4 : Circuits logiques}
-\rhead{v2.0.0 \\ page \thepage}
+\rhead{v2.1.0 \\ page \thepage}
 \chead{\ifthenelse{\boolean{corrige}}{Corrigé}{}}
 \cfoot{}
 %%
@@ -488,7 +488,7 @@ On peut trouve l'input capacitance de la sonde de l'oscillo dans la datasheet du
 \Question{
 	Quelle est le plus petit intervalle de temps que vous pouvez mesurer avec le picoscope 2204A ?
 	\begin{astuce}
-		Vous trouverez la réponse dans sa fiche technique. On y indique notamment qu'il peut capturer 100 millions d'échantillons par seconde (100MS/s).
+		Vous trouverez la réponse dans sa \href{https://www.picotech.com/oscilloscope/2000/picoscope-2000-specifications}{fiche technique}. On y indique notamment qu'il peut capturer 100 millions d'échantillons par seconde (100MS/s), lorsqu'un seul canal est utilisé. Si les deux canaux sont utilisés simultanément, on descend à 50MS/s.
 	\end{astuce}
 }{10 ns}
 
@@ -868,21 +868,31 @@ Soit le circuit suivant :
 \Question{
 	Quel est l'état des entrées qui assure la fonction de mémorisation ?
 	\label{Q:rs_deb}
-}{}
+}{
+	$\overline{R}, \overline{S} = (1, 1)$
+}
 \end{predet}
 
 \begin{predet}
 \Question{
 	Que faut il appliquer au circuit pour réaliser un Set ou Reset ?
 	\label{Q:1}
-}{}
+}{
+	\begin{tabular}{rcc}
+	& $\overline{S}$ & $\overline{R}$ \\
+	Set : & 0 & 1 \\
+	Reset : & 1 & 0
+	\end{tabular}
+}
 \end{predet}
 
 \begin{predet}
 \Question{
 	Quelle est l'anomalie des sorties lorsque les deux entrées sont à l'état bas ?
 	\label{Q:1}
-}{}
+}{
+	$Q = \overline{Q} = 1$, alors que les deux sorties devraient être complémentaires.
+}
 \end{predet}
 
 
@@ -896,21 +906,33 @@ Soit le circuit suivant :
 	\item indésirable
 	\end{itemize}
 	\label{Q:1}
-}{}
+}{
+	\begin{itemize}
+	\item mémorisation : ($\overline{R}$, $\overline{S}$) = (1, 1)
+	\item mise à 0 : ($\overline{R}$, $\overline{S}$) = (0, 1)
+	\item mise à 1 : ($\overline{R}$, $\overline{S}$) = (1, 0)
+	\item indésirable : ($\overline{R}$, $\overline{S}$) = (0, 0)
+	\end{itemize}
+}
 \end{predet}
 
 \begin{predet}
 \Question{
-	Justifiez appellation R-S. (R : Reset S : Set); Quel est le niveau logique actif de ces 2 entrées ?
+	Justifiez appellation R-S. Quel est le niveau logique actif de ces 2 entrées ?
 	\label{Q:1}
-}{}
+}{
+	(R : Reset S : Set) et dans la configuration proposée (avec des portes \texttt{NAND}), les entrées sont actives à l'état bas.
+}
 \end{predet}
 
 \begin{predet}
 \Question{
 	Pourquoi parle-t-on d'entrées en logique inverse ?
 	\label{Q:1}
-}{}
+}{
+	La description habituelle d'un bistable R-S part de la description avec des portes \texttt{NOR}.
+	Si le bistables est réalisé avec des portes \texttt{NAND}, toute la logique est \textbf{inversée}.
+}
 \end{predet}
 
 \begin{predet}
@@ -918,7 +940,9 @@ Soit le circuit suivant :
 	Que pourrait-il se passer si on passe de l'état [mise à 1] à l'état [mémorisation] en passant transitoirement
 par l'état [indésirable] ?
 	\label{Q:rs_fin}
-}{}
+}{
+	Les deux sorties seraient actives en même temps. Tant que cette situation est \textit{transitoire}, ce n'est pas un problème majeur.
+}
 \end{predet}
 
 \begin{manip}
@@ -1051,7 +1075,15 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 	 Déterminez son fonctionnement (table de vérité simplifiée).
 
 	\label{Q:dlatch}
-}{}
+}{
+	\begin{tabular}{cc|cc}
+	D & E & $Q_{n+1}$ & $\overline{Q_{n+1}}$ \\ \hline
+	0 & 0 & $Q_n$ & $\overline{Q_n}$ \\
+	0 & 1 & 0 & 1 \\
+	1 & 0 & $Q_n$ & $\overline{Q_n}$ \\
+	1 & 1 & 1 & 0
+	\end{tabular}
+}
 \end{predet}
 
 \begin{manip}
