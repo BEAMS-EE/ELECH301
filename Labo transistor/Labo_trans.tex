@@ -55,7 +55,7 @@
 
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ LABO \no 3 : Transistor MOS\ifthenelse{\boolean{corrige}}{~-- corrigé}{}}
-\rhead{v2.1.0\\ page \thepage}
+\rhead{v2.1.1\\ page \thepage}
 \cfoot{}
 %%
 
@@ -626,7 +626,7 @@ $\rightarrow$ Cette contrainte sur le courant impose une contrainte sur la trans
 En utilisant la caractéristique de transfert du BS170 donnée en annexe, on peut trouver qu'à $I_D \leq 83 mA$ on a $\boxed{g_m \leq 0.215 S}$.\\
 
 $\rightarrow$ Choisissons enfin un point de fonctionnement au repos.
-Afin de maximiser l'excursion de la tension de sortie, prenons un point au centre de la droite de charge, soit $\boxed{V_{DS} = 6 V}$.\\
+Afin de maximiser l'excursion de la tension de sortie, prenons un point au centre de la droite de charge, soit $\boxed{V_{DS} = 6 V}$\footnote{Les plus attentif$\cdot$ve$\cdot$s d'entre vous auront remarqué que $V_{DS} = 6 V$ ne correspond pas au centre de la droite de charge \textit{dans la zone de saturation} de la caractéristique de sortie. On est cependant suffisamment proche pour négliger la différence.}.\\
 
 $\rightarrow$ Nous savons qu'à cette tension, $I_D \leq 83 mA$.
 Étant donné que l'équation de la maille en sortie du transistor est $E - V_{DS} - R_D \cdot I_D = 0$, nous avons $\boxed{R_D \geq 72 \Omega}$.
@@ -635,7 +635,7 @@ Si nous négligeons l'impact du condensateur de sortie sur l'impédance de sorti
 Il nous faut donc $R_D \ll 3.3 k\Omega$, soit $\boxed{R_D \leq 330 \Omega}$\footnote{Le cahier des charges est même moins strict en imposant une impédance de sortie $Z_{out} \leq 1 k\Omega$.}.
 
 $\rightarrow$ Cette liste de contraintes établie, nous pouvons chercher une bonne combinaison de paramètres les respectant.
-En particulier, sachant que le gain du montage à source commune utilisé est $A_v = -g_m \cdot R_D$, on peut trouver que pour $\boxed{V_{GS} = 3 V}$, nous avons $\boxed{I_D = 50 mA}$ et $\boxed{g_m = 0.17 S}$. Sachant que $R_D = \frac{E - V_{DS}}{I_D}$, nous avons en prime $\boxed{R_D = 120 \Omega}$.
+En particulier, sachant que le gain du montage à source commune utilisé est $A_v = -g_m \cdot R_D$, on peut trouver que pour $\boxed{V_{GS} = 3 V}$\footnote{Attention, en plaçant $V_{GS}$ à 3 V, l'intersection entre la droite de charge et la caractéristique de sortie correspondante n'est plus exactement à $V_{DS} = 6 V$, mais plutôt aux alentours de $V_{DS} = 5 V$. Ce point de fonctionnement au repos est néanmoins acceptable, étant donné qu'on a maximum 2 V d'amplitude pour $V_{out}$, ce que ce point de fonctionnement nous permet encore tout en restant dans la zone de saturation des caractéristiques de sortie.}, nous avons $\boxed{I_D = 50 mA}$ et $\boxed{g_m = 0.17 S}$. Sachant que $R_D = \frac{E - V_{DS}}{I_D}$, nous avons en prime $\boxed{R_D = 120 \Omega}$.
 Le gain du montage est donc $\boxed{A_v = 20.4}$, ce qu'on considérera comme \textit{good enough}.\\
 
 $\rightarrow$ La polarisation à l'entrée du montage fixée, nous pouvons dimensionner les résistances $R_{B1}$ et $R_{B2}$ :
