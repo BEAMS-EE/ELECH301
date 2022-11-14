@@ -594,24 +594,23 @@ Vous pouvez condidérer que la capacité a une impédance nulle à la fréquence
 	L'étage suiveur permet de résoudre un problème d'adaptaion d'impédance entre l'étage 1 et l'étage 2. Sans celui-ci, lorsque la diode Zener est en avalanche, une partie non négligeable du courant du diviseur résistif circule au sein du deuxième étage, diminuant fortement la tension de décalage continue additionnée à $V_i$, et il n'est alors pas possible d'atteindre la tension d'avalanche de la Zener avec l'alimentation 5V.
 \end{info}
 
-\begin{manip}
-Afin de réaliser l'étage suiveur, vous aurez besoin d'un amplificateur opérationnel TLV prévu pour la manipulation 5. L'image \ref{fig:tlv_suiveur} vous indique comment réaliser le cablage correspondant sans regarder dans les datasheets.
+\begin{info}
+    Afin de réaliser l'étage suiveur, vous aurez besoin d'un amplificateur opérationnel TLV se trouvant dans le matériel du Labo 5. La Figure \ref{fig:tlv_suiveur} vous indique comment réaliser le cablage correspondant sans regarder dans les datasheets.
+\end{info}
+
 \begin{figure}[h!]
-	\begin{center}
-		\includegraphics{figures/tlv_suiveur.png}
-	\end{center}
-	\caption{Cablage du TLV pour un montage suiveur}
-	\label{fig:tlv_suiveur}
+    \begin{center}
+        \includegraphics[scale=0.2]{figures/tlv_suiveur.png}
+    \end{center}
+    \caption{Cablage du TLV pour un montage suiveur}
+    \label{fig:tlv_suiveur}
 \end{figure}
 
+\begin{manip}
 \Question
 {Câblez le circuit et vérifiez vos prédeterminations expérimentalement avec en entrée une sinusoide d'amplitude 2V. 
-\begin{astuce}
-	La tension de Zener semble avoir diminué.
-	Vérifiez bien les datasheets pour comprendre quelles sont ses conditions d'application.
-\end{astuce}
 }
-{La tension de Zener a été définie pour un courant de 20~mA. Comme le courant est bien inférieur ici, la tension de Zener est plus basse (aux alentours de 2.5V). L'exponentielle dans la zone d'avalanche est moins raide que lorsque la diode est polarisée en direct. }
+{On observe effectivement un écrêtage de la tension lorsque celle-ci est supérieure à 3.3V. }
 \label{Q:zener_4}
 \Question
 {Si l'entrée est une sinusoïde d'amplitude 0.5V, observez-vous encore un écrêtage du signal? Si en aval on veut placer un microcontrôleur 3.3V, ce circuit fournit-il une protection efficace? }
