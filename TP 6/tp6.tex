@@ -42,7 +42,7 @@
 %% fancy header & foot
 \pagestyle{fancy}
 \lhead{[ELEC-H-301] Électronique appliquée\\ TP \no 6 : Problèmes contextualisés\ifthenelse{\boolean{corrige}}{~-- Corrigé}{}}
-\rhead{v2.0.2\\ page \thepage}
+\rhead{v2.0.3\\ page \thepage}
 \cfoot{}
 %%
 
@@ -273,8 +273,8 @@ Légendez clairement les repères.
     width=10cm,
     % height=5cm,
     xmode=log, ymode=log,
-    xmin=1e-1, xmax=1e8,
-    ymin=1e-1, ymax=1e7,
+    xmin=1, xmax=1e9,
+    ymin=1e-8, ymax=1,
     grid=both,
     major grid style={black!50},
     yticklabels={,,},
@@ -290,8 +290,9 @@ Légendez clairement les repères.
     width=10cm,
     % height=5cm,
     xmode=log,
-    xmin=1e-1, xmax=1e8,
-    ymin=0, ymax=4,
+    xmin=1, xmax=1e9,
+    ymin=-90, ymax=270,
+    ytick distance=90,
     grid=both,
     major grid style={black!50},
     yticklabels={,,},
@@ -317,7 +318,59 @@ H(p) & = \frac{10^3 \cdot (p + 10^2)^3 \cdot(p+10^4)}{p \cdot (p+10^3) \cdot (p+
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=10cm]{elech301_bode.png}
+\tikzset{handle active characters in code=false}
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm,
+    xmode=log, ymode=log,
+    xmin=1, xmax=1e9,
+    ymin=1e-8, ymax=1,
+    grid=both,
+    major grid style={black!50},
+    xlabel = \(\omega\),
+    ylabel = \(|H(j\omega)|\),
+]
+\addplot +[mark=none, ultra thick] coordinates {
+	(1,1e-5)
+	(1e2,1e-7)
+	(1e3,1e-5)
+	(1e4,1e-4)
+	(1e5,1e-2)
+	(1e6,1e-3)
+};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\tikzset{handle active characters in code=false}
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm,
+    xmode=log,
+    xmin=1, xmax=1e9,
+    ymin=-90, ymax=270,
+    ytick distance=90,
+    grid=both,
+    major grid style={black!50},
+    yticklabel={\(\pgfmathprintnumber{\tick}^\circ\)},
+    xlabel = \(\omega\),
+    ylabel = \(\arg(H(j\omega))\),
+]
+\addplot +[mark=none, ultra thick] coordinates {
+	(1,-90)
+	(1e2,-90)
+	(1e2,180)
+	(1e3,180)
+	(1e3,90)
+	(1e4,90)
+	(1e4,180)
+	(1e5,180)
+	(1e5,-90)
+	(1e9,-90)
+};
+\end{axis}
+\end{tikzpicture}
 \end{center}
 }
 \clearpage
