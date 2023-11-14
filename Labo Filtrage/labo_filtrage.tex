@@ -255,14 +255,19 @@ Câblez le montage suivant :
 	Attention, $R_G$ est déjà comprise à l'intérieur du générateur, vous ne devez pas l'ajouter au montage.
 \end{astuce}
 
-\Question
-{
-Pouvez-vous négliger l'impédance de sortie du générateur?
-%\item A la fréquence de coupure, mesurez la tension aux bornes de R, de C et à la sortie du générateur. Les résultats vous semblent-ils cohérents ? % Nécessite un voltmètre différentiel. Ils doivent voir que la somme des deux tensions est plus grande que Vin. La solution est de sommer les *phaseurs* de ces tensions.
-
-Vérifiez vos prédéterminations en relevant la réponse fréquentielle du circuit (module ET phase), entre $10Hz$ et $80kHz$.
+\Question{
+	Vérifiez, à haute fréquence ($\approx 80kHz$), que la résistance interne du générateur est négligeable en mesurant la tension aux bornes du circuit.\\
+	Celle-ci devrait presque être égale à la tension spécifiée dans le logiciel picoscope, pourquoi ?\\
+	Pourquoi est-il important de se mettre à haute fréquence pour effectuer cette mesure ?
 }
 {}
+
+\Question{
+	Relevez la réponse fréquentielle du circuit (module \emph{et} phase), entre $10Hz$ et $80kHz$.\\
+	Est-ce-que ces courbes de Bode sont similaires à vos prédeterminations théoriques ?
+}
+{}
+
 \end{manip}
 
 \subsection{Circuit RLC passe-bas}
