@@ -1098,7 +1098,16 @@ L'inverseur en tête du montage a pour effet de supprimer l'état illicite du bi
 \Question{
 	Peut-on, à votre avis, modifier D n'importe quand sans peur de provoquer une sortie «~interdite~» ?
 	\label{Q:1}
-}{}
+}{
+	Si on considère la porte logique NOT comme non idéale (avec un temps de propagation non nul), alors il est encore possible d'atteindre l'état de sortie indésirable.
+	En considérant :
+	\begin{itemize}
+		\item une transition de B de l'état bas vers l'état haut au moment $t_D$
+		\item un délai de la porte NOT $\Delta t_{NOT}$
+		\item le prochain rising edge de l'enable en $t_{en} > t_D$
+	\end{itemize}
+	Il est alors nécessaire que $t_D + \Delta t_{NOT} < t_{en}$ pour éviter la situation instable.
+}
 \end{predet}
 
 \clearpage
