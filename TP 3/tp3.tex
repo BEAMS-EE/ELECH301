@@ -291,12 +291,13 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 \Question{%Ex labo 2, 3.1
 
 	\begin{enumerate}
-		\item Dimensionnez un étage amplificateur inverseur à ampli-op ayant un gain à vide $A_v = 14 dB$ et une impédance d'entrée $R_{in} \geq 10 k\ohm$
+		\item Dimensionnez un étage amplificateur inverseur à ampli-op ayant un gain à vide $A_v = 14 dB$ pour une source de tension dont la résistance interne vaut $R_S = 100\ohm$. 
+			Faites attention à l'adaptation d'impédence en tension de votre montage (un facteur 100 est considéré comme suffisant pour assurer une adaptation idéale). 
 
 		\item En supposant que l'ampli-op utilisé pour réaliser ce montage est un LM741, déterminez~:
 		\begin{itemize}
-			\item la bande passante du montage~;
-			\item la tension de décalage à la sortie.
+			\item la bande passante du montage
+			\item la tension de décalage à la sortie
 		\end{itemize}
 	\end{enumerate}
 }
@@ -305,13 +306,14 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 		\item Le gain d'un inverseur est $A = -\frac{R_2}{R_1}$, avec $R_2$ la résistance de rétroaction et $R_1$ la résistance à l'entrée inverseuse.
 		Étant donné que 14~dB correspond à un gain de 5, on a $R_2 = 5 R_1$. Notez que le gain en décibel correspond à la valeur absolue du gain «~décimal~».
 		Dans le cas du montage inverseur, l'impédance d'entrée correspond à notre $R_1$.
-		Puisqu'on veut $R_{in} \geq 10 k\ohm$, on peut prendre $R_1 = 10 k\Omega$ et $R_2 = 50 k\Omega$.
+		Puisqu'on veut $R_{in} \geq 100 \cdot R_S = 10k\ohm$, on peut prendre $R_1 = 10 k\ohm$ et $R_2 = 50 k\ohm$.
 
 		\item Le produit gain-bande passante («~\textit{gain-bandwidth product}~», ou GBP en anglais) du LM741 étant de 1.5~MHz, la bande passante du montage vaut $\frac{GBP}{|A|} = 300 kHz$.
 
-		La tension de décalage se calcule de la même façon que dans l'exercice~\ref{q.tension-decalage}, à savoir $V_{out} = (1+\frac{R_2}{R_1})\cdot e_0 -(1+\frac{R_2}{R_1}) \cdot R_s \cdot I_+ + R_2 \cdot I_-$.
-		Cependant, dans le cas présent, la source $I_+$ est directment connectée à la masse et n'a donc aucune influence.
-		On obtient alors $V_{out} = 6\cdot e_0 + R_2 \cdot I_- = 33.5 mV$, puisqu'on a $e_0 = 1mV$ et $I_- = 70nA$.
+		La tension de décalage se calcule de la même façon que dans l'exercice~\ref{q.tension-decalage}, à savoir $V_{out} = (1+\frac{R_2}{R_S+R_1})\cdot e_0 - (1+\frac{R_2}{R_S+R_1}) \cdot R_+ \cdot I_+ + R_2 \cdot I_-$.
+		Cependant, dans le cas présent, il n'y a pas de résistance sur borne non-inverseuse de l'amplificateur. 
+		La source $I_+$ est directment connectée à la masse et n'a donc aucune influence.
+		On obtient alors $V_{out} =  (1+\frac{50}{10.1}) \cdot e_0 + 50 \cdot 10^3 \cdot I_- \approx 33.5 mV$, puisqu'on a $e_0 = 1mV$ et $I_- = 70nA$.
 	\end{enumerate}
 }
 
