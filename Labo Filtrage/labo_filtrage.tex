@@ -211,17 +211,25 @@ Remarque : nous avons écrit un document détaillant cette méthode : « Fonctio
 Nous pouvons aussi déduire le comportement asymptotique de la réponse fréquentielle par un raisonnement sur les impédances, en se rappelant que :
 $H(j\omega)=\frac{Z_R(j\omega)}{Z_{tot}(j\omega)}$
 
-\Question
-{
-Répondez aux questions suivantes \textbf{pour chacun des cas} $\omega \rightarrow 0$ et  $\omega \rightarrow \infty$ :
-\begin{enumerate}
-\item $Z_{tot}$ est la somme de deux impédances, laquelle des deux peut-on négliger ?
-\item Déduisez-en une expression approchée de la réponse fréquentielle $H(j\omega)$ à la pulsation considérée.
-\item Quelle relation pouvez-vous écrire entre les modules de $Z_R$ et $Z_C$ pour $\omega = \omega_C=\frac{1}{RC}$ ?
-\item Déduisez-en la valeur de la réponse fréquentielle pour $\omega = \omega_C$.
-\end{enumerate}
+\Question {
+	\emph{Pour chacun des cas} $\omega \rightarrow 0$ et $\omega \rightarrow \infty$ :
+	\begin{itemize}
+		\item que vaut $Z_{tot}$, l'impédance totale du circuit ?
+		\item comment peut-on approximer la réponse fréquentielle $H(j\omega)$ du circuit ?
+	\end{itemize}
 }
 {}
+
+\Question {
+	Dans le cas où $\omega \rightarrow \omega_C = \frac{1}{RC}$ :
+	\begin{itemize}
+		\item quel est le rapport entre le module de $Z_R$ et le module de $Z_C$ ?
+		\item quelle est la valeur de la réponse fréquentielle en $\omega = \omega_C$ ?
+	\end{itemize}
+}
+{}
+	
+
 \end{predet}
 
 \subsubsection{Manipulation}
@@ -247,14 +255,19 @@ Câblez le montage suivant :
 	Attention, $R_G$ est déjà comprise à l'intérieur du générateur, vous ne devez pas l'ajouter au montage.
 \end{astuce}
 
-\Question
-{
-Pouvez-vous négliger l'impédance de sortie du générateur?
-%\item A la fréquence de coupure, mesurez la tension aux bornes de R, de C et à la sortie du générateur. Les résultats vous semblent-ils cohérents ? % Nécessite un voltmètre différentiel. Ils doivent voir que la somme des deux tensions est plus grande que Vin. La solution est de sommer les *phaseurs* de ces tensions.
-
-Vérifiez vos prédéterminations en relevant la réponse fréquentielle du circuit (module ET phase), entre $10Hz$ et $80kHz$.
+\Question{
+	Vérifiez, à haute fréquence ($\approx 80kHz$), que la résistance interne du générateur est négligeable en mesurant la tension aux bornes du circuit.\\
+	Celle-ci devrait presque être égale à la tension spécifiée dans le logiciel picoscope, pourquoi ?\\
+	Pourquoi est-il important de se mettre à haute fréquence pour effectuer cette mesure ?
 }
 {}
+
+\Question{
+	Relevez la réponse fréquentielle du circuit (module \emph{et} phase), entre $10Hz$ et $80kHz$.\\
+	Est-ce-que ces courbes de Bode sont similaires à vos prédeterminations théoriques ?
+}
+{}
+
 \end{manip}
 
 \subsection{Circuit RLC passe-bas}
