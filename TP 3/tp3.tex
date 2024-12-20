@@ -1,5 +1,5 @@
-\documentclass{../template/tp}
-\usepackage[utf8x]{inputenc}
+\documentclass{template/tp}
+\usepackage[utf8]{inputenc}
 
 \usepackage[frenchb]{babel}
 \usepackage[T1]{fontenc}
@@ -38,7 +38,7 @@
 \fi
 
 % \correction{false}
-% \correction{true}
+\correction{true}
 
 \author{The Fantastic Four}
 
@@ -202,7 +202,7 @@ Objectifs : à la fin de cette séance, l'étudiant sera capable de :
 		Quant à $I_+$ et $I_-$, ils se retrouvent dans les termes «~\textit{input offset current}~» (courant de décalage) qui vaut $I_+ - I_-$, et «~\textit{input bias current}~» (courant de polarisation) qui vaut $\frac{I_++I_-}{2}$.
 		En solvant le système, on peut trouver que $I_+ = i_{bias} + \frac{i_{offset}}{2}$ et $I_- = i_{bias} - \frac{i_{offset}}{2}$.
 
-		Pour le LM741, on trouve $e_0$ = 1~mv, $I_+$ = 90~nA et $I_-$ = 70~nA, ce qui donne $V_{out} = 9.99 mV$.
+		Pour le LM741, on trouve $e_0$ = 1~mv, $I_+$ = 90~nA et $I_-$ = 70~nA, ce qui donne $V_{out} = 1.6 mV$.
 
 		Pour le CA3140A, on trouve $e_0$ = 2~mv, $I_+$ = 10.25~pA et $I_-$ = 9.75~pA, ce qui donne $V_{out} = 20 mV$, l'influence des courants d'entrée sur la sortie est négligeable par rapport aux autres tensions du circuit.
 
